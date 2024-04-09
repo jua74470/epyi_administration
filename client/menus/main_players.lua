@@ -19,7 +19,7 @@ function main_players_showContentThisFrame(playerGroup)
 			end
 		end
 	)
-	RageUI.Separator("↓ Résultats du ~r~filtre ~s~↓")
+	RageUI.Separator(_U("filter_result"))
 	local count = 0
 	for _k, player in pairs(_var.players.list) do
 		if
@@ -66,7 +66,7 @@ function main_players_showContentThisFrame(playerGroup)
 	end
 	if count == 0 then
 		RageUI.Separator("")
-		RageUI.Separator("~c~Aucun joueur trouvé")
+		RageUI.Separator(_U("no_result"))
 		RageUI.Separator("")
 	end
 end

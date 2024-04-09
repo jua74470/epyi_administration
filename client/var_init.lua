@@ -93,6 +93,7 @@ _var.menu.weatherArray = {
 	"HALLOWEEN",
 }
 _var.menu.playersFilter = ""
+_var.menu.bansFilter = ""
 _var.menu.pedsCategoryFilterArrayIndex = 1
 _var.menu.pedsCategoryFilterArray = {
 	_U("main_personnal_appearance_pedscategory0"),
