@@ -304,7 +304,14 @@ RegisterNetEvent("epyi_administration:editBan", function(id, action, data)
 		local newReason = data.reason
 		local _datas = json.decode(_datastore[id].data)
 		_datas.reason = newReason
-		TriggerEvent("epyi_administration:editData", id, _datastore[id].type, _datastore[id].date_unix, json.encode(_datas), _datastore[id].owner)
+		TriggerEvent(
+			"epyi_administration:editData",
+			id,
+			_datastore[id].type,
+			_datastore[id].date_unix,
+			json.encode(_datas),
+			_datastore[id].owner
+		)
 	elseif action == "revoke" then
 		TriggerEvent("epyi_administration:deleteData", id)
 	end
