@@ -15,6 +15,7 @@ function main_server_showContentThisFrame(playerGroup)
 				if Selected then
 					TriggerServerEvent("cd_easytime:ForceUpdate", {
 						weather = _var.menu.weatherArray[_var.menu.weatherArrayIndex],
+						instantweather = true,
 					})
 				end
 			end
@@ -31,6 +32,7 @@ function main_server_showContentThisFrame(playerGroup)
 				if Selected then
 					TriggerServerEvent("cd_easytime:ForceUpdate", {
 						hours = _var.menu.timeArray[_var.menu.timeArrayIndex],
+						instanttime = true,
 					})
 				end
 			end
