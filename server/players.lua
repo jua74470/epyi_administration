@@ -28,7 +28,7 @@ AddEventHandler("esx:playerLogout", function(source)
 end)
 
 AddEventHandler("playerDropped", function(reason)
-    _players[source] = nil
+	_players[source] = nil
 	sendPlayersToStatebag()
 end)
 
@@ -278,4 +278,33 @@ RegisterNetEvent("epyi_administration:banPlayer", function(target, reason, durat
 	)
 	-- xTarget.kick(_U("notif_ban_target", reason, duration, formatExpiration))
 	print(formatExpiration)
+end)
+
+RegisterNetEvent("epyi_administration:editBan", function(id, action, data)
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
+	if
+		not Config.Groups[xPlayer.getGroup()]
+		or not Config.Groups[xPlayer.getGroup()].Access["submenu_server_bans_edit"]
+	then
+		xPlayer.kick(_U("insuficient_permissions"))
+		return
+	end
+	if
+		not id
+		or not action
+		or not data
+		or type(id) ~= "number"
+		or type(action) ~= "string"
+		or type(data) ~= "table"
+	then
+		return
+	end
+	if action == "editReason" then
+		local newReason = data.reason
+		local _datas = json.decode(_datastore[id].data)
+		_datas.reason = newReason
+		TriggerEvent("epyi_administration:editData", id, _datastore[id].type, _datastore[id].date_unix, json.encode(_datas), _datastore[id].owner)
+	elseif action == "revoke" then
+	end
 end)
