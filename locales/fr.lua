@@ -41,6 +41,8 @@ Locales["fr"] = {
 	["door_trunk"] = "Coffre",
 	["door_all"] = "Toutes les portes",
 	["date_format_long"] = "_d/_m/_Y _Hh_M",
+	["search"] = "Rechercher",
+	["no_filter"] = "Aucun filtre",
 
 	-- Elements → Main menu
 	["main_menu_staffmode"] = "~r~Activer/Désactiver ~s~le mode staff",
@@ -103,6 +105,7 @@ Locales["fr"] = {
 
 	-- Elements → Menu menu / players
 	["main_players_desc"] = "Intéragir avec le joueur ~r~%s",
+	["main_players_filter_desc"] = "Permet de rechercher par ~r~ID/Prénom/Nom/Pseudo",
 
 	-- Elements → Menu menu / players / interact
 	["main_players_interact_ooc_name"] = "Son pseudo: ~r~%s",

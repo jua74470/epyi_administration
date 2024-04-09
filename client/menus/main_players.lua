@@ -4,9 +4,9 @@
 function main_players_showContentThisFrame(playerGroup)
 	_var.players.list = GlobalState["epyi_administration:playerList"] or {}
 	RageUI.ButtonWithStyle(
-		"Rechercher",
-		"Permet de rechercher par ~r~ID/Prénom/Nom/Pseudo",
-		{ RightLabel = (_var.menu.playersFilter ~= "" and _var.menu.playersFilter or "Aucun filtre") },
+		_U("search"),
+		_U("main_players_filter_desc"),
+		{ RightLabel = (_var.menu.playersFilter ~= "" and _var.menu.playersFilter or _U("no_filter")) },
 		true,
 		function(_h, _a, Selected)
 			if Selected then
