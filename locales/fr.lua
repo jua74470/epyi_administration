@@ -43,6 +43,8 @@ Locales["fr"] = {
 	["date_format_long"] = "_d/_m/_Y _Hh_M",
 	["search"] = "Rechercher",
 	["no_filter"] = "Aucun filtre",
+	["filter_result"] = "↓ Résultats du ~r~filtre ~s~↓",
+	["no_result"] = "~c~Aucun résultat",
 
 	-- Elements → Main menu
 	["main_menu_staffmode"] = "~r~Activer/Désactiver ~s~le mode staff",
@@ -58,7 +60,7 @@ Locales["fr"] = {
 	["main_menu_access_server"] = "Gestion ~r~du serveur",
 	["main_menu_access_server_desc"] = "Accéder à la gestion avancée du serveur",
 
-	-- Elements → Menu menu / personnal
+	-- Elements → Main menu / personnal
 	["main_personnal_health_management"] = "Gérer votre santé",
 	["main_personnal_health_management_desc"] = "Permet de vous soigner, de vous nourrir, de vous hydrater",
 	["main_personnal_appearance"] = "Gérer votre apparence",
@@ -82,7 +84,7 @@ Locales["fr"] = {
 	["main_personnal_shownames"] = "Activer/Désactiver l'affichage des noms",
 	["main_personnal_shownames_desc"] = "Vous permet de voir les noms des joueurs lorsque vous êtes à proximité d'eux",
 
-	-- Elements → Menu menu / personnal / appearance
+	-- Elements → Main menu / personnal / appearance
 	["main_personnal_appearance_back"] = "Prendre mon apparence initiale",
 	["main_personnal_appearance_back_desc"] = "Permet de reprendre votre apparence par défaut",
 	["main_personnal_appearance_peds"] = "↓ Liste des peds ~r~disponibles~s~ ↓",
@@ -103,11 +105,11 @@ Locales["fr"] = {
 	["main_personnal_appearance_pedscategory11"] = "Scénario histoire - femme",
 	["main_personnal_appearance_pedscategory12"] = "Scénario histoire - homme",
 
-	-- Elements → Menu menu / players
+	-- Elements → Main menu / players
 	["main_players_desc"] = "Intéragir avec le joueur ~r~%s",
 	["main_players_filter_desc"] = "Permet de rechercher par ~r~ID/Prénom/Nom/Pseudo",
 
-	-- Elements → Menu menu / players / interact
+	-- Elements → Main menu / players / interact
 	["main_players_interact_ooc_name"] = "Son pseudo: ~r~%s",
 	["main_players_interact_rp_name"] = "Son nom rp: ~r~%s",
 	["main_players_interact_id"] = "Son id: ~r~%s",
@@ -129,7 +131,7 @@ Locales["fr"] = {
 	["main_players_interact_ban"] = "~r~Ban le joueur",
 	["main_players_interact_ban_desc"] = "Permet de bannir le joueur du serveur",
 
-	-- Elements → Menu menu / vehicles
+	-- Elements → Main menu / vehicles
 	["main_vehicles_current"] = "Gestion du véhicule actuel",
 	["main_vehicles_current_desc"] = "Permet de gérer le véhicule dans lequel vous êtes",
 	["main_vehicles_favorites"] = "Gestion de vos véhicules favoris",
@@ -137,7 +139,7 @@ Locales["fr"] = {
 	["main_vehicles_spawn"] = "Faire apparaître un véhicule",
 	["main_vehicles_spawn_desc"] = "Permet de faire apparaître un véhicule parmis la liste des véhicules disponibles",
 
-	-- Elements → Menu menu / vehicles / vehicles_current
+	-- Elements → Main menu / vehicles / vehicles_current
 	["main_vehicles_current_repair"] = "Réparer le véhicule",
 	["main_vehicles_current_repair_desc"] = "Permet de retourner votre véhicule a son état d'usine",
 	["main_vehicles_current_clean"] = "Nettoyer le véhicule",
@@ -171,19 +173,19 @@ Locales["fr"] = {
 	["main_vehicles_current_custom"] = "Customiser le vehicle",
 	["main_vehicles_current_custom_desc"] = "Permet de customiser votre véhicule",
 
-	-- Elements → Menu menu / vehicles / vehicles_favorites
+	-- Elements → Main menu / vehicles / vehicles_favorites
 	["main_vehicles_favorites_add"] = "Ajouter le véhicule aux favories",
 	["main_vehicles_favorites_add_desc"] = "Permet d'ajouter le véhicule dans lequel vous êtes aux favoris. Vous pourrez le faire réapparaitre quand vous le souhaitez !",
 	["main_vehicles_favorites_interact_desc"] = "Intéragir avec le véhicule favoris ~r~%s",
 	["main_vehicles_favorites_interact_spawn"] = "Apparaître",
 	["main_vehicles_favorites_interact_delete"] = "Supprimer",
 
-	-- Elements → Menu menu / vehicles / vehicles_spawner
+	-- Elements → Main menu / vehicles / vehicles_spawner
 	["main_vehicles_spawn_search"] = "Rechercher par nom de modèle",
 	["main_vehicles_spawn_search_desc"] = "Permet de rechercher un véhicule grâce à son nom de modèle",
 	["main_vehicles_spawn_spawn_desc"] = "Faire apparaître un·e ~r~%s ~s~de la catégorie ~r~%s",
 
-	-- Elements → Menu menu / Reports
+	-- Elements → Main menu / Reports
 	["main_reports_report_desc"] = "~r~Raison du rapport:~s~\n%s",
 	["main_reports_no_report"] = "Il n'y a ~r~aucun rapport ~s~de disponible",
 	["main_reports_avalaible"] = "↓ ~r~Rapports~s~ (Total: %s, Caché·s: %s) ↓",
@@ -207,7 +209,7 @@ Locales["fr"] = {
 	["main_reports_edit_delete"] = "Supprimer définitivement",
 	["main_reports_edit_delete_desc"] = "Ceci va ~r~supprimer définitivement~s~ ce rapport. Vous ne pouvez pas revenir en arrière!",
 
-	-- Elements → Menu menu / Server
+	-- Elements → Main menu / Server
 	["main_server_weather"] = "Changer la météo",
 	["main_server_weather_desc"] = "Permet de changer la météo du serveur",
 	["main_server_time"] = "Changer l'heure",
@@ -222,6 +224,7 @@ Locales["fr"] = {
 	["main_server_clearpeds_desc"] = "Permet de supprimer tous les peds de la zone",
 	["main_server_bans"] = "Gestion des bans",
 	["main_server_bans_desc"] = "Accéder à la gestion des bans",
+	["main_server_bans_filter_desc"] = "Permet de rechercher par ~r~ID/Cible/Auteur/Raison/Status",
 	["main_server_bans_unit_valid"] = "~g~Valide",
 	["main_server_bans_unit_finished"] = "~r~Terminé",
 	["main_server_bans_unit_desc"] = "Appuyez sur ~r~[ENTRER] ~s~pour voir les détails",
