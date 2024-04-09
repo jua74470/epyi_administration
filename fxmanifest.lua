@@ -60,5 +60,4 @@ dependencies({
 	"es_extended",
 	"oxmysql",
 	"esx_status",
-	"esx_datastore",
 })
