@@ -2,7 +2,9 @@
 ---@param playerGroup string
 ---@return void
 function main_server_bans_details_showContentThisFrame(playerGroup)
+	_var.datas.list = GlobalState["epyi_administration:datastore"] or {}
 	local datas = json.decode(_var.bans.selectedBan.data)
+	_var.bans.selectedBan = _var.datas.list[datas.id]
 	RageUI.Separator(_U("main_server_bans_details_target", datas.targetName))
 	RageUI.Separator(_U("main_server_bans_details_author", datas.staffName))
 	RageUI.Separator(
@@ -22,9 +24,20 @@ function main_server_bans_details_showContentThisFrame(playerGroup)
 		_U("main_server_bans_details_reason"),
 		_U("main_server_bans_details_actual", datas.reason),
 		{ RightLabel = _U("main_server_bans_details_edit") },
-		true,
+		Config.Groups[playerGroup].Access["submenu_server_bans_edit"] and not _var.menus.admin.cooldowns.items,
 		function(_h, _a, s)
 			if s then
+				Citizen.CreateThread(function()
+					_var.menus.admin.cooldowns.items = true
+					local _reason = textEntry(_U("textentry_reason"), "", 50)
+					if _reason == nil or _reason == "" then
+						ESX.ShowNotification(_U("textentry_string_invalid"))
+						_var.menus.admin.cooldowns.items = false
+						return
+					end
+					TriggerServerEvent("epyi_administration:editBan", datas.id, "editReason", { reason = _reason})
+					_var.menus.admin.cooldowns.items = false
+				end)
 			end
 		end
 	)
@@ -32,11 +45,16 @@ function main_server_bans_details_showContentThisFrame(playerGroup)
 		_U("main_server_bans_details_delete"),
 		_U("main_server_bans_details_delete_desc"),
 		{ Color = { BackgroundColor = { 150, 50, 50, 20 } } },
-		true,
+		_var.bans.selectedBan.type == "BAN" and Config.Groups[playerGroup].Access["submenu_server_bans_edit"] and not _var.menus.admin.cooldowns.items,
 		function(_h, _a, s)
 			if s then
+				Citizen.CreateThread(function()
+					_var.menus.admin.cooldowns.items = true
+					Citizen.Wait(500)
+					TriggerServerEvent("epyi_administration:editBan", datas.id, "revoke", {})
+					_var.menus.admin.cooldowns.items = false
+				end)
 			end
-		end,
-		_var.menus.admin.objects.mainServerBans
+		end
 	)
 end

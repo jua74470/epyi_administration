@@ -84,8 +84,7 @@ local function isDeadState(src, bool)
 	Player(src).state:set("isDead", bool, true)
 end
 
-RegisterNetEvent("epyi_administration:setDeathStatus")
-AddEventHandler("epyi_administration:setDeathStatus", function(isDead)
+RegisterNetEvent("epyi_administration:setDeathStatus", function(isDead)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if type(isDead) == "boolean" then
 		MySQL.update("UPDATE users SET is_dead = ? WHERE identifier = ?", { isDead, xPlayer.identifier })
@@ -93,8 +92,7 @@ AddEventHandler("epyi_administration:setDeathStatus", function(isDead)
 	end
 end)
 
-RegisterNetEvent("epyi_administration:addPlayerMoney")
-AddEventHandler("epyi_administration:addPlayerMoney", function(target, type, amount)
+RegisterNetEvent("epyi_administration:addPlayerMoney", function(target, type, amount)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if
 		not Config.Groups[xPlayer.getGroup()]
@@ -117,8 +115,7 @@ AddEventHandler("epyi_administration:addPlayerMoney", function(target, type, amo
 	sendPlayersToStatebag()
 end)
 
-RegisterNetEvent("epyi_administration:removePlayerMoney")
-AddEventHandler("epyi_administration:removePlayerMoney", function(target, type, amount)
+RegisterNetEvent("epyi_administration:removePlayerMoney", function(target, type, amount)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if
 		not Config.Groups[xPlayer.getGroup()]
@@ -145,8 +142,7 @@ AddEventHandler("epyi_administration:removePlayerMoney", function(target, type, 
 	sendPlayersToStatebag()
 end)
 
-RegisterNetEvent("epyi_administration:setPlayerMoney")
-AddEventHandler("epyi_administration:setPlayerMoney", function(target, type, amount)
+RegisterNetEvent("epyi_administration:setPlayerMoney", function(target, type, amount)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if
 		not Config.Groups[xPlayer.getGroup()]
@@ -169,8 +165,7 @@ AddEventHandler("epyi_administration:setPlayerMoney", function(target, type, amo
 	sendPlayersToStatebag()
 end)
 
-RegisterNetEvent("epyi_administration:sendMessage")
-AddEventHandler("epyi_administration:sendMessage", function(target, message)
+RegisterNetEvent("epyi_administration:sendMessage", function(target, message)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if
 		not Config.Groups[xPlayer.getGroup()]
@@ -188,8 +183,7 @@ AddEventHandler("epyi_administration:sendMessage", function(target, message)
 	xPlayer.showNotification(_U("notif_dm_send_success", xTarget.getName()))
 end)
 
-RegisterNetEvent("epyi_administration:kickPlayer")
-AddEventHandler("epyi_administration:kickPlayer", function(target, reason)
+RegisterNetEvent("epyi_administration:kickPlayer", function(target, reason)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if
 		not Config.Groups[xPlayer.getGroup()]
@@ -220,8 +214,7 @@ AddEventHandler("epyi_administration:kickPlayer", function(target, reason)
 	xTarget.kick(_U("notif_kick_target", reason))
 end)
 
-RegisterNetEvent("epyi_administration:banPlayer")
-AddEventHandler("epyi_administration:banPlayer", function(target, reason, duration)
+RegisterNetEvent("epyi_administration:banPlayer", function(target, reason, duration)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if
 		not Config.Groups[xPlayer.getGroup()]
@@ -285,4 +278,34 @@ AddEventHandler("epyi_administration:banPlayer", function(target, reason, durati
 	)
 	-- xTarget.kick(_U("notif_ban_target", reason, duration, formatExpiration))
 	print(formatExpiration)
+end)
+
+RegisterNetEvent("epyi_administration:editBan", function(id, action, data)
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
+	if
+		not Config.Groups[xPlayer.getGroup()]
+		or not Config.Groups[xPlayer.getGroup()].Access["submenu_server_bans_edit"]
+	then
+		xPlayer.kick(_U("insuficient_permissions"))
+		return
+	end
+	if
+		not id
+		or not action
+		or not data
+		or type(id) ~= "number"
+		or type(action) ~= "string"
+		or type(data) ~= "table"
+	then
+		return
+	end
+	if action == "editReason" then
+		local newReason = data.reason
+		local _datas = json.decode(_datastore[id].data)
+		_datas.reason = newReason
+		TriggerEvent("epyi_administration:editData", id, _datastore[id].type, _datastore[id].date_unix, json.encode(_datas), _datastore[id].owner)
+	elseif action == "revoke" then
+		TriggerEvent("epyi_administration:deleteData", id)
+	end
 end)
