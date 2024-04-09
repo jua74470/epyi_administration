@@ -65,7 +65,7 @@ end
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(10 * 1 * 1000)
+		Citizen.Wait(10 * 60 * 1000)
 		saveDatastoreToDB()
 	end
 end)

@@ -276,7 +276,7 @@ RegisterNetEvent("epyi_administration:banPlayer", function(target, reason, durat
 			.. duration
 			.. "'"
 	)
-	-- xTarget.kick(_U("notif_ban_target", reason, duration, formatExpiration))
+	xTarget.kick(_U("notif_ban_target", reason, duration, formatExpiration))
 	print(formatExpiration)
 end)
 
