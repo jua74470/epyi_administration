@@ -30,8 +30,10 @@ function main_vehicles_favorites_showContentThisFrame(playerGroup)
 		end
 	)
 	RageUI.Separator("↓ Your ~r~favorites vehicles~s~ ↓")
+	local count = 0
 	for id, content in pairs(_var.datas.list) do
 		if content.type == "FAVVEH" and content.owner == _var.client.playerData.identifier then
+			count = count + 1
 			local _datas = json.decode(content.data)
 			RageUI.List(
 				_datas.vehicleName .. " (" .. GetDisplayNameFromVehicleModel(_datas.model) .. ")",
@@ -69,5 +71,10 @@ function main_vehicles_favorites_showContentThisFrame(playerGroup)
 				end
 			)
 		end
+	end
+	if count == 0 then
+		RageUI.Separator("")
+		RageUI.Separator(_U("no_result"))
+		RageUI.Separator("")
 	end
 end
