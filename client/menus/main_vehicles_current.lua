@@ -19,6 +19,9 @@ function main_vehicles_current_showContentThisFrame(playerGroup)
 				SetVehicleEngineHealth(pedVehicle, 1000)
 				SetVehicleEngineOn(pedVehicle, true, true)
 				SetVehicleFixed(pedVehicle)
+				if GetResourceState("VehicleDeformation") == "started" then
+					TriggerServerEvent("VehicleDeformation:fix_sv", NetworkGetNetworkIdFromEntity(pedVehicle))
+				end
 				ESX.ShowNotification(_U("notif_repair_vehicle_success"))
 			end
 		end

@@ -154,6 +154,24 @@ function openMenu()
 		_var.menus.admin.bannerTexture,
 		_var.menus.admin.bannerTexture
 	)
+	_var.menus.admin.objects.mainServerBans = RageUI.CreateSubMenu(
+		_var.menus.admin.objects.mainServer,
+		_U("menu_title"),
+		_U("main_server_ban_subtitle"),
+		Config.MenuStyle.Margins.left,
+		Config.MenuStyle.Margins.top,
+		_var.menus.admin.bannerTexture,
+		_var.menus.admin.bannerTexture
+	)
+	_var.menus.admin.objects.mainServerBansDetails = RageUI.CreateSubMenu(
+		_var.menus.admin.objects.mainServerBans,
+		_U("menu_title"),
+		_U("main_server_ban_details_subtitle"),
+		Config.MenuStyle.Margins.left,
+		Config.MenuStyle.Margins.top,
+		_var.menus.admin.bannerTexture,
+		_var.menus.admin.bannerTexture
+	)
 
 	for _k, rageObject in pairs(_var.menus.admin.objects) do
 		-- Set the offset
@@ -313,6 +331,24 @@ function openMenu()
 				Config.MenuStyle.BannerStyle.UseInstructionalButtons,
 				function()
 					main_server_showContentThisFrame(_var.client.staffGroup)
+				end
+			)
+			RageUI.IsVisible(
+				_var.menus.admin.objects.mainServerBans,
+				true,
+				Config.MenuStyle.BannerStyle.UseGlareEffect,
+				Config.MenuStyle.BannerStyle.UseInstructionalButtons,
+				function()
+					main_server_bans_showContentThisFrame(_var.client.staffGroup)
+				end
+			)
+			RageUI.IsVisible(
+				_var.menus.admin.objects.mainServerBansDetails,
+				true,
+				Config.MenuStyle.BannerStyle.UseGlareEffect,
+				Config.MenuStyle.BannerStyle.UseInstructionalButtons,
+				function()
+					main_server_bans_details_showContentThisFrame(_var.client.staffGroup)
 				end
 			)
 			for _k, rageObject in pairs(_var.menus.admin.objects) do

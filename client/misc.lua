@@ -45,22 +45,41 @@ end
 ---@return void
 function leaveAllReports()
 	_var.client.playerData = ESX.GetPlayerData()
-	ESX.TriggerServerCallback("epyi_administration:getReports", function(reports)
-		_var.reports.list = reports
-		for key, report in pairs(_var.reports.list) do
-			if report.staff.takerIdentifier == _var.client.playerData.identifier then
-				report.staff.taken = false
-				report.staff.takerIdentifier = nil
-				report.staff.takerSource = nil
-				report.staff.takerGroup = nil
-				ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
-					if not result then
-						ESX.ShowNotification(_U("notif_report_editing_error"))
-					end
-				end, _var.client.playerData.identifier, key, _var.reports.list[key])
-			end
+	_var.reports.list = GlobalState["epyi_administration:reportList"] or {}
+	for key, report in pairs(_var.reports.list) do
+		if report.staff.takerIdentifier == _var.client.playerData.identifier then
+			report.staff.taken = false
+			report.staff.takerIdentifier = nil
+			report.staff.takerSource = nil
+			report.staff.takerGroup = nil
+			ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
+				if not result then
+					ESX.ShowNotification(_U("notif_report_editing_error"))
+				end
+			end, _var.client.playerData.identifier, key, _var.reports.list[key])
 		end
-	end, _var.client.playerData.identifier)
+	end
+end
+
+---timeFormat
+---@param format string
+---@param params table
+---@return string
+---@public
+function timeFormat(format, params)
+    local day = params.day or os.date("%d")
+    local month = params.month or os.date("%m")
+    local year = params.year or os.date("%Y")
+    local hour = params.hour or os.date("%H")
+    local minute = params.minute or os.date("%M")
+    
+    local formatted = format:gsub("_d", string.format("%02d", day))
+    formatted = formatted:gsub("_m", string.format("%02d", month))
+    formatted = formatted:gsub("_Y", year)
+    formatted = formatted:gsub("_H", string.format("%02d", hour))
+    formatted = formatted:gsub("_M", string.format("%02d", minute))
+    
+    return formatted
 end
 
 ---textEntry → Open a popup to write some text
@@ -105,4 +124,53 @@ AddEventHandler("epyi_administration:syncWeather", function(weather, blackout, t
 	SetWeatherTypeNow(weather)
 	SetWeatherTypeNowPersist(weather)
 	NetworkOverrideClockTime(time, 0, 0)
+end)
+
+local oldPos = nil
+local spectateInfo = { toggled = false, target = 0, targetPed = 0 }
+
+RegisterNetEvent("epyi_administration:requestSpectate", function(targetPed, target, name)
+	oldPos = GetEntityCoords(PlayerPedId())
+	spectateInfo = {
+		toggled = true,
+		target = target,
+		targetPed = targetPed,
+	}
+end)
+
+RegisterNetEvent("epyi_administration:cancelSpectate", function()
+	if NetworkIsInSpectatorMode() then
+		NetworkSetInSpectatorMode(false, spectateInfo["targetPed"])
+	end
+	if not Cloack and not yayeetActive then
+		SetEntityVisible(PlayerPedId(), true, 0)
+	end
+	spectateInfo = { toggled = false, target = 0, targetPed = 0 }
+	RequestCollisionAtCoord(oldPos)
+	SetEntityCoords(PlayerPedId(), oldPos)
+	oldPos = nil
+end)
+
+CreateThread(function()
+	while true do
+		Wait(0)
+		if spectateInfo["toggled"] then
+			local text = {}
+			local targetPed = NetworkGetEntityFromNetworkId(spectateInfo.targetPed)
+			if DoesEntityExist(targetPed) then
+				SetEntityVisible(PlayerPedId(), false, 0)
+				if not NetworkIsInSpectatorMode() then
+					RequestCollisionAtCoord(GetEntityCoords(targetPed))
+					NetworkSetInSpectatorMode(true, targetPed)
+				end
+			else
+				TriggerServerEvent("epyi_administration:spectate:teleport", spectateInfo["target"])
+				while not DoesEntityExist(NetworkGetEntityFromNetworkId(spectateInfo.targetPed)) do
+					Wait(100)
+				end
+			end
+		else
+			Wait(500)
+		end
+	end
 end)

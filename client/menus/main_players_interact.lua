@@ -2,23 +2,12 @@
 ---@param playerGroup string
 ---@return void
 function main_players_interact_showContentThisFrame(playerGroup)
-	Citizen.CreateThread(function()
-		if _var.activeThreads.getPlayers then
-			return
+	_var.players.list = GlobalState["epyi_administration:playerList"] or {}
+	for _k, player in pairs(_var.players.list) do
+		if player.identifier == _var.players.selected.identifier then
+			_var.players.selected = player
 		end
-		_var.activeThreads.getPlayers = true
-		_var.client.playerData = ESX.GetPlayerData()
-		ESX.TriggerServerCallback("epyi_administration:getPlayers", function(players)
-			_var.players.list = players
-			for _k, player in pairs(_var.players.list) do
-				if player.identifier == _var.players.selected.identifier then
-					_var.players.selected = player
-				end
-			end
-		end, _var.client.playerData.identifier)
-		Citizen.Wait(500)
-		_var.activeThreads.getPlayers = false
-	end)
+	end
 	local player = _var.players.selected
 	local playerAccounts = {}
 	for _k, account in pairs(player.accounts) do
@@ -227,7 +216,7 @@ function main_players_interact_showContentThisFrame(playerGroup)
 						end
 						ESX.ShowNotification(_U("notif_goto_success", player.name))
 						_var.menus.admin.cooldowns.items = false
-					end, GetPlayerServerId(PlayerId()), player.coords)
+					end, GetPlayerServerId(PlayerId()), player.source, "source")
 				end)
 			end
 		end
@@ -248,11 +237,22 @@ function main_players_interact_showContentThisFrame(playerGroup)
 						end
 						ESX.ShowNotification(_U("notif_bring_success", player.name))
 						_var.menus.admin.cooldowns.items = false
-					end, player.source, GetEntityCoords(PlayerPedId()))
+					end, player.source, GetEntityCoords(PlayerPedId()), "coords")
 				end)
 			end
 		end
 	)
+	-- RageUI.ButtonWithStyle(
+	-- 	"Spectateur",
+	-- 	"Observer le joueur en mode spectateur",
+	-- 	{},
+	-- 	Config.Groups[playerGroup].Access["submenu_players_interact_spectate"] and not _var.menus.admin.cooldowns.items,
+	-- 	function(_h, _a, Selected)
+	-- 		if Selected then
+	-- 			TriggerServerEvent("epyi_administration:spectate", player.source)
+	-- 		end
+	-- 	end
+	-- )
 	RageUI.ButtonWithStyle(
 		_U("main_players_interact_dm"),
 		_U("main_players_interact_dm_desc"),
@@ -310,18 +310,13 @@ function main_players_interact_showContentThisFrame(playerGroup)
 						_var.menus.admin.cooldowns.items = false
 						return
 					end
-					local duration = textEntry(_U("textentry_duration"), "", 3)
+					local duration = textEntry(_U("textentry_duration"), "", 10)
 					if duration == nil or duration == "" then
 						ESX.ShowNotification(_U("textentry_number_invalid"))
 						_var.menus.admin.cooldowns.items = false
 						return
 					end
-					if string.find(duration, "[%c%p%s%z%a]") then
-						ESX.ShowNotification(_U("textentry_number_invalid"))
-						_var.menus.admin.cooldowns.items = false
-						return
-					end
-					TriggerServerEvent("epyi_administration:banPlayer", player.source, reason, tonumber(duration))
+					TriggerServerEvent("epyi_administration:banPlayer", player.source, reason, duration)
 					_var.menus.admin.cooldowns.items = false
 				end)
 			end

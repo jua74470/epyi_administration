@@ -39,6 +39,10 @@ function main_vehicles_spawn_showContentThisFrame(playerGroup)
 						ESX.Game.SpawnVehicle(vehicle.model, pedCoords, pedHeading, function(callback_vehicle)
 							TaskWarpPedIntoVehicle(ped, callback_vehicle, -1)
 							SetVehicleEngineOn(callback_vehicle, true, true, false)
+							if GetResourceState("cd_garage") == "started" then 
+								Wait(100)
+								TriggerEvent('cd_garage:AddKeys', GetVehicleNumberPlateText(callback_vehicle))
+							end
 						end)
 					end
 				end

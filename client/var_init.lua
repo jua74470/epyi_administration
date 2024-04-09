@@ -6,8 +6,10 @@ _var = {
 	menus = {},
 	activeThreads = {},
 	vehicle = {},
+	datas = {},
 	players = {},
 	reports = {},
+	bans = {},
 	instructionnal = {},
 	noclip = {},
 	peds = {},
@@ -16,6 +18,7 @@ _var.client.isStaffModeActivated = false
 _var.client.staffGroup = nil
 _var.client.playerData = {}
 _var.client.userData = {}
+_var.datas.list = {}
 _var.reports.list = {}
 _var.players.list = {}
 _var.players.selected = {}
@@ -29,6 +32,7 @@ _var.noclip.offsets = { y = 0.5, z = 0.2, h = 20 }
 _var.reports.count = 0
 _var.reports.countHiden = 0
 _var.reports.selectedReport = 1
+_var.bans.selectedBan = {}
 _var.menus.admin = {
 	isOpened = false,
 	bannerTexture = nil,
@@ -50,6 +54,8 @@ _var.menus.admin = {
 		mainReportsEdit = nil,
 		mainReportsEditAdvanced = nil,
 		mainServer = nil,
+		mainServerBans = nil,
+		mainServerBansDetails = nil,
 	},
 }
 _var.menu.cooldownStatus = false
@@ -65,6 +71,7 @@ _var.menu.liveryArrayIndex = 1
 _var.menu.modArrayIndex = 1
 _var.menu.modVariantArrayIndex = 1
 _var.menu.blackoutCheckbox = false
+_var.menu.isSpectate = false
 _var.menu.timeArrayIndex = 1
 _var.menu.timeArray = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }
 _var.menu.weatherArrayIndex = 1
@@ -85,6 +92,7 @@ _var.menu.weatherArray = {
 	"XMAS",
 	"HALLOWEEN",
 }
+_var.menu.playersFilter = ""
 _var.menu.pedsCategoryFilterArrayIndex = 1
 _var.menu.pedsCategoryFilterArray = {
 	_U("main_personnal_appearance_pedscategory0"),

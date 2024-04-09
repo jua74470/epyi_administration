@@ -2,18 +2,8 @@
 ---@param playerGroup string
 ---@return void
 function main_reports_showContentThisFrame(playerGroup)
-	Citizen.CreateThread(function()
-		if _var.activeThreads.getReports then
-			return
-		end
-		_var.activeThreads.getReports = true
-		_var.client.playerData = ESX.GetPlayerData()
-		ESX.TriggerServerCallback("epyi_administration:getReports", function(reports)
-			_var.reports.list = reports
-		end, _var.client.playerData.identifier)
-		Citizen.Wait(500)
-		_var.activeThreads.getReports = false
-	end)
+	_var.client.playerData = ESX.GetPlayerData()
+	_var.reports.list = GlobalState["epyi_administration:reportList"] or {}
 	_var.reports.count = 0
 	_var.reports.countHiden = 0
 	for _k, report in pairs(_var.reports.list) do

@@ -1,19 +1,41 @@
----getPlayers → Get connected players
----@param identifier string
----@return table
-ESX.RegisterServerCallback("epyi_administration:getPlayers", function(source, cb, identifier)
-	local xPlayer = ESX.GetPlayerFromIdentifier(identifier)
-	if
-		not Config.Groups[xPlayer.getGroup()] or not Config.Groups[xPlayer.getGroup()].Access["submenu_players_access"]
-	then
-		cb({})
-		xPlayer.kick(_U("insuficient_permissions"))
+local _players = {}
+
+local function sendPlayersToStatebag()
+	GlobalState:set("epyi_administration:playerList", _players, true)
+end
+
+AddEventHandler("esx:playerLoaded", function(source, xPlayer)
+	if _players[xPlayer.source] then
 		return
 	end
-	local players = {}
+	_players[xPlayer.source] = {
+		identifier = xPlayer.identifier,
+		source = xPlayer.source,
+		name = xPlayer.getName(),
+		ooc_name = GetPlayerName(xPlayer.source),
+		group = xPlayer.getGroup(),
+		job = xPlayer.getJob(),
+		accounts = xPlayer.getAccounts(),
+		coords = xPlayer.getCoords(),
+		inventory = xPlayer.getInventory(),
+	}
+	sendPlayersToStatebag()
+end)
+
+AddEventHandler("esx:playerLogout", function(source)
+	_players[source] = nil
+	sendPlayersToStatebag()
+end)
+
+AddEventHandler("playerDropped", function(reason)
+    _players[source] = nil
+	sendPlayersToStatebag()
+end)
+
+Citizen.CreateThread(function()
 	local xPlayers = ESX.GetExtendedPlayers()
 	for _k, xTarget in pairs(xPlayers) do
-		players[xTarget.identifier] = {
+		_players[xTarget.source] = {
 			identifier = xTarget.identifier,
 			source = xTarget.source,
 			name = xTarget.getName(),
@@ -25,10 +47,10 @@ ESX.RegisterServerCallback("epyi_administration:getPlayers", function(source, cb
 			inventory = xTarget.getInventory(),
 		}
 	end
-	cb(players)
+	sendPlayersToStatebag()
 end)
 
-ESX.RegisterServerCallback("epyi_administration:setCoords", function(source, cb, target, coords)
+ESX.RegisterServerCallback("epyi_administration:setCoords", function(source, cb, target, coords, type)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if not Config.Groups[xPlayer.getGroup()] then
 		xPlayer.kick(_U("insuficient_permissions"))
@@ -36,12 +58,22 @@ ESX.RegisterServerCallback("epyi_administration:setCoords", function(source, cb,
 		return
 	end
 	local xTarget = ESX.GetPlayerFromId(target)
-	if not xTarget or not coords then
+	if not xTarget or not coords or not type then
 		xPlayer.showNotification(_U("notif_error"))
 		cb(false)
 		return
 	end
-	xTarget.setCoords(coords)
+	if type == "coords" then
+		xTarget.setCoords(coords)
+	elseif type == "source" then
+		local xSourceCoords = ESX.GetPlayerFromId(coords)
+		if not xSourceCoords then
+			xPlayer.showNotification(_U("notif_error"))
+			cb(false)
+			return
+		end
+		xTarget.setCoords(xSourceCoords.getCoords(true))
+	end
 	cb(true)
 end)
 
@@ -78,6 +110,11 @@ AddEventHandler("epyi_administration:addPlayerMoney", function(target, type, amo
 	end
 	xTarget.addAccountMoney(type, amount)
 	xPlayer.showNotification(_U("notif_addmoney_success", amount))
+
+	local _cache = _players[xTarget.source]
+	_cache["accounts"] = xTarget.getAccounts()
+	_players[xTarget.source] = _cache
+	sendPlayersToStatebag()
 end)
 
 RegisterNetEvent("epyi_administration:removePlayerMoney")
@@ -99,8 +136,13 @@ AddEventHandler("epyi_administration:removePlayerMoney", function(target, type, 
 		xPlayer.showNotification(_U("notif_amount_too_much"))
 		return
 	end
-	xPlayer.removeAccountMoney(type, amount)
+	xTarget.removeAccountMoney(type, amount)
 	xPlayer.showNotification(_U("notif_removemoney_success", amount))
+
+	local _cache = _players[xTarget.source]
+	_cache["accounts"] = xTarget.getAccounts()
+	_players[xTarget.source] = _cache
+	sendPlayersToStatebag()
 end)
 
 RegisterNetEvent("epyi_administration:setPlayerMoney")
@@ -120,6 +162,11 @@ AddEventHandler("epyi_administration:setPlayerMoney", function(target, type, amo
 	end
 	xTarget.setAccountMoney(type, tonumber(amount))
 	xPlayer.showNotification(_U("notif_setmoney_success", amount))
+
+	local _cache = _players[xTarget.source]
+	_cache["accounts"] = xTarget.getAccounts()
+	_players[xTarget.source] = _cache
+	sendPlayersToStatebag()
 end)
 
 RegisterNetEvent("epyi_administration:sendMessage")
@@ -188,17 +235,39 @@ AddEventHandler("epyi_administration:banPlayer", function(target, reason, durati
 		xPlayer.showNotification(_U("notif_error"))
 		return
 	end
+	local unixDuration = timeExpression(duration)
+	print(duration)
+	if not unixDuration then
+		xPlayer.showNotification(_U("textentry_timestamp_invalid"))
+		return
+	end
+	unixDuration = tonumber(unixDuration)
+	local expiration = os.time() + unixDuration
+	TriggerEvent("epyi_administration:saveData", "BAN", {
+		unixDuration = unixDuration,
+		duration = duration,
+		expiration = expiration,
+		expirationDetails = {
+			day = os.date("%d", expiration),
+			month = os.date("%m", expiration),
+			year = os.date("%Y", expiration),
+			hour = os.date("%H", expiration),
+			minute = os.date("%M", expiration),
+		},
+		writeDetails = {
+			day = os.date("%d"),
+			month = os.date("%m"),
+			year = os.date("%Y"),
+			hour = os.date("%H"),
+			minute = os.date("%M"),
+		},
+		reason = reason,
+		target = xTarget.identifier,
+		staff = xPlayer.identifier,
+		targetName = xTarget.getName(),
+		staffName = xPlayer.getName(),
+	}, xTarget.identifier)
 	xPlayer.showNotification(_U("notif_ban_success", xTarget.getName()))
-	local expiration = os.time() + (duration * 86400)
-	local datastore = {
-		isBanned = true,
-		banDuration = duration,
-		banExpiration = expiration,
-		banReason = reason,
-	}
-	TriggerEvent("esx_datastore:getDataStore", "epyi_admin_userdata", xTarget.identifier, function(store)
-		store.set("ban_status", datastore)
-	end)
 	logToConsole(
 		"Player "
 			.. xPlayer.getName()
@@ -210,9 +279,10 @@ AddEventHandler("epyi_administration:banPlayer", function(target, reason, durati
 			.. xTarget.identifier
 			.. ") for the reason '"
 			.. reason
-			.. "' during "
+			.. "' with duration '"
 			.. duration
-			.. " days"
+			.. "'"
 	)
-	xTarget.kick(_U("notif_ban_target", reason, duration, os.date("Month: %m, Day: %d, Year: %Y", expiration)))
+	-- xTarget.kick(_U("notif_ban_target", reason, duration, formatExpiration))
+	print(formatExpiration)
 end)

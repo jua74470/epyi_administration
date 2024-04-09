@@ -8,9 +8,9 @@ function main_vehicles_favorites_showContentThisFrame(playerGroup)
 		end
 		_var.activeThreads.getVehiclesFavorites = true
 		_var.client.playerData = ESX.GetPlayerData()
-		ESX.TriggerServerCallback("epyi_administration:getUserData", function(data)
+		ESX.TriggerServerCallback("epyi_administration:getFavoritesVehicles", function(data)
 			_var.client.userData.favoritesVehicles = data
-		end, _var.client.playerData.identifier, "favorites_vehicles")
+		end)
 		Citizen.Wait(500)
 		_var.activeThreads.getVehiclesFavorites = false
 	end)
@@ -35,14 +35,7 @@ function main_vehicles_favorites_showContentThisFrame(playerGroup)
 				end
 				vehicleData["vehicleName"] = vehicleName
 				table.insert(_var.client.userData.favoritesVehicles, vehicleData)
-				_var.client.playerData = ESX.GetPlayerData()
-				ESX.TriggerServerCallback("epyi_administration:setUserData", function(result)
-					if not result then
-						ESX.ShowNotification(_U("notif_datastore_error"))
-						return
-					end
-					ESX.ShowNotification(_U("notif_add_vehicle_favorite_success", vehicleName))
-				end, _var.client.playerData.identifier, "favorites_vehicles", _var.client.userData.favoritesVehicles)
+				TriggerServerEvent("epyi_administration:saveFavoriteVehicle", vehicleData)
 			end
 		end
 	)
@@ -81,21 +74,8 @@ function main_vehicles_favorites_showContentThisFrame(playerGroup)
 						_var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex]
 						== _("main_vehicles_favorites_interact_delete")
 					then
+						TriggerServerEvent("epyi_administration:deleteFavoriteVehicle", vehicle)
 						table.remove(_var.client.userData.favoritesVehicles, key)
-						_var.client.playerData = ESX.GetPlayerData()
-						ESX.TriggerServerCallback(
-							"epyi_administration:setUserData",
-							function(result)
-								if not result then
-									ESX.ShowNotification(_U("notif_datastore_error"))
-									return
-								end
-								ESX.ShowNotification(_U("notif_remove_vehicle_favorite_success", vehicle.vehicleName))
-							end,
-							_var.client.playerData.identifier,
-							"favorites_vehicles",
-							_var.client.userData.favoritesVehicles
-						)
 					end
 				end
 			end

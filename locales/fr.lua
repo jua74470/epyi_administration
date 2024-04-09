@@ -1,7 +1,7 @@
 Locales["fr"] = {
 	-- Banners
-	["menu_title"] = "Menu admin",
-	["main_subtitle"] = "Ceci est le ~r~menu admin~s~",
+	["menu_title"] = "Administration",
+	["main_subtitle"] = "Menu des ~r~administrateurs",
 	["main_personnal_subtitle"] = "Gestion de ~r~mon personnage",
 	["main_personnal_appearance_subtitle"] = "Gestion de ~r~mon apparence",
 	["main_players_subtitle"] = "Gestion des ~r~joueurs connectés",
@@ -15,6 +15,8 @@ Locales["fr"] = {
 	["main_reports_edit_subtitle"] = "Gestion du ~r~report",
 	["main_reports_edit_advanced_subtitle"] = "Gestion ~r~du joueur",
 	["main_server_subtitle"] = "Gestion ~r~du serveur",
+	["main_server_ban_subtitle"] = "Gestion ~r~des bans",
+	["main_server_ban_details_subtitle"] = "~r~Information détaillées ~s~du ban",
 
 	-- Keys
 	["keys_menu_description"] = "~r~Ouvrir le menu admin",
@@ -38,6 +40,7 @@ Locales["fr"] = {
 	["door_hood"] = "Capot",
 	["door_trunk"] = "Coffre",
 	["door_all"] = "Toutes les portes",
+	["date_format_long"] = "_d/_m/_Y _Hh_M",
 
 	-- Elements → Main menu
 	["main_menu_staffmode"] = "~r~Activer/Désactiver ~s~le mode staff",
@@ -180,14 +183,14 @@ Locales["fr"] = {
 	-- Elements → Menu menu / Reports
 	["main_reports_report_desc"] = "~r~Raison du rapport:~s~\n%s",
 	["main_reports_no_report"] = "Il n'y a ~r~aucun rapport ~s~de disponible",
-	["main_reports_avalaible"] = "↓ Rapports ~r~disponibles ~s~ (Total: %s, Caché·s: %s) ↓",
+	["main_reports_avalaible"] = "↓ ~r~Rapports~s~ (Total: %s, Caché·s: %s) ↓",
 	["main_reports_filter"] = "Filtrer les rapports",
 	["main_reports_filter_desc"] = "Permet de filtrer les rapports",
 	["main_reports_filter_all"] = "Tous les rapports",
-	["main_reports_filter_waiting"] = "Seulement en attente",
-	["main_reports_filter_taken"] = "Seulement pris",
-	["main_reports_filter_taken_me"] = "Seulement pris par moi",
-	["main_reports_edit_by"] = "Rapport par: ~r~%s",
+	["main_reports_filter_waiting"] = "En attente",
+	["main_reports_filter_taken"] = "Pris",
+	["main_reports_filter_taken_me"] = "Pris par moi",
+	["main_reports_edit_by"] = "Par: ~r~%s",
 	["main_reports_edit_status"] = "Status du rapport: ~r~%s",
 	["main_reports_edit_taker"] = "Pris par: ~r~%s",
 	["main_reports_edit_by_id"] = "ID: ~r~%s",
@@ -214,6 +217,23 @@ Locales["fr"] = {
 	["main_server_clearvehicle_desc"] = "Permet de supprimer tous les véhicules de la zone",
 	["main_server_clearpeds"] = "Supprimer tous les peds",
 	["main_server_clearpeds_desc"] = "Permet de supprimer tous les peds de la zone",
+	["main_server_bans"] = "Gestion des bans",
+	["main_server_bans_desc"] = "Accéder à la gestion des bans",
+	["main_server_bans_unit_valid"] = "~g~Valide",
+	["main_server_bans_unit_finished"] = "~r~Terminé",
+	["main_server_bans_unit_desc"] = "Appuyez sur ~r~[ENTRER] ~s~pour voir les détails",
+	["main_server_bans_details_id"] = "Identifiant du ban: ~g~#%s",
+	["main_server_bans_details_target"] = "Cible du ban: %s",
+	["main_server_bans_details_author"] = "Auteur du ban: %s",
+	["main_server_bans_details_validity"] = "Validé du ban: %s",
+	["main_server_bans_details_date"] = "Date d'application: ~g~%s",
+	["main_server_bans_details_time"] = "Durée du ban: %s",
+	["main_server_bans_details_expiration"] = "Date d'éxpiration: ~g~%s",
+	["main_server_bans_details_reason"] = "Raison du ban",
+	["main_server_bans_details_actual"] = "~c~Valeur actuelle\n~s~%s",
+	["main_server_bans_details_edit"] = "~g~Éditer",
+	["main_server_bans_details_delete"] = "Révoquer définitivement",
+	["main_server_bans_details_delete_desc"] = "Permet de ~r~révoquer définitivement~s~ le ban, celui-ci sera toujours visible mais sera inscrit comme ~r~terminé",
 
 	-- Noclip
 	["noclip_go_forward"] = "Avancer",
@@ -233,6 +253,7 @@ Locales["fr"] = {
 	["command_report"] = "Permet de demander de l'aide au staff",
 	["command_report_no_reason"] = "Aucune raison spécifiée",
 	["command_report_success"] = "Un rapport a été envoyé au staff (Raison: ~r~%s~s~)",
+	["command_report_success_staff"] = "Nouveau repport de ~r~%s ~s~(#%s)",
 
 	-- Notifications
 	["notif_health_management_heal_self"] = "Vous avez été ~g~soigné",
@@ -295,22 +316,25 @@ Locales["fr"] = {
 	["notif_kick_success"] = "Vous avez bien kick ~r~%s ~s~ du serveur!",
 	["notif_kick_target"] = "Vous avez été éjecté par un staff\nRaison: %s",
 	["notif_ban_success"] = "Vous avez bien banni ~r~%s ~s~du serveur!",
-	["notif_ban_target"] = "Vous êtes banni de ce serveur\nRaison: %s\nDurée: %s jours\nExpire le: %s",
+	["notif_ban_target"] = "Vous êtes banni de ce serveur\nRaison: %s\nDurée: %s\nExpire le: %s",
 	["notif_not_in_staff_mode"] = "Votre mode staff n'est pas activé",
 	["notif_cannot_perform_cooldown"] = "Cooldown : Vous ne pouvez pas faire cela trop rapidement",
+	["notif_repport_closed"] = "Vous avez été renvoyé à la liste des rapports car le rapport que vous regardiez a été fermé",
 
 	-- Defferals
-	["deffer_ban_checker"] = "Nous vérifions si vous êtes banni",
+	["deffer_ban_checker"] = "Nous vérifions si vous êtes banni...",
 
 	-- Text entries
 	["textentry_string_invalid"] = "Le texte fourni est ~r~invalide",
 	["textentry_number_invalid"] = "Le numéro fourni est ~r~invalide",
+	["textentry_timestamp_invalid"] = "La durée fournie est ~r~invalide",
 	["textentry_change_vehicle_plate"] = "Veuillez entrer ~r~la plaque d'immatriculation",
 	["textentry_add_to_favorites_name"] = "Veuillez entrer ~r~le nom~s~ de votre véhicule",
 	["textentry_search_vehicle_model"] = "Veuillez entrer ~r~le modèle~s~ du véhicule",
+	["textentry_search"] = "Veuillez entrer ~r~votre recherche",
 	["textentry_radius"] = "Veuillez entrer ~r~le rayon~s~",
 	["textentry_amount"] = "Veuillez entrer ~r~le montant~s~",
 	["textentry_message"] = "Veuillez entrer ~r~le message~s~",
 	["textentry_reason"] = "Veuillez entrer ~r~la raison~s~",
-	["textentry_duration"] = "Veuillez entrer ~r~la durée en jours~s~",
+	["textentry_duration"] = "Veuillez entrer ~r~la durée~s~ ~m~(ex: 10d5h30m)",
 }

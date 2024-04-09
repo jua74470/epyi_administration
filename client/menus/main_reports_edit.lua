@@ -3,22 +3,18 @@
 ---@return void
 function main_reports_edit_showContentThisFrame(playerGroup)
 	local group = _U("invalid")
+	if not _var.reports.list[_var.reports.selectedReport] then
+		RageUI.Visible(_var.menus.admin.objects.mainReportsEdit, false)
+		RageUI.Visible(_var.menus.admin.objects.mainReports, true)
+		ESX.ShowNotification(_U("notif_repport_closed"))
+		return
+	end
 	if Config.Groups[_var.reports.list[_var.reports.selectedReport].user.group] ~= nil then
 		group = Config.Groups[_var.reports.list[_var.reports.selectedReport].user.group].Color
 			.. Config.Groups[_var.reports.list[_var.reports.selectedReport].user.group].Label
 	end
-	Citizen.CreateThread(function()
-		if _var.activeThreads.getReports then
-			return
-		end
-		_var.activeThreads.getReports = true
-		_var.client.playerData = ESX.GetPlayerData()
-		ESX.TriggerServerCallback("epyi_administration:getReports", function(reports)
-			_var.reports.list = reports
-		end, _var.client.playerData.identifier)
-		Citizen.Wait(500)
-		_var.activeThreads.getReports = false
-	end)
+	_var.client.playerData = ESX.GetPlayerData()
+	_var.reports.list = GlobalState["epyi_administration:reportList"] or {}
 	if _var.reports.list[_var.reports.selectedReport] == nil then
 		RageUI.CloseAll()
 		ESX.ShowNotification("notif_report_watching_deleted")
@@ -65,9 +61,7 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 			RageUI.Separator(
 				_U(
 					"main_reports_edit_taker",
-					GetPlayerName(
-						GetPlayerFromServerId(_var.reports.list[_var.reports.selectedReport].staff.takerSource)
-					)
+					_var.reports.list[_var.reports.selectedReport].staff.takerName
 						.. " ~s~["
 						.. takerGroup
 						.. "~s~] - "
@@ -97,13 +91,11 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 					editedReport.staff.takerIdentifier = _var.client.playerData.identifier
 					editedReport.staff.takerSource = GetPlayerServerId(PlayerId())
 					editedReport.staff.takerGroup = playerGroup
+					editedReport.staff.takerName = GetPlayerName(PlayerId())
 					ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
 						if result then
 							ESX.ShowNotification((_U("notif_report_status_take", _var.reports.selectedReport)))
-							ESX.TriggerServerCallback("epyi_administration:getReports", function(reports)
-								_var.reports.list = reports
-								_var.menus.admin.cooldowns.items = false
-							end, _var.client.playerData.identifier)
+							_var.menus.admin.cooldowns.items = false
 						else
 							ESX.ShowNotification(_U("notif_report_editing_error"))
 							_var.menus.admin.cooldowns.items = false
@@ -132,10 +124,7 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 					ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
 						if result then
 							ESX.ShowNotification((_U("notif_report_status_leave", _var.reports.selectedReport)))
-							ESX.TriggerServerCallback("epyi_administration:getReports", function(reports)
-								_var.reports.list = reports
-								_var.menus.admin.cooldowns.items = false
-							end, _var.client.playerData.identifier)
+							_var.menus.admin.cooldowns.items = false
 						else
 							ESX.ShowNotification(_U("notif_report_editing_error"))
 							_var.menus.admin.cooldowns.items = false
@@ -163,7 +152,7 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 							_U("notif_goto_success", _var.reports.list[_var.reports.selectedReport].user.name)
 						)
 						_var.menus.admin.cooldowns.items = false
-					end, GetPlayerServerId(PlayerId()), _var.reports.list[_var.reports.selectedReport].user.coords)
+					end, GetPlayerServerId(PlayerId()), _var.reports.list[_var.reports.selectedReport].user.source, "source")
 				end)
 			end
 		end
@@ -186,7 +175,7 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 							_U("notif_bring_success", _var.reports.list[_var.reports.selectedReport].user.name)
 						)
 						_var.menus.admin.cooldowns.items = false
-					end, _var.reports.list[_var.reports.selectedReport].user.source, GetEntityCoords(PlayerPedId()))
+					end, _var.reports.list[_var.reports.selectedReport].user.source, GetEntityCoords(PlayerPedId()), "coords")
 				end)
 			end
 		end
@@ -200,19 +189,12 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 			and not _var.menus.admin.cooldowns.items,
 		function(_h, _a, Selected)
 			if Selected then
-				local canSkip = false
 				_var.client.playerData = ESX.GetPlayerData()
-				ESX.TriggerServerCallback("epyi_administration:getPlayers", function(players)
-					_var.players.list = players
-					for _k, player in pairs(_var.players.list) do
-						if player.identifier == _var.reports.list[_var.reports.selectedReport].user.identifier then
-							_var.players.selected = player
-						end
+				_var.players.list = GlobalState["epyi_administration:playerList"] or {}
+				for _k, player in pairs(_var.players.list) do
+					if player.identifier == _var.reports.list[_var.reports.selectedReport].user.identifier then
+						_var.players.selected = player
 					end
-					canSkip = true
-				end, _var.client.playerData.identifier)
-				while not canSkip do
-					Citizen.Wait(1)
 				end
 			end
 		end,
@@ -225,23 +207,14 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 		not _var.menus.admin.cooldowns.items,
 		function(_h, _a, Selected)
 			if Selected then
-				local canSkip = false
 				_var.client.playerData = ESX.GetPlayerData()
 				ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
 					if result then
 						ESX.ShowNotification((_U("notif_report_delete_success", _var.reports.selectedReport)))
-						ESX.TriggerServerCallback("epyi_administration:getReports", function(reports)
-							_var.reports.list = reports
-							canSkip = true
-						end, _var.client.playerData.identifier)
 					else
 						ESX.ShowNotification(_U("notif_report_editing_error"))
-						canSkip = true
 					end
 				end, _var.client.playerData.identifier, _var.reports.selectedReport, nil)
-				while not canSkip do
-					Citizen.Wait(1)
-				end
 			end
 		end,
 		_var.menus.admin.objects.mainReports

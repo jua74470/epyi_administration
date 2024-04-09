@@ -43,7 +43,7 @@ _threads.invisibility.enable = function()
 		_threads.invisibility.isActivated = true
 		while _threads.invisibility.isActivated do
 			SetEntityVisible(PlayerPedId(), false, 0)
-			Citizen.Wait(1000)
+			Citizen.Wait(1)
 		end
 	end)
 end
@@ -176,18 +176,20 @@ _threads.shownames.enable = function()
 				local selfPed = PlayerPedId()
 				local targetPedCoords = GetEntityCoords(targetPed)
 				local selfPedCoords = GetEntityCoords(selfPed)
-				if GetDistanceBetweenCoords(selfPedCoords, targetPedCoords, true) < 400.0 then
-					_threads.shownames.showed[v] = CreateFakeMpGamerTag(
-						targetPed,
-						("[%s] %s"):format(GetPlayerServerId(v), string.upper(GetPlayerName(v))),
-						false,
-						false,
-						"",
-						0
+				local dist = #(selfPedCoords - targetPedCoords)
+				if dist < 400.0 then
+					local targetState = Player(GetPlayerServerId(v)).state
+					DrawText3Ds(
+						targetPedCoords.x,
+						targetPedCoords.y,
+						targetPedCoords.z + 1.2,
+						("[ID: ~r~#%s~s~] \nHRP NAME: ~r~%s~s~\nRP NAME: ~r~%s"):format(
+							GetPlayerServerId(v),
+							string.upper(GetPlayerName(v)),
+							targetState["name"]
+						),
+						0.8
 					)
-					SetMpGamerTagVisibility(_threads.shownames.showed[v], 2, 1)
-					SetMpGamerTagAlpha(_threads.shownames.showed[v], 2, 255)
-					SetMpGamerTagHealthBarColor(_threads.shownames.showed[v], 129)
 				else
 					RemoveMpGamerTag(_threads.shownames.showed[v])
 					_threads.shownames.showed[v] = nil
@@ -275,7 +277,7 @@ _threads.noclip.enable = function()
 				{ GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.right], 0), _U("noclip_go_right") },
 				{ GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.up], 0), _U("noclip_go_up") },
 				{ GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.down], 0), _U("noclip_go_down") },
-				{ GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.speed], 0), _var.noclip.speedLabel },
+				{ 261, "Changer vitesse (Actuelle: x" .. round(_var.noclip.currentSpeed, 1) .. ")" },
 			}, 0)
 			drawInstructionnalButtons()
 			DisableAllControlActions()
@@ -299,6 +301,7 @@ _threads.noclip.enable = function()
 			EnableControlAction(0, 191, true)
 			EnableControlAction(0, 201, true)
 			EnableControlAction(0, 215, true)
+			EnableControlAction(0, 249, true) -- PUSH TO TALK
 			EnableControlAction(0, 23, true)
 			EnableControlAction(0, 200, true)
 			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.forward]) then
@@ -319,27 +322,16 @@ _threads.noclip.enable = function()
 			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.down]) then
 				zOffset = -_var.noclip.offsets.z
 			end
-			if IsDisabledControlJustPressed(0, _var.keys[Config.Keys.NoClip.speed]) then
-				if _var.noclip.speedArrayIndex ~= #_var.noclip.speedArray then
-					_var.noclip.speedArrayIndex = _var.noclip.speedArrayIndex + 1
-					_var.noclip.currentSpeed = _var.noclip.speedArray[_var.noclip.speedArrayIndex]
-				else
-					_var.noclip.currentSpeed = _var.noclip.speedArray[1]
-					_var.noclip.speedArrayIndex = 1
+			if IsDisabledControlPressed(0, 261) then
+				if _var.noclip.currentSpeed == 0 then
+					_var.noclip.currentSpeed = 0.1
 				end
+				_var.noclip.currentSpeed = _var.noclip.currentSpeed * 1.2
 			end
-			if _var.noclip.currentSpeed == 0 then
-				_var.noclip.speedLabel = _U("noclip_speed_0")
-			elseif _var.noclip.currentSpeed == 1 then
-				_var.noclip.speedLabel = _U("noclip_speed_1")
-			elseif _var.noclip.currentSpeed == 2 then
-				_var.noclip.speedLabel = _U("noclip_speed_2")
-			elseif _var.noclip.currentSpeed == 5 then
-				_var.noclip.speedLabel = _U("noclip_speed_5")
-			elseif _var.noclip.currentSpeed == 10 then
-				_var.noclip.speedLabel = _U("noclip_speed_10")
-			elseif _var.noclip.currentSpeed == 15 then
-				_var.noclip.speedLabel = _U("noclip_speed_15")
+			if IsDisabledControlPressed(0, 262) then
+				if _var.noclip.currentSpeed >= 0.1 then
+					_var.noclip.currentSpeed = _var.noclip.currentSpeed / 1.2
+				end
 			end
 			local newPos = GetOffsetFromEntityInWorldCoords(
 				_var.noclip.entity,
@@ -372,4 +364,36 @@ _threads.noclip.disable = function()
 	SetEveryoneIgnorePlayer(ped, false)
 	SetPoliceIgnorePlayer(ped, false)
 	_threads.noclip.isActivated = false
+end
+
+function DrawText3Ds(x, y, z, text, size)
+	local vector = vector3(x, y, z)
+	local camCoords = GetFinalRenderedCamCoord()
+	local distance = #(vector - camCoords)
+
+	local scale = (size / distance) * 2
+	local fov = (1 / GetGameplayCamFov()) * 100
+	scale = scale * fov
+
+	local onScreen, _x, _y = World3dToScreen2d(x, y, z)
+	local px, py, pz = table.unpack(GetGameplayCamCoords())
+
+	SetTextScale(0.0, 0.55 * scale)
+	SetTextFont(0)
+	SetTextProportional(1)
+	SetTextColour(255, 255, 255, 255)
+	BeginTextCommandDisplayText("STRING")
+	SetTextCentre(true)
+	AddTextComponentSubstringPlayerName(text)
+	SetDrawOrigin(x, y, z, 0)
+	SetTextDropshadow(0.15, 0, 0, 0, 0)
+	EndTextCommandDisplayText(0.0, 0.0)
+	ClearDrawOrigin()
+	-- local factor = (string.len(text)) / 500
+	-- DrawRect(_x,_y+0.048, 0.015+ factor, 0.1, 0, 0, 0, 80)
+end
+
+function round(num, numDecimalPlaces)
+	local mult = 10 ^ (numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
 end
