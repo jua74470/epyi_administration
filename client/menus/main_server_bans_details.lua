@@ -20,7 +20,7 @@ function main_server_bans_details_showContentThisFrame(playerGroup)
 		_U("main_server_bans_details_reason"),
 		_U("main_server_bans_details_actual", datas.reason),
 		{ RightLabel = _U("main_server_bans_details_edit") },
-		true,
+		Config.Groups[playerGroup].Access["submenu_server_bans_edit"] and not _var.menus.admin.cooldowns.items,
 		function(_h, _a, s)
 			if s then
 			end
@@ -30,7 +30,7 @@ function main_server_bans_details_showContentThisFrame(playerGroup)
 		_U("main_server_bans_details_delete"),
 		_U("main_server_bans_details_delete_desc"),
 		{ Color = { BackgroundColor = { 150, 50, 50, 20 } } },
-		true,
+		_var.bans.selectedBan.type == "BAN" and Config.Groups[playerGroup].Access["submenu_server_bans_edit"] and not _var.menus.admin.cooldowns.items,
 		function(_h, _a, s)
 			if s then
 			end

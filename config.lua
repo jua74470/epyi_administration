@@ -130,6 +130,7 @@ Config.Groups = {
 			["submenu_server_clearvehicles"] = true, -- can remove vehicles in an area
 			["submenu_server_clearpeds"] = true, -- can remove peds in an area
 			["submenu_server_bans"] = true, -- can open ban management sub menu
+			["submenu_server_bans_edit"] = true, -- can edit a specific ban (revoke ban, edit reason)
 		},
 	},
 	mod = {
@@ -223,7 +224,8 @@ Config.Groups = {
 			["submenu_server_clearall"] = true, -- can remove vehicles and peds in an area
 			["submenu_server_clearvehicles"] = true, -- can remove vehicles in an area
 			["submenu_server_clearpeds"] = true, -- can remove peds in an area
-			["submenu_server_bans"] = false, -- can open ban management sub menu
+			["submenu_server_bans"] = true, -- can open ban management sub menu
+			["submenu_server_bans_edit"] = false, -- can edit a specific ban (revoke ban, edit reason)
 		},
 	},
 	user = {
@@ -293,6 +295,7 @@ Config.Groups = {
 			["submenu_server_clearvehicles"] = false, -- can remove vehicles in an area
 			["submenu_server_clearpeds"] = false, -- can remove peds in an area
 			["submenu_server_bans"] = false, -- can open ban management sub menu
+			["submenu_server_bans_edit"] = false, -- can edit a specific ban (revoke ban, edit reason)
 		},
 	},
 }
