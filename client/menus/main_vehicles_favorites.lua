@@ -2,18 +2,9 @@
 ---@param playerGroup string
 ---@return void
 function main_vehicles_favorites_showContentThisFrame(playerGroup)
-	Citizen.CreateThread(function()
-		if _var.activeThreads.getVehiclesFavorites then
-			return
-		end
-		_var.activeThreads.getVehiclesFavorites = true
-		_var.client.playerData = ESX.GetPlayerData()
-		ESX.TriggerServerCallback("epyi_administration:getFavoritesVehicles", function(data)
-			_var.client.userData.favoritesVehicles = data
-		end)
-		Citizen.Wait(500)
-		_var.activeThreads.getVehiclesFavorites = false
-	end)
+	_var.client.playerData = ESX.GetPlayerData()
+	_var.datas.list = GlobalState["epyi_administration:datastore"] or {}
+
 	RageUI.ButtonWithStyle(
 		_U("main_vehicles_favorites_add"),
 		_U("main_vehicles_favorites_add_desc"),
@@ -34,51 +25,49 @@ function main_vehicles_favorites_showContentThisFrame(playerGroup)
 					return
 				end
 				vehicleData["vehicleName"] = vehicleName
-				table.insert(_var.client.userData.favoritesVehicles, vehicleData)
 				TriggerServerEvent("epyi_administration:saveFavoriteVehicle", vehicleData)
 			end
 		end
 	)
 	RageUI.Separator("↓ Your ~r~favorites vehicles~s~ ↓")
-	if _var.client.userData.favoritesVehicles == nil then
-		_var.client.userData.favoritesVehicles = {}
-	end
-	for key, vehicle in pairs(_var.client.userData.favoritesVehicles) do
-		RageUI.List(
-			vehicle.vehicleName .. " (" .. GetDisplayNameFromVehicleModel(vehicle.model) .. ")",
-			_var.menu.favritesActionsArray,
-			_var.menu.favritesActionsArrayIndex,
-			_U("main_vehicles_favorites_interact_desc", vehicle.vehicleName),
-			{},
-			true,
-			function(_h, _a, Selected, Index)
-				_var.menu.favritesActionsArrayIndex = Index
-				if Selected then
-					if
-						_var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex]
-						== _("main_vehicles_favorites_interact_spawn")
-					then
-						local ped = PlayerPedId()
-						local pedCoords = GetEntityCoords(ped)
-						local pedHeading = GetEntityHeading(ped)
-						local pedVehicle = GetVehiclePedIsIn(ped, false)
-						if pedVehicle then
-							ESX.Game.DeleteVehicle(pedVehicle)
+	for id, content in pairs(_var.datas.list) do
+		if content.type == "FAVVEH" and content.owner == _var.client.playerData.identifier then
+			local _datas = json.decode(content.data)
+			RageUI.List(
+				_datas.vehicleName .. " (" .. GetDisplayNameFromVehicleModel(_datas.model) .. ")",
+				_var.menu.favritesActionsArray,
+				_var.menu.favritesActionsArrayIndex,
+				_U("main_vehicles_favorites_interact_desc", _datas.vehicleName),
+				{},
+				true,
+				function(_h, _a, Selected, Index)
+					_var.menu.favritesActionsArrayIndex = Index
+					if Selected then
+						if
+							_var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex]
+							== _("main_vehicles_favorites_interact_spawn")
+						then
+							local ped = PlayerPedId()
+							local pedCoords = GetEntityCoords(ped)
+							local pedHeading = GetEntityHeading(ped)
+							local pedVehicle = GetVehiclePedIsIn(ped, false)
+							if pedVehicle then
+								ESX.Game.DeleteVehicle(pedVehicle)
+							end
+							ESX.Game.SpawnVehicle(_datas.model, pedCoords, pedHeading, function(callback_vehicle)
+								ESX.Game.SetVehicleProperties(callback_vehicle, _datas)
+								TaskWarpPedIntoVehicle(ped, callback_vehicle, -1)
+								SetVehicleEngineOn(callback_vehicle, true, true, false)
+							end)
+						elseif
+							_var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex]
+							== _("main_vehicles_favorites_interact_delete")
+						then
+							TriggerServerEvent("epyi_administration:deleteFavoriteVehicle", content.id)
 						end
-						ESX.Game.SpawnVehicle(vehicle.model, pedCoords, pedHeading, function(callback_vehicle)
-							ESX.Game.SetVehicleProperties(callback_vehicle, vehicle)
-							TaskWarpPedIntoVehicle(ped, callback_vehicle, -1)
-							SetVehicleEngineOn(callback_vehicle, true, true, false)
-						end)
-					elseif
-						_var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex]
-						== _("main_vehicles_favorites_interact_delete")
-					then
-						TriggerServerEvent("epyi_administration:deleteFavoriteVehicle", vehicle)
-						table.remove(_var.client.userData.favoritesVehicles, key)
 					end
 				end
-			end
-		)
+			)
+		end
 	end
 end
