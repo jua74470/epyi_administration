@@ -1,5 +1,11 @@
 local reportCooldowns = reportCooldowns or {}
 
+GlobalState:set("epyi_administration:reportList", {}, true)
+
+local function sendReportsToStatebag()
+	GlobalState:set("epyi_administration:reportList", _var.reports.list, true)
+end
+
 --report command
 --command to create a report
 ESX.RegisterCommand("report", "user", function(xPlayer, args, showError)
@@ -20,6 +26,12 @@ ESX.RegisterCommand("report", "user", function(xPlayer, args, showError)
 	end
 	addReport(xPlayer, reason)
 	xPlayer.showNotification(_U("command_report_success", reason))
+	local xPlayers = ESX.GetExtendedPlayers()
+	for _, xStaff in pairs(xPlayers) do
+		if Config.Groups[xStaff.getGroup()].Access["submenu_reports_access"] then
+			xStaff.showNotification(_U("command_report_success_staff", xPlayer.getName(), xPlayer.source))
+		end
+	end
 	reportCooldowns[xPlayer.identifier] = true
 	Citizen.SetTimeout(5000, function()
 		reportCooldowns[xPlayer.identifier] = false
@@ -49,25 +61,12 @@ function addReport(xPlayer, reason)
 			takerIdentifier = nil,
 			takerSource = nil,
 			takerGroup = nil,
+			takerName = nil,
 		},
 	}
 	table.insert(_var.reports.list, report)
+	sendReportsToStatebag()
 end
-
----getReports → Get server reports
----@param identifier string
----@return table
-ESX.RegisterServerCallback("epyi_administration:getReports", function(source, cb, identifier)
-	xPlayer = ESX.GetPlayerFromIdentifier(identifier)
-	if
-		not Config.Groups[xPlayer.getGroup()] or not Config.Groups[xPlayer.getGroup()].Access["submenu_reports_access"]
-	then
-		cb({})
-		xPlayer.kick(_U("insuficient_permissions"))
-		return
-	end
-	cb(_var.reports.list)
-end)
 
 ---setReport → Set a server report data
 ---@param identifier string
@@ -86,6 +85,7 @@ ESX.RegisterServerCallback("epyi_administration:setReport", function(source, cb,
 		return
 	end
 	_var.reports.list[key] = data
+	sendReportsToStatebag()
 	cb(true)
 end)
 

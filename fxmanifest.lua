@@ -39,13 +39,11 @@ client_scripts({
 	"client/misc.lua",
 	"client/threads.lua",
 	"client/menus/*.lua",
-
-	"client/modules.lua",
-	"modules/**/cl_*",
 })
 
 server_scripts({
 	"@oxmysql/lib/MySQL.lua",
+	"server/misc.lua",
 	"server/version.lua",
 	"server/logs.lua",
 	"server/var_init.lua",
@@ -54,16 +52,13 @@ server_scripts({
 	"server/players.lua",
 	"server/ban.lua",
 	"server/reports.lua",
-	"server/weather_time.lua",
-
-	"server/modules.lua",
-	"modules/**/sv_*",
+	"server/spectate.lua",
+	"server/favorites_vehicles.lua"
 })
 
 dependencies({
 	"es_extended",
 	"oxmysql",
-	"esx_skin",
 	"esx_status",
 	"esx_datastore",
 })
