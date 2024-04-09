@@ -1,10 +1,12 @@
 local spectating = {}
 
 RegisterNetEvent("epyi_administration:spectate", function(target)
-    local _source = source
-    local type = "1"
-	if spectating[_source] then type = "0" end
-    local on = (type == "1")
+	local _source = source
+	local type = "1"
+	if spectating[_source] then
+		type = "0"
+	end
+	local on = (type == "1")
 	local tPed = GetPlayerPed(target)
 	if DoesEntityExist(tPed) then
 		if not on then

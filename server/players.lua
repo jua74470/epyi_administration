@@ -28,7 +28,7 @@ AddEventHandler("esx:playerLogout", function(source)
 end)
 
 AddEventHandler("playerDropped", function(reason)
-    _players[source] = nil
+	_players[source] = nil
 	sendPlayersToStatebag()
 end)
 

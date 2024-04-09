@@ -178,7 +178,7 @@ function main_server_showContentThisFrame(playerGroup)
 		_U("main_server_bans_desc"),
 		{ RightLabel = "→" },
 		Config.Groups[playerGroup].Access["submenu_server_bans"] and not _var.menus.admin.cooldowns.items,
-		function(_h, _a, _s)end,
+		function(_h, _a, _s) end,
 		_var.menus.admin.objects.mainServerBans
 	)
 end

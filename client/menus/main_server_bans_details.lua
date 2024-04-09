@@ -13,9 +13,11 @@ function main_server_bans_details_showContentThisFrame(playerGroup)
 		)
 	)
 	RageUI.Separator(_U("main_server_bans_details_id", datas.id))
-    RageUI.Separator(_U("main_server_bans_details_date", timeFormat(_U("date_format_long"), datas.writeDetails)))
-    RageUI.Separator(_U("main_server_bans_details_time", datas.duration))
-    RageUI.Separator(_U("main_server_bans_details_expiration", timeFormat(_U("date_format_long"), datas.expirationDetails)))
+	RageUI.Separator(_U("main_server_bans_details_date", timeFormat(_U("date_format_long"), datas.writeDetails)))
+	RageUI.Separator(_U("main_server_bans_details_time", datas.duration))
+	RageUI.Separator(
+		_U("main_server_bans_details_expiration", timeFormat(_U("date_format_long"), datas.expirationDetails))
+	)
 	RageUI.ButtonWithStyle(
 		_U("main_server_bans_details_reason"),
 		_U("main_server_bans_details_actual", datas.reason),

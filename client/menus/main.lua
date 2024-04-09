@@ -11,16 +11,22 @@ function main_showContentThisFrame(playerGroup)
 		function()
 			_var.client.isStaffModeActivated = true
 			if Config.Groups[playerGroup].Clothes then
-				TriggerEvent('skinchanger:getSkin', function(skin)
-					TriggerEvent('skinchanger:loadClothes', skin, Config.Groups[playerGroup].Clothes[(GetEntityModel(PlayerPedId()) == GetHashKey("mp_m_freemode_01") and "male" or "female")])
+				TriggerEvent("skinchanger:getSkin", function(skin)
+					TriggerEvent(
+						"skinchanger:loadClothes",
+						skin,
+						Config.Groups[playerGroup].Clothes[(GetEntityModel(PlayerPedId()) == GetHashKey(
+							"mp_m_freemode_01"
+						) and "male" or "female")]
+					)
 				end)
 			end
 		end,
 		function()
 			_var.client.isStaffModeActivated = false
 			if Config.Groups[playerGroup].Clothes then
-				ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin)
-					TriggerEvent('skinchanger:loadSkin', skin)
+				ESX.TriggerServerCallback("esx_skin:getPlayerSkin", function(skin)
+					TriggerEvent("skinchanger:loadSkin", skin)
 				end)
 			end
 			stopAllThreads()

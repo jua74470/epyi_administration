@@ -143,16 +143,22 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 			if Selected then
 				Citizen.CreateThread(function()
 					_var.menus.admin.cooldowns.items = true
-					ESX.TriggerServerCallback("epyi_administration:setCoords", function(result)
-						if not result then
+					ESX.TriggerServerCallback(
+						"epyi_administration:setCoords",
+						function(result)
+							if not result then
+								_var.menus.admin.cooldowns.items = false
+								return
+							end
+							ESX.ShowNotification(
+								_U("notif_goto_success", _var.reports.list[_var.reports.selectedReport].user.name)
+							)
 							_var.menus.admin.cooldowns.items = false
-							return
-						end
-						ESX.ShowNotification(
-							_U("notif_goto_success", _var.reports.list[_var.reports.selectedReport].user.name)
-						)
-						_var.menus.admin.cooldowns.items = false
-					end, GetPlayerServerId(PlayerId()), _var.reports.list[_var.reports.selectedReport].user.source, "source")
+						end,
+						GetPlayerServerId(PlayerId()),
+						_var.reports.list[_var.reports.selectedReport].user.source,
+						"source"
+					)
 				end)
 			end
 		end
@@ -166,16 +172,22 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 			if Selected then
 				Citizen.CreateThread(function()
 					_var.menus.admin.cooldowns.items = true
-					ESX.TriggerServerCallback("epyi_administration:setCoords", function(result)
-						if not result then
+					ESX.TriggerServerCallback(
+						"epyi_administration:setCoords",
+						function(result)
+							if not result then
+								_var.menus.admin.cooldowns.items = false
+								return
+							end
+							ESX.ShowNotification(
+								_U("notif_bring_success", _var.reports.list[_var.reports.selectedReport].user.name)
+							)
 							_var.menus.admin.cooldowns.items = false
-							return
-						end
-						ESX.ShowNotification(
-							_U("notif_bring_success", _var.reports.list[_var.reports.selectedReport].user.name)
-						)
-						_var.menus.admin.cooldowns.items = false
-					end, _var.reports.list[_var.reports.selectedReport].user.source, GetEntityCoords(PlayerPedId()), "coords")
+						end,
+						_var.reports.list[_var.reports.selectedReport].user.source,
+						GetEntityCoords(PlayerPedId()),
+						"coords"
+					)
 				end)
 			end
 		end

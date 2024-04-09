@@ -3,20 +3,36 @@
 ---@return void
 function main_players_showContentThisFrame(playerGroup)
 	_var.players.list = GlobalState["epyi_administration:playerList"] or {}
-	RageUI.ButtonWithStyle("Rechercher", "Permet de rechercher par ~r~ID/Prénom/Nom/Pseudo", { RightLabel = (_var.menu.playersFilter ~= "" and _var.menu.playersFilter or "Aucun filtre")}, true, function(_h, _a, Selected)
-		if Selected then
-			local search = textEntry(_U("textentry_search"), _var.menu.playersFilter, 30)
-			if search == nil or search == "" then
-				_var.menu.playersFilter = ""
-				return
+	RageUI.ButtonWithStyle(
+		"Rechercher",
+		"Permet de rechercher par ~r~ID/Prénom/Nom/Pseudo",
+		{ RightLabel = (_var.menu.playersFilter ~= "" and _var.menu.playersFilter or "Aucun filtre") },
+		true,
+		function(_h, _a, Selected)
+			if Selected then
+				local search = textEntry(_U("textentry_search"), _var.menu.playersFilter, 30)
+				if search == nil or search == "" then
+					_var.menu.playersFilter = ""
+					return
+				end
+				_var.menu.playersFilter = search
 			end
-			_var.menu.playersFilter = search
 		end
-	end)
+	)
 	RageUI.Separator("↓ Résultats du ~r~filtre ~s~↓")
 	local count = 0
 	for _k, player in pairs(_var.players.list) do
-		if player.ooc_name and (_var.menu.playersFilter == "" or string.find(string.lower(player.ooc_name .. player.source .. player.name .. player.group), string.lower(_var.menu.playersFilter)) ~= nil) then
+		if
+			player.ooc_name
+			and (
+				_var.menu.playersFilter == ""
+				or string.find(
+						string.lower(player.ooc_name .. player.source .. player.name .. player.group),
+						string.lower(_var.menu.playersFilter)
+					)
+					~= nil
+			)
+		then
 			count = count + 1
 			local targetisLower = true
 			if
@@ -36,7 +52,8 @@ function main_players_showContentThisFrame(playerGroup)
 				{ RightLabel = "→" },
 				Config.Groups[playerGroup].Access["submenu_players_interact"]
 					and (
-						Config.Groups[playerGroup].Access["submenu_players_interact_highergroup"] and true or targetisLower
+						Config.Groups[playerGroup].Access["submenu_players_interact_highergroup"] and true
+						or targetisLower
 					),
 				function(_h, _a, Selected)
 					if Selected then

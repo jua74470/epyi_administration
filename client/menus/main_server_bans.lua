@@ -14,11 +14,11 @@ function main_server_bans_showContentThisFrame(playerGroup)
 				{ RightLabel = _U("main_server_bans_unit_valid") },
 				true,
 				function(_h, _a, s)
-                    if s then
-                        _var.bans.selectedBan = content
-                    end
-                end,
-                _var.menus.admin.objects.mainServerBansDetails
+					if s then
+						_var.bans.selectedBan = content
+					end
+				end,
+				_var.menus.admin.objects.mainServerBansDetails
 			)
 		elseif content.type == "D_BAN" then
 			RageUI.ButtonWithStyle(
@@ -27,11 +27,11 @@ function main_server_bans_showContentThisFrame(playerGroup)
 				{ RightLabel = _U("main_server_bans_unit_finished") },
 				true,
 				function(_h, _a, s)
-                    if s then
-                        _var.bans.selectedBan = content
-                    end
-                end,
-                _var.menus.admin.objects.mainServerBansDetails
+					if s then
+						_var.bans.selectedBan = content
+					end
+				end,
+				_var.menus.admin.objects.mainServerBansDetails
 			)
 		end
 	end

@@ -53,7 +53,7 @@ server_scripts({
 	"server/ban.lua",
 	"server/reports.lua",
 	"server/spectate.lua",
-	"server/favorites_vehicles.lua"
+	"server/favorites_vehicles.lua",
 })
 
 dependencies({
