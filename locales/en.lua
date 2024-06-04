@@ -1,4 +1,4 @@
-Locales["en"] = {
+locales["en"] = {
 	-- Banners
 	["menu_title"] = "Administration",
 	["main_subtitle"] = "Menu for ~r~administrators",
