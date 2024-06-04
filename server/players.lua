@@ -198,7 +198,7 @@ RegisterNetEvent("epyi_administration:kickPlayer", function(target, reason)
 		return
 	end
 	xPlayer.showNotification(_U("notif_kick_success", xTarget.getName()))
-	logToConsole(
+	log(
 		"Player "
 			.. xPlayer.getName()
 			.. " (Identifier: "
@@ -261,7 +261,7 @@ RegisterNetEvent("epyi_administration:banPlayer", function(target, reason, durat
 		staffName = xPlayer.getName(),
 	}, xTarget.identifier)
 	xPlayer.showNotification(_U("notif_ban_success", xTarget.getName()))
-	logToConsole(
+	log(
 		"Player "
 			.. xPlayer.getName()
 			.. " (Identifier: "

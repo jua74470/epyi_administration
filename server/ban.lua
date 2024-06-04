@@ -22,7 +22,7 @@ AddEventHandler("playerConnecting", function(name, setCallback, deferrals)
 				if tonumber(expiration) <= tonumber(time) then
 					TriggerEvent("epyi_administration:deleteData", id)
 					deferrals.done()
-					logToConsole(
+					log(
 						"Player with identifier "
 							.. identifier
 							.. " is currently logging in for the first time since his last ban."
@@ -35,7 +35,7 @@ AddEventHandler("playerConnecting", function(name, setCallback, deferrals)
 						os.date("Month: %m, Day: %d, Year: %Y", expiration)
 					)
 					deferrals.done(reason)
-					logToConsole("Player with identifier " .. identifier .. " tried to connect but he is banned")
+					log("Player with identifier " .. identifier .. " tried to connect but he is banned")
 				end
 			end
 		end

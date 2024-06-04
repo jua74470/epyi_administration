@@ -2,11 +2,11 @@ function checkVersion(err, responseText, headers)
 	local resource = GetInvokingResource() or GetCurrentResourceName()
 	local currentVersion = GetResourceMetadata(resource, "version", 0)
 	if currentVersion == nil then
-		logToConsole("It looks like your ressource's version checker is broken. This does not prevent the resource from working.")
+		log("It looks like your ressource's version checker is broken. This does not prevent the resource from working.")
 		return
 	end
 	if responseText == nil then
-		logToConsole("It looks like github is offline. The resource uses github to check if it's up to date. This does not prevent the resource from working.")
+		log("It looks like github is offline. The resource uses github to check if it's up to date. This does not prevent the resource from working.")
 		return
 	end
 
@@ -16,7 +16,7 @@ function checkVersion(err, responseText, headers)
 	end
 
 	if #lines < 2 then
-		logToConsole("It looks like your ressource's version checker is broken. This does not prevent the resource from working.")
+		log("It looks like your ressource's version checker is broken. This does not prevent the resource from working.")
 		return
 	end
 
@@ -24,7 +24,7 @@ function checkVersion(err, responseText, headers)
 	local updateUrl = lines[2]:gsub("%s+", "")
 
 	if currentVersion:gsub("%s+", "") ~= latestVersion then
-		logToConsole("^0" .. GetCurrentResourceName() .. " is not up to date. The latest release is " .. latestVersion .. " but you are on release " .. currentVersion .. " -- > " .. updateUrl .. "^0")
+		log("^0" .. GetCurrentResourceName() .. " is not up to date. The latest release is " .. latestVersion .. " but you are on release " .. currentVersion .. " -- > " .. updateUrl .. "^0")
 	end
 end
 
