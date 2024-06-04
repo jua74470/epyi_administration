@@ -40,7 +40,7 @@ client_scripts({
 server_scripts({
 	"@oxmysql/lib/MySQL.lua",
 	"server/misc.lua",
-	"server/version.lua",
+	"server/version_check.lua",
 	"server/logs.lua",
 	"server/var_init.lua",
 	"server/permissions.lua",
