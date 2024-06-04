@@ -1,15 +1,11 @@
----
---- @author Epyi - Work FiveM
---- @version 0.2.0
---- created at [04/08/2023 14:21]
----
-
 fx_version("cerulean")
 game("gta5")
+use_experimental_fxv2_oal("yes")
+lua54("yes")
 
 name("epyi_administration")
 description("A RageUI Administration for ESX Legacy 1.7.5 or newer")
-author("Epyi (https://discord.gg/VyRPheG6Es)")
+author("Epyi")
 version("0.2.0")
 
 shared_scripts({
