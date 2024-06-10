@@ -38,7 +38,7 @@ ESX.RegisterServerCallback("epyi_administration:getPlayers", function(source, cb
 	cb(_players)
 end)
 
-AddEventHandler("esx:playerUpdated", function(_, xPlayer)
+AddEventHandler("esx:playerLoaded", function(_, xPlayer)
 	if _players[xPlayer.source] then
 		return
 	end
@@ -53,8 +53,21 @@ AddEventHandler("esx:playerUpdated", function(_, xPlayer)
 		coords = xPlayer.getCoords(),
 		inventory = xPlayer.getInventory(),
 	}
+	if GetResourceState("epyi_simplefaction") == "started" then
+		_players[xPlayer.source]["faction"] = exports["epyi_simplefaction"]:getFaction(xPlayer.source)
+	end
 	playerUpdated(xPlayer.source, _players[xPlayer.source])
 end)
+
+if GetResourceState("epyi_simplefaction") == "started" then
+	AddEventHandler("epyi_simplefaction:setFaction", function(source, faction)
+		if not _players[source] then
+			return
+		end
+		_players[source]["faction"] = faction
+		playerUpdated(source, _players[source])
+	end)
+end
 
 AddEventHandler("esx:playerLogout", function(source)
 	logoutPlayer(source)
@@ -78,6 +91,9 @@ Citizen.CreateThread(function()
 			coords = xTarget.getCoords(),
 			inventory = xTarget.getInventory(),
 		}
+		if GetResourceState("epyi_simplefaction") == "started" then
+			_players[xTarget.source]["faction"] = exports["epyi_simplefaction"]:getFaction(xTarget.source)
+		end
 	end
 end)
 
