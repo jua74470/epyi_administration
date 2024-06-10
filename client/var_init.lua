@@ -74,7 +74,32 @@ _var.menu.modVariantArrayIndex = 1
 _var.menu.blackoutCheckbox = false
 _var.menu.isSpectate = false
 _var.menu.timeArrayIndex = 1
-_var.menu.timeArray = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }
+_var.menu.timeArray = {
+	0,
+	1,
+	2,
+	3,
+	4,
+	5,
+	6,
+	7,
+	8,
+	9,
+	10,
+	11,
+	12,
+	13,
+	14,
+	15,
+	16,
+	17,
+	18,
+	19,
+	20,
+	21,
+	22,
+	23,
+}
 _var.menu.weatherArrayIndex = 1
 _var.menu.weatherArray = {
 	"EXTRASUNNY",
@@ -1520,7 +1545,10 @@ _var.peds.list = {
 			[48] = { model = "s_m_m_ups_02", label = "UPS 02" },
 			[49] = { model = "s_m_o_busker_01", label = "Busker 01" },
 			[50] = { model = "s_m_y_airworker", label = "Air Worker" },
-			[51] = { model = "s_m_y_ammucity_01", label = "Ammu-Nation City 01" },
+			[51] = {
+				model = "s_m_y_ammucity_01",
+				label = "Ammu-Nation City 01",
+			},
 			[52] = { model = "s_m_y_armymech_01", label = "Army Mechanic 01" },
 			[53] = { model = "s_m_y_autopsy_01", label = "Autopsy 01" },
 			[54] = { model = "s_m_y_barman_01", label = "Barman 01" },
@@ -1641,7 +1669,10 @@ _var.peds.list = {
 			[65] = { model = "ig_josh", label = "Josh" },
 			[66] = { model = "ig_karen_daniels", label = "Karen Daniels" },
 			[67] = { model = "ig_kerrymcintosh", label = "Kerry McIntosh" },
-			[68] = { model = "ig_kerrymcintosh_02", label = "Kerry McIntosh 02" },
+			[68] = {
+				model = "ig_kerrymcintosh_02",
+				label = "Kerry McIntosh 02",
+			},
 			[69] = { model = "ig_lacey_jones_02", label = "Lacey Jones 02" },
 			[70] = { model = "ig_lamardavis", label = "Lamar Davis" },
 			[71] = { model = "ig_lazlow", label = "Lazlow" },

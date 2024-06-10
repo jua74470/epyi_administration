@@ -5,7 +5,13 @@ local SettingsButton = {
 	LeftBadge = { Y = -2, Width = 40, Height = 40 },
 	RightBadge = { X = 385, Y = -2, Width = 40, Height = 40 },
 	RightText = { X = 420, Y = 4, Scale = 0.35 },
-	SelectedSprite = { Dictionary = "commonmenu", Texture = "gradient_nav", Y = 0, Width = 431, Height = 38 },
+	SelectedSprite = {
+		Dictionary = "commonmenu",
+		Texture = "gradient_nav",
+		Y = 0,
+		Width = 431,
+		Height = 38,
+	},
 }
 
 ---Button
@@ -22,7 +28,10 @@ function RageUI.Button(Label, Description, Enabled, Callback, Submenu)
 		---@type number
 		local Option = RageUI.Options + 1
 
-		if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
+		if
+			CurrentMenu.Pagination.Minimum <= Option
+			and CurrentMenu.Pagination.Maximum >= Option
+		then
 			---@type boolean
 			local Active = CurrentMenu.Index == Option
 
@@ -33,23 +42,53 @@ function RageUI.Button(Label, Description, Enabled, Callback, Submenu)
 					SettingsButton.SelectedSprite.Dictionary,
 					SettingsButton.SelectedSprite.Texture,
 					CurrentMenu.X,
-					CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-					SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+					CurrentMenu.Y
+						+ SettingsButton.SelectedSprite.Y
+						+ CurrentMenu.SubtitleHeight
+						+ RageUI.ItemOffset,
+					SettingsButton.SelectedSprite.Width
+						+ CurrentMenu.WidthOffset,
 					SettingsButton.SelectedSprite.Height
 				)
 			end
 
-			local colorData = Enabled and (Active and { 0, 0, 0 } or { 255, 255, 255 }) or { 163, 159, 148 }
-			RenderText(Label, CurrentMenu.X + SettingsButton.Text.X, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, colorData[1], colorData[2], colorData[3], 255)
+			local colorData = Enabled
+					and (Active and { 0, 0, 0 } or { 255, 255, 255 })
+				or { 163, 159, 148 }
+			RenderText(
+				Label,
+				CurrentMenu.X + SettingsButton.Text.X,
+				CurrentMenu.Y
+					+ SettingsButton.Text.Y
+					+ CurrentMenu.SubtitleHeight
+					+ RageUI.ItemOffset,
+				0,
+				SettingsButton.Text.Scale,
+				colorData[1],
+				colorData[2],
+				colorData[3],
+				255
+			)
 
-			RageUI.ItemOffset = RageUI.ItemOffset + SettingsButton.Rectangle.Height
+			RageUI.ItemOffset = RageUI.ItemOffset
+				+ SettingsButton.Rectangle.Height
 
 			RageUI.ItemsDescription(CurrentMenu, Description, Active)
 
 			if Enabled then
 				---@type boolean
-				local Hovered = CurrentMenu.EnableMouse and (CurrentMenu.CursorStyle == 0 or CurrentMenu.CursorStyle == 1) and RageUI.ItemsMouseBounds(CurrentMenu, Active, Option + 1, SettingsButton)
-				local Selected = (CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) and Active
+				local Hovered = CurrentMenu.EnableMouse
+					and (CurrentMenu.CursorStyle == 0 or CurrentMenu.CursorStyle == 1)
+					and RageUI.ItemsMouseBounds(
+						CurrentMenu,
+						Active,
+						Option + 1,
+						SettingsButton
+					)
+				local Selected = (
+					CurrentMenu.Controls.Select.Active
+					or (Hovered and CurrentMenu.Controls.Click.Active)
+				) and Active
 
 				if Callback then
 					Callback(Hovered, Active, Selected)
@@ -57,7 +96,10 @@ function RageUI.Button(Label, Description, Enabled, Callback, Submenu)
 
 				if Selected then
 					local Audio = RageUI.Settings.Audio
-					RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
+					RageUI.PlaySound(
+						Audio[Audio.Use].Select.audioName,
+						Audio[Audio.Use].Select.audioRef
+					)
 
 					if Submenu and Submenu() then
 						RageUI.NextMenu = Submenu
@@ -79,20 +121,35 @@ end
 ---@param Submenu table
 ---@return nil
 ---@public
-function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Submenu)
+function RageUI.ButtonWithStyle(
+	Label,
+	Description,
+	Style,
+	Enabled,
+	Callback,
+	Submenu
+)
 	local CurrentMenu = RageUI.CurrentMenu
 	if CurrentMenu ~= nil and CurrentMenu() then
 		---@type number
 		local Option = RageUI.Options + 1
 
-		if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
+		if
+			CurrentMenu.Pagination.Minimum <= Option
+			and CurrentMenu.Pagination.Maximum >= Option
+		then
 			---@type boolean
 			local Active = CurrentMenu.Index == Option
 
 			RageUI.ItemsSafeZone(CurrentMenu)
 
-			local haveLeftBadge = Style.LeftBadge and Style.LeftBadge ~= RageUI.BadgeStyle.None
-			local haveRightBadge = (Style.RightBadge and Style.RightBadge ~= RageUI.BadgeStyle.None) or (not Enabled and Style.LockBadge ~= RageUI.BadgeStyle.None)
+			local haveLeftBadge = Style.LeftBadge
+				and Style.LeftBadge ~= RageUI.BadgeStyle.None
+			local haveRightBadge = (
+				Style.RightBadge
+				and Style.RightBadge ~= RageUI.BadgeStyle.None
+			)
+				or (not Enabled and Style.LockBadge ~= RageUI.BadgeStyle.None)
 
 			local LeftBadgeOffset = haveLeftBadge and 27 or 0
 			local RightBadgeOffset = haveRightBadge and 32 or 0
@@ -100,8 +157,12 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 			if Style.Color and Style.Color.BackgroundColor then
 				RenderRectangle(
 					CurrentMenu.X,
-					CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-					SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+					CurrentMenu.Y
+						+ SettingsButton.SelectedSprite.Y
+						+ CurrentMenu.SubtitleHeight
+						+ RageUI.ItemOffset,
+					SettingsButton.SelectedSprite.Width
+						+ CurrentMenu.WidthOffset,
 					SettingsButton.SelectedSprite.Height,
 					Style.Color.BackgroundColor[1],
 					Style.Color.BackgroundColor[2],
@@ -113,8 +174,12 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 				if Style.Color and Style.Color.HightLightColor then
 					RenderRectangle(
 						CurrentMenu.X,
-						CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-						SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+						CurrentMenu.Y
+							+ SettingsButton.SelectedSprite.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
+						SettingsButton.SelectedSprite.Width
+							+ CurrentMenu.WidthOffset,
 						SettingsButton.SelectedSprite.Height,
 						Style.Color.HightLightColor[1],
 						Style.Color.HightLightColor[2],
@@ -125,8 +190,12 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 						SettingsButton.SelectedSprite.Dictionary,
 						SettingsButton.SelectedSprite.Texture,
 						CurrentMenu.X,
-						CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-						SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+						CurrentMenu.Y
+							+ SettingsButton.SelectedSprite.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
+						SettingsButton.SelectedSprite.Width
+							+ CurrentMenu.WidthOffset,
 						SettingsButton.SelectedSprite.Height
 					)
 				end
@@ -139,7 +208,10 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 						LeftBadge.BadgeDictionary or "commonmenu",
 						LeftBadge.BadgeTexture or "",
 						CurrentMenu.X,
-						CurrentMenu.Y + SettingsButton.LeftBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						CurrentMenu.Y
+							+ SettingsButton.LeftBadge.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
 						SettingsButton.LeftBadge.Width,
 						SettingsButton.LeftBadge.Height,
 						0,
@@ -155,23 +227,38 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 					RenderSprite(
 						RightBadge.BadgeDictionary or "commonmenu",
 						RightBadge.BadgeTexture or "",
-						CurrentMenu.X + SettingsButton.RightBadge.X + CurrentMenu.WidthOffset,
-						CurrentMenu.Y + SettingsButton.RightBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						CurrentMenu.X
+							+ SettingsButton.RightBadge.X
+							+ CurrentMenu.WidthOffset,
+						CurrentMenu.Y
+							+ SettingsButton.RightBadge.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
 						SettingsButton.RightBadge.Width,
 						SettingsButton.RightBadge.Height,
 						0,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.R or 255,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.G or 255,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.B or 255,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.A or 255
+						RightBadge.BadgeColour and RightBadge.BadgeColour.R
+							or 255,
+						RightBadge.BadgeColour and RightBadge.BadgeColour.G
+							or 255,
+						RightBadge.BadgeColour and RightBadge.BadgeColour.B
+							or 255,
+						RightBadge.BadgeColour and RightBadge.BadgeColour.A
+							or 255
 					)
 				end
 
 				if Style.RightLabel then
 					RenderText(
 						Style.RightLabel,
-						CurrentMenu.X + SettingsButton.RightText.X - RightBadgeOffset + CurrentMenu.WidthOffset,
-						CurrentMenu.Y + SettingsButton.RightText.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						CurrentMenu.X
+							+ SettingsButton.RightText.X
+							- RightBadgeOffset
+							+ CurrentMenu.WidthOffset,
+						CurrentMenu.Y
+							+ SettingsButton.RightText.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
 						0,
 						SettingsButton.RightText.Scale,
 						Active and 0 or 245,
@@ -182,36 +269,82 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 					)
 				end
 
-				RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, Active and 0 or 245, Active and 0 or 245, Active and 0 or 245, 255)
+				RenderText(
+					Label,
+					CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset,
+					CurrentMenu.Y
+						+ SettingsButton.Text.Y
+						+ CurrentMenu.SubtitleHeight
+						+ RageUI.ItemOffset,
+					0,
+					SettingsButton.Text.Scale,
+					Active and 0 or 245,
+					Active and 0 or 245,
+					Active and 0 or 245,
+					255
+				)
 			else
 				if haveRightBadge then
 					local RightBadge = RageUI.BadgeStyle.Lock(Active)
 					RenderSprite(
 						RightBadge.BadgeDictionary or "commonmenu",
 						RightBadge.BadgeTexture or "",
-						CurrentMenu.X + SettingsButton.RightBadge.X + CurrentMenu.WidthOffset,
-						CurrentMenu.Y + SettingsButton.RightBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						CurrentMenu.X
+							+ SettingsButton.RightBadge.X
+							+ CurrentMenu.WidthOffset,
+						CurrentMenu.Y
+							+ SettingsButton.RightBadge.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
 						SettingsButton.RightBadge.Width,
 						SettingsButton.RightBadge.Height,
 						0,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.R or 255,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.G or 255,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.B or 255,
-						RightBadge.BadgeColour and RightBadge.BadgeColour.A or 255
+						RightBadge.BadgeColour and RightBadge.BadgeColour.R
+							or 255,
+						RightBadge.BadgeColour and RightBadge.BadgeColour.G
+							or 255,
+						RightBadge.BadgeColour and RightBadge.BadgeColour.B
+							or 255,
+						RightBadge.BadgeColour and RightBadge.BadgeColour.A
+							or 255
 					)
 				end
 
-				RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 163, 159, 148, 255)
+				RenderText(
+					Label,
+					CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset,
+					CurrentMenu.Y
+						+ SettingsButton.Text.Y
+						+ CurrentMenu.SubtitleHeight
+						+ RageUI.ItemOffset,
+					0,
+					SettingsButton.Text.Scale,
+					163,
+					159,
+					148,
+					255
+				)
 			end
 
-			RageUI.ItemOffset = RageUI.ItemOffset + SettingsButton.Rectangle.Height
+			RageUI.ItemOffset = RageUI.ItemOffset
+				+ SettingsButton.Rectangle.Height
 
 			RageUI.ItemsDescription(CurrentMenu, Description, Active)
 
 			if Enabled then
 				---@type boolean
-				local Hovered = CurrentMenu.EnableMouse and (CurrentMenu.CursorStyle == 0 or CurrentMenu.CursorStyle == 1) and RageUI.ItemsMouseBounds(CurrentMenu, Active, Option + 1, SettingsButton)
-				local Selected = (CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) and Active
+				local Hovered = CurrentMenu.EnableMouse
+					and (CurrentMenu.CursorStyle == 0 or CurrentMenu.CursorStyle == 1)
+					and RageUI.ItemsMouseBounds(
+						CurrentMenu,
+						Active,
+						Option + 1,
+						SettingsButton
+					)
+				local Selected = (
+					CurrentMenu.Controls.Select.Active
+					or (Hovered and CurrentMenu.Controls.Click.Active)
+				) and Active
 
 				if Callback then
 					Callback(Hovered, Active, Selected)
@@ -219,7 +352,10 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 
 				if Selected then
 					local Audio = RageUI.Settings.Audio
-					RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
+					RageUI.PlaySound(
+						Audio[Audio.Use].Select.audioName,
+						Audio[Audio.Use].Select.audioRef
+					)
 
 					if Submenu and Submenu() then
 						RageUI.NextMenu = Submenu
@@ -232,7 +368,14 @@ function RageUI.ButtonWithStyle(Label, Description, Style, Enabled, Callback, Su
 	end
 end
 
-function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Submenu)
+function RageUI.CenterButton(
+	Label,
+	Description,
+	Style,
+	Enabled,
+	Callback,
+	Submenu
+)
 	---@type table
 	local CurrentMenu = RageUI.CurrentMenu
 
@@ -241,22 +384,43 @@ function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Subme
 			---@type number
 			local Option = RageUI.Options + 1
 
-			if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
+			if
+				CurrentMenu.Pagination.Minimum <= Option
+				and CurrentMenu.Pagination.Maximum >= Option
+			then
 				---@type boolean
 				local Selected = CurrentMenu.Index == Option
 
 				RageUI.ItemsSafeZone(CurrentMenu)
 
-				local LeftBadgeOffset = ((Style.LeftBadge == RageUI.BadgeStyle.None or Style.LeftBadge == nil) and 0 or 27)
-				local RightBadgeOffset = ((Style.RightBadge == RageUI.BadgeStyle.None or Style.RightBadge == nil) and 0 or 32)
+				local LeftBadgeOffset = (
+					(
+							Style.LeftBadge == RageUI.BadgeStyle.None
+							or Style.LeftBadge == nil
+						)
+						and 0
+					or 27
+				)
+				local RightBadgeOffset = (
+					(
+							Style.RightBadge == RageUI.BadgeStyle.None
+							or Style.RightBadge == nil
+						)
+						and 0
+					or 32
+				)
 
 				local Hovered = false
 				if Style.Color ~= nil then
 					if Style.Color.BackgroundColor ~= nil then
 						RenderRectangle(
 							CurrentMenu.X,
-							CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-							SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+							CurrentMenu.Y
+								+ SettingsButton.SelectedSprite.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							SettingsButton.SelectedSprite.Width
+								+ CurrentMenu.WidthOffset,
 							SettingsButton.SelectedSprite.Height,
 							Style.Color.BackgroundColor[1],
 							Style.Color.BackgroundColor[2],
@@ -266,7 +430,12 @@ function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Subme
 				end
 				---@type boolean
 				if CurrentMenu.EnableMouse == true then
-					Hovered = RageUI.ItemsMouseBounds(CurrentMenu, Selected, Option, SettingsButton)
+					Hovered = RageUI.ItemsMouseBounds(
+						CurrentMenu,
+						Selected,
+						Option,
+						SettingsButton
+					)
 				end
 				if Selected then
 					if Style.Color == nil then
@@ -274,17 +443,28 @@ function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Subme
 							SettingsButton.SelectedSprite.Dictionary,
 							SettingsButton.SelectedSprite.Texture,
 							CurrentMenu.X,
-							CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-							SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+							CurrentMenu.Y
+								+ SettingsButton.SelectedSprite.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							SettingsButton.SelectedSprite.Width
+								+ CurrentMenu.WidthOffset,
 							SettingsButton.SelectedSprite.Height
 						)
 					end
 
-					if Style.Color ~= nil and Style.Color.HightLightColor ~= nil then
+					if
+						Style.Color ~= nil
+						and Style.Color.HightLightColor ~= nil
+					then
 						RenderRectangle(
 							CurrentMenu.X,
-							CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-							SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+							CurrentMenu.Y
+								+ SettingsButton.SelectedSprite.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							SettingsButton.SelectedSprite.Width
+								+ CurrentMenu.WidthOffset,
 							SettingsButton.SelectedSprite.Height,
 							Style.Color.HightLightColor[1],
 							Style.Color.HightLightColor[2],
@@ -295,8 +475,12 @@ function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Subme
 							SettingsButton.SelectedSprite.Dictionary,
 							SettingsButton.SelectedSprite.Texture,
 							CurrentMenu.X,
-							CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-							SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+							CurrentMenu.Y
+								+ SettingsButton.SelectedSprite.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							SettingsButton.SelectedSprite.Width
+								+ CurrentMenu.WidthOffset,
 							SettingsButton.SelectedSprite.Height
 						)
 					end
@@ -304,39 +488,69 @@ function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Subme
 
 				if type(Style) == "table" then
 					if Style.LeftBadge ~= nil then
-						if Style.LeftBadge ~= RageUI.BadgeStyle.None and Style.LeftBadge ~= nil then
+						if
+							Style.LeftBadge ~= RageUI.BadgeStyle.None
+							and Style.LeftBadge ~= nil
+						then
 							local LeftBadge = Style.LeftBadge(Selected)
 							RenderSprite(
 								LeftBadge.BadgeDictionary or "commonmenu",
 								LeftBadge.BadgeTexture or "",
 								CurrentMenu.X,
-								CurrentMenu.Y + SettingsButton.LeftBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+								CurrentMenu.Y
+									+ SettingsButton.LeftBadge.Y
+									+ CurrentMenu.SubtitleHeight
+									+ RageUI.ItemOffset,
 								SettingsButton.LeftBadge.Width,
 								SettingsButton.LeftBadge.Height,
 								0,
-								LeftBadge.BadgeColour and LeftBadge.BadgeColour.R or 255,
-								LeftBadge.BadgeColour and LeftBadge.BadgeColour.G or 255,
-								LeftBadge.BadgeColour and LeftBadge.BadgeColour.B or 255,
-								LeftBadge.BadgeColour and LeftBadge.BadgeColour.A or 255
+								LeftBadge.BadgeColour
+										and LeftBadge.BadgeColour.R
+									or 255,
+								LeftBadge.BadgeColour
+										and LeftBadge.BadgeColour.G
+									or 255,
+								LeftBadge.BadgeColour
+										and LeftBadge.BadgeColour.B
+									or 255,
+								LeftBadge.BadgeColour
+										and LeftBadge.BadgeColour.A
+									or 255
 							)
 						end
 					end
 
 					if Style.RightBadge ~= nil then
-						if Style.RightBadge ~= RageUI.BadgeStyle.None and Style.RightBadge ~= nil then
+						if
+							Style.RightBadge ~= RageUI.BadgeStyle.None
+							and Style.RightBadge ~= nil
+						then
 							local RightBadge = Style.RightBadge(Selected)
 							RenderSprite(
 								RightBadge.BadgeDictionary or "commonmenu",
 								RightBadge.BadgeTexture or "",
-								CurrentMenu.X + SettingsButton.RightBadge.X + CurrentMenu.WidthOffset,
-								CurrentMenu.Y + SettingsButton.RightBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+								CurrentMenu.X
+									+ SettingsButton.RightBadge.X
+									+ CurrentMenu.WidthOffset,
+								CurrentMenu.Y
+									+ SettingsButton.RightBadge.Y
+									+ CurrentMenu.SubtitleHeight
+									+ RageUI.ItemOffset,
 								SettingsButton.RightBadge.Width,
 								SettingsButton.RightBadge.Height,
 								0,
-								RightBadge.BadgeColour and RightBadge.BadgeColour.R or 255,
-								RightBadge.BadgeColour and RightBadge.BadgeColour.G or 255,
-								RightBadge.BadgeColour and RightBadge.BadgeColour.B or 255,
-								RightBadge.BadgeColour and RightBadge.BadgeColour.A or 255
+								RightBadge.BadgeColour
+										and RightBadge.BadgeColour.R
+									or 255,
+								RightBadge.BadgeColour
+										and RightBadge.BadgeColour.G
+									or 255,
+								RightBadge.BadgeColour
+										and RightBadge.BadgeColour.B
+									or 255,
+								RightBadge.BadgeColour
+										and RightBadge.BadgeColour.A
+									or 255
 							)
 						end
 					end
@@ -344,32 +558,140 @@ function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Subme
 
 				if Enabled == true or Enabled == nil then
 					if Selected then
-						if Style.RightLabel ~= nil and Style.RightLabel ~= "" then
-							RenderText(Style.RightLabel, CurrentMenu.X + SettingsButton.RightText.X - RightBadgeOffset + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsButton.RightText.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.RightText.Scale, 0, 0, 0, 255, 2)
+						if
+							Style.RightLabel ~= nil
+							and Style.RightLabel ~= ""
+						then
+							RenderText(
+								Style.RightLabel,
+								CurrentMenu.X
+									+ SettingsButton.RightText.X
+									- RightBadgeOffset
+									+ CurrentMenu.WidthOffset,
+								CurrentMenu.Y
+									+ SettingsButton.RightText.Y
+									+ CurrentMenu.SubtitleHeight
+									+ RageUI.ItemOffset,
+								0,
+								SettingsButton.RightText.Scale,
+								0,
+								0,
+								0,
+								255,
+								2
+							)
 						end
-						RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset + 250.0, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 0, 0, 0, 255, 1)
+						RenderText(
+							Label,
+							CurrentMenu.X
+								+ SettingsButton.Text.X
+								+ LeftBadgeOffset
+								+ 250.0,
+							CurrentMenu.Y
+								+ SettingsButton.Text.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							0,
+							SettingsButton.Text.Scale,
+							0,
+							0,
+							0,
+							255,
+							1
+						)
 					else
-						if Style.RightLabel ~= nil and Style.RightLabel ~= "" then
-							RenderText(Style.RightLabel, CurrentMenu.X + SettingsButton.RightText.X - RightBadgeOffset + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsButton.RightText.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.RightText.Scale, 245, 245, 245, 255, 2)
+						if
+							Style.RightLabel ~= nil
+							and Style.RightLabel ~= ""
+						then
+							RenderText(
+								Style.RightLabel,
+								CurrentMenu.X
+									+ SettingsButton.RightText.X
+									- RightBadgeOffset
+									+ CurrentMenu.WidthOffset,
+								CurrentMenu.Y
+									+ SettingsButton.RightText.Y
+									+ CurrentMenu.SubtitleHeight
+									+ RageUI.ItemOffset,
+								0,
+								SettingsButton.RightText.Scale,
+								245,
+								245,
+								245,
+								255,
+								2
+							)
 						end
 
-						RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset + 250.0, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 245, 245, 245, 255, 1)
+						RenderText(
+							Label,
+							CurrentMenu.X
+								+ SettingsButton.Text.X
+								+ LeftBadgeOffset
+								+ 250.0,
+							CurrentMenu.Y
+								+ SettingsButton.Text.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							0,
+							SettingsButton.Text.Scale,
+							245,
+							245,
+							245,
+							255,
+							1
+						)
 					end
 				else
-					RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 163, 159, 148, 255)
+					RenderText(
+						Label,
+						CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset,
+						CurrentMenu.Y
+							+ SettingsButton.Text.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
+						0,
+						SettingsButton.Text.Scale,
+						163,
+						159,
+						148,
+						255
+					)
 				end
 
-				RageUI.ItemOffset = RageUI.ItemOffset + SettingsButton.Rectangle.Height
+				RageUI.ItemOffset = RageUI.ItemOffset
+					+ SettingsButton.Rectangle.Height
 
 				RageUI.ItemsDescription(CurrentMenu, Description, Selected)
 
 				if Enabled then
-					Callback(Hovered, Selected, ((CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) and Selected))
+					Callback(
+						Hovered,
+						Selected,
+						(
+							(
+								CurrentMenu.Controls.Select.Active
+								or (
+									Hovered and CurrentMenu.Controls.Click.Active
+								)
+							) and Selected
+						)
+					)
 				end
 
-				if Selected and (CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) then
+				if
+					Selected
+					and (
+						CurrentMenu.Controls.Select.Active
+						or (Hovered and CurrentMenu.Controls.Click.Active)
+					)
+				then
 					local Audio = RageUI.Settings.Audio
-					RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
+					RageUI.PlaySound(
+						Audio[Audio.Use].Select.audioName,
+						Audio[Audio.Use].Select.audioRef
+					)
 					if Submenu ~= nil then
 						if Submenu() then
 							RageUI.NextMenu = Submenu
@@ -382,49 +704,177 @@ function RageUI.CenterButton(Label, Description, Style, Enabled, Callback, Subme
 	end
 end
 
-function RageUI.EmptyButton(Label, Description, Style, Enabled, Callback, Submenu)
+function RageUI.EmptyButton(
+	Label,
+	Description,
+	Style,
+	Enabled,
+	Callback,
+	Submenu
+)
 	---@type table
 	local CurrentMenu = RageUI.CurrentMenu
 	if CurrentMenu ~= nil then
 		if CurrentMenu() then
 			---@type number
 			local Option = RageUI.Options + 1
-			if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
+			if
+				CurrentMenu.Pagination.Minimum <= Option
+				and CurrentMenu.Pagination.Maximum >= Option
+			then
 				---@type boolean
 				local Selected = CurrentMenu.Index == Option
 				RageUI.ItemsSafeZone(CurrentMenu)
 
-				local LeftBadgeOffset = ((Style.LeftBadge == RageUI.BadgeStyle.None or Style.LeftBadge == nil) and 0 or 27)
-				local RightBadgeOffset = ((Style.RightBadge == RageUI.BadgeStyle.None or Style.RightBadge == nil) and 0 or 32)
+				local LeftBadgeOffset = (
+					(
+							Style.LeftBadge == RageUI.BadgeStyle.None
+							or Style.LeftBadge == nil
+						)
+						and 0
+					or 27
+				)
+				local RightBadgeOffset = (
+					(
+							Style.RightBadge == RageUI.BadgeStyle.None
+							or Style.RightBadge == nil
+						)
+						and 0
+					or 32
+				)
 
 				local Hovered = false
 				if Enabled == true or Enabled == nil then
 					if Selected then
-						if Style.RightLabel ~= nil and Style.RightLabel ~= "" then
-							RenderText(Style.RightLabel, CurrentMenu.X + SettingsButton.RightText.X - RightBadgeOffset + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsButton.RightText.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.RightText.Scale, 0, 0, 0, 255, 2)
+						if
+							Style.RightLabel ~= nil
+							and Style.RightLabel ~= ""
+						then
+							RenderText(
+								Style.RightLabel,
+								CurrentMenu.X
+									+ SettingsButton.RightText.X
+									- RightBadgeOffset
+									+ CurrentMenu.WidthOffset,
+								CurrentMenu.Y
+									+ SettingsButton.RightText.Y
+									+ CurrentMenu.SubtitleHeight
+									+ RageUI.ItemOffset,
+								0,
+								SettingsButton.RightText.Scale,
+								0,
+								0,
+								0,
+								255,
+								2
+							)
 						end
-						RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 0, 0, 0, 255)
+						RenderText(
+							Label,
+							CurrentMenu.X
+								+ SettingsButton.Text.X
+								+ LeftBadgeOffset,
+							CurrentMenu.Y
+								+ SettingsButton.Text.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							0,
+							SettingsButton.Text.Scale,
+							0,
+							0,
+							0,
+							255
+						)
 					else
-						if Style.RightLabel ~= nil and Style.RightLabel ~= "" then
-							RenderText(Style.RightLabel, CurrentMenu.X + SettingsButton.RightText.X - RightBadgeOffset + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsButton.RightText.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.RightText.Scale, 245, 245, 245, 255, 2)
+						if
+							Style.RightLabel ~= nil
+							and Style.RightLabel ~= ""
+						then
+							RenderText(
+								Style.RightLabel,
+								CurrentMenu.X
+									+ SettingsButton.RightText.X
+									- RightBadgeOffset
+									+ CurrentMenu.WidthOffset,
+								CurrentMenu.Y
+									+ SettingsButton.RightText.Y
+									+ CurrentMenu.SubtitleHeight
+									+ RageUI.ItemOffset,
+								0,
+								SettingsButton.RightText.Scale,
+								245,
+								245,
+								245,
+								255,
+								2
+							)
 						end
 
-						RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 245, 245, 245, 255)
+						RenderText(
+							Label,
+							CurrentMenu.X
+								+ SettingsButton.Text.X
+								+ LeftBadgeOffset,
+							CurrentMenu.Y
+								+ SettingsButton.Text.Y
+								+ CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							0,
+							SettingsButton.Text.Scale,
+							245,
+							245,
+							245,
+							255
+						)
 					end
 				else
-					RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 163, 159, 148, 255)
+					RenderText(
+						Label,
+						CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset,
+						CurrentMenu.Y
+							+ SettingsButton.Text.Y
+							+ CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
+						0,
+						SettingsButton.Text.Scale,
+						163,
+						159,
+						148,
+						255
+					)
 				end
 
-				RageUI.ItemOffset = RageUI.ItemOffset + SettingsButton.Rectangle.Height
+				RageUI.ItemOffset = RageUI.ItemOffset
+					+ SettingsButton.Rectangle.Height
 				RageUI.ItemsDescription(CurrentMenu, Description, Selected)
 
 				if Enabled then
-					Callback(Hovered, Selected, ((CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) and Selected))
+					Callback(
+						Hovered,
+						Selected,
+						(
+							(
+								CurrentMenu.Controls.Select.Active
+								or (
+									Hovered and CurrentMenu.Controls.Click.Active
+								)
+							) and Selected
+						)
+					)
 				end
 
-				if Selected and (CurrentMenu.Controls.Select.Active or (Hovered and CurrentMenu.Controls.Click.Active)) then
+				if
+					Selected
+					and (
+						CurrentMenu.Controls.Select.Active
+						or (Hovered and CurrentMenu.Controls.Click.Active)
+					)
+				then
 					local Audio = RageUI.Settings.Audio
-					RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef)
+					RageUI.PlaySound(
+						Audio[Audio.Use].Select.audioName,
+						Audio[Audio.Use].Select.audioRef
+					)
 					if Submenu ~= nil then
 						if Submenu() then
 							RageUI.NextMenu = Submenu

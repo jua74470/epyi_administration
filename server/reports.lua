@@ -28,8 +28,16 @@ ESX.RegisterCommand("report", "user", function(xPlayer, args, showError)
 	xPlayer.showNotification(_U("command_report_success", reason))
 	local xPlayers = ESX.GetExtendedPlayers()
 	for _, xStaff in pairs(xPlayers) do
-		if Config.Groups[xStaff.getGroup()].Access["submenu_reports_access"] then
-			xStaff.showNotification(_U("command_report_success_staff", xPlayer.getName(), xPlayer.source))
+		if
+			Config.Groups[xStaff.getGroup()].Access["submenu_reports_access"]
+		then
+			xStaff.showNotification(
+				_U(
+					"command_report_success_staff",
+					xPlayer.getName(),
+					xPlayer.source
+				)
+			)
 		end
 	end
 	reportCooldowns[xPlayer.identifier] = true
@@ -71,21 +79,27 @@ end
 ---setReport → Set a server report data
 ---@param identifier string
 ---@return table
-ESX.RegisterServerCallback("epyi_administration:setReport", function(source, cb, identifier, key, data)
-	xPlayer = ESX.GetPlayerFromIdentifier(identifier)
-	if not Config.Groups[xPlayer.getGroup()] or not Config.Groups[xPlayer.getGroup()].Access["submenu_reports_access"] then
-		cb(false)
-		xPlayer.kick(_U("insuficient_permissions"))
-		return
+ESX.RegisterServerCallback(
+	"epyi_administration:setReport",
+	function(source, cb, identifier, key, data)
+		xPlayer = ESX.GetPlayerFromIdentifier(identifier)
+		if
+			not Config.Groups[xPlayer.getGroup()]
+			or not Config.Groups[xPlayer.getGroup()].Access["submenu_reports_access"]
+		then
+			cb(false)
+			xPlayer.kick(_U("insuficient_permissions"))
+			return
+		end
+		if _var.reports.list[key] == nil then
+			cb(false)
+			return
+		end
+		_var.reports.list[key] = data
+		sendReportsToStatebag()
+		cb(true)
 	end
-	if _var.reports.list[key] == nil then
-		cb(false)
-		return
-	end
-	_var.reports.list[key] = data
-	sendReportsToStatebag()
-	cb(true)
-end)
+)
 
 ---Thread to leave report from staff when quit the server
 Citizen.CreateThread(function()
@@ -93,7 +107,9 @@ Citizen.CreateThread(function()
 		for _k, report in pairs(_var.reports.list) do
 			if report.staff.taken then
 				if report.staff.takerIdentifier ~= nil then
-					local xPlayer = ESX.GetPlayerFromIdentifier(report.staff.takerIdentifier)
+					local xPlayer = ESX.GetPlayerFromIdentifier(
+						report.staff.takerIdentifier
+					)
 					if not xPlayer then
 						report.staff.taken = false
 						report.staff.takerIdentifier = nil

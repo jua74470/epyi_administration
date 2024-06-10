@@ -1,7 +1,8 @@
 _datastore = _datastore or {}
 
 Citizen.CreateThread(function()
-	local response = MySQL.query.await("SELECT * FROM `epyi_administration`", {})
+	local response =
+		MySQL.query.await("SELECT * FROM `epyi_administration`", {})
 
 	if response then
 		for i = 1, #response do
@@ -19,27 +20,44 @@ end)
 
 local function saveDatastoreToDB()
 	for id, content in pairs(_datastore) do
-		local check = MySQL.single.await("SELECT * FROM `epyi_administration` WHERE `id` = ? LIMIT 1", {
-			id,
-		})
-		if check and (check.type ~= content.type or check.date_unix ~= content.date_unix or check.data ~= content.data or check.owner ~= content.owner) then
-			MySQL.update.await("UPDATE epyi_administration SET type = ?, date_unix = ?, data = ?, owner = ? WHERE id = ?", {
-				content.type,
-				content.date_unix,
-				content.data,
-				content.owner,
+		local check = MySQL.single.await(
+			"SELECT * FROM `epyi_administration` WHERE `id` = ? LIMIT 1",
+			{
 				id,
-			})
+			}
+		)
+		if
+			check
+			and (
+				check.type ~= content.type
+				or check.date_unix ~= content.date_unix
+				or check.data ~= content.data
+				or check.owner ~= content.owner
+			)
+		then
+			MySQL.update.await(
+				"UPDATE epyi_administration SET type = ?, date_unix = ?, data = ?, owner = ? WHERE id = ?",
+				{
+					content.type,
+					content.date_unix,
+					content.data,
+					content.owner,
+					id,
+				}
+			)
 		end
 
 		if not check then
-			MySQL.insert.await("INSERT INTO `epyi_administration` (id, type, date_unix, data, owner) VALUES (?, ?, ?, ?, ?)", {
-				id,
-				content.type,
-				content.date_unix,
-				content.data,
-				content.owner,
-			})
+			MySQL.insert.await(
+				"INSERT INTO `epyi_administration` (id, type, date_unix, data, owner) VALUES (?, ?, ?, ?, ?)",
+				{
+					id,
+					content.type,
+					content.date_unix,
+					content.data,
+					content.owner,
+				}
+			)
 		end
 	end
 end
@@ -70,17 +88,20 @@ AddEventHandler("epyi_administration:saveData", function(type, data, owner)
 	}
 end)
 
-AddEventHandler("epyi_administration:editData", function(id, type, date_unix, data, owner)
-	if not _datastore[id] then
-		return
+AddEventHandler(
+	"epyi_administration:editData",
+	function(id, type, date_unix, data, owner)
+		if not _datastore[id] then
+			return
+		end
+		_datastore[id] = {
+			type = type,
+			date_unix = date_unix,
+			data = data,
+			owner = owner,
+		}
 	end
-	_datastore[id] = {
-		type = type,
-		date_unix = date_unix,
-		data = data,
-		owner = owner,
-	}
-end)
+)
 
 AddEventHandler("epyi_administration:deleteData", function(id)
 	if not _datastore[id] then

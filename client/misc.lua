@@ -19,8 +19,23 @@ function revivePed(ped)
 		z = ESX.Math.Round(coords.z, 1),
 	}
 
-	SetEntityCoordsNoOffset(_ped, formattedCoords.x, formattedCoords.y, formattedCoords.z, false, false, false)
-	NetworkResurrectLocalPlayer(formattedCoords.x, formattedCoords.y, formattedCoords.z, heading, true, false)
+	SetEntityCoordsNoOffset(
+		_ped,
+		formattedCoords.x,
+		formattedCoords.y,
+		formattedCoords.z,
+		false,
+		false,
+		false
+	)
+	NetworkResurrectLocalPlayer(
+		formattedCoords.x,
+		formattedCoords.y,
+		formattedCoords.z,
+		heading,
+		true,
+		false
+	)
 	SetPlayerInvincible(_ped, false)
 	ClearPedBloodDamage(_ped)
 	TriggerEvent("esx_basicneeds:resetStatus")
@@ -47,16 +62,24 @@ function leaveAllReports()
 	_var.client.playerData = ESX.GetPlayerData()
 	_var.reports.list = GlobalState["epyi_administration:reportList"] or {}
 	for key, report in pairs(_var.reports.list) do
-		if report.staff.takerIdentifier == _var.client.playerData.identifier then
+		if
+			report.staff.takerIdentifier == _var.client.playerData.identifier
+		then
 			report.staff.taken = false
 			report.staff.takerIdentifier = nil
 			report.staff.takerSource = nil
 			report.staff.takerGroup = nil
-			ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
-				if not result then
-					ESX.ShowNotification(_U("notif_report_editing_error"))
-				end
-			end, _var.client.playerData.identifier, key, _var.reports.list[key])
+			ESX.TriggerServerCallback(
+				"epyi_administration:setReport",
+				function(result)
+					if not result then
+						ESX.ShowNotification(_U("notif_report_editing_error"))
+					end
+				end,
+				_var.client.playerData.identifier,
+				key,
+				_var.reports.list[key]
+			)
 		end
 	end
 end
@@ -89,7 +112,16 @@ end
 ---@return string
 function textEntry(textEntry, inputText, maxLength)
 	AddTextEntry("FMMC_KEY_TIP1", textEntry)
-	DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP1", "", inputText, "", "", "", maxLength)
+	DisplayOnscreenKeyboard(
+		1,
+		"FMMC_KEY_TIP1",
+		"",
+		inputText,
+		"",
+		"",
+		"",
+		maxLength
+	)
 	while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
 		Citizen.Wait(1.0)
 	end
@@ -108,35 +140,43 @@ end
 ---@param blackout boolean
 ---@return void
 RegisterNetEvent("epyi_administration:syncWeather")
-AddEventHandler("epyi_administration:syncWeather", function(weather, blackout, time)
-	_var.menu.blackoutCheckbox = blackout
-	SetArtificialLightsState(blackout)
-	SetArtificialLightsStateAffectsVehicles(false)
-	for key, weather in pairs(_var.menu.weatherArray) do
-		if _var.menu.weatherArray[_var.menu.weatherArrayIndex] == weather then
-			_var.menu.weatherArrayIndex = key
+AddEventHandler(
+	"epyi_administration:syncWeather",
+	function(weather, blackout, time)
+		_var.menu.blackoutCheckbox = blackout
+		SetArtificialLightsState(blackout)
+		SetArtificialLightsStateAffectsVehicles(false)
+		for key, weather in pairs(_var.menu.weatherArray) do
+			if
+				_var.menu.weatherArray[_var.menu.weatherArrayIndex] == weather
+			then
+				_var.menu.weatherArrayIndex = key
+			end
 		end
+		SetWeatherTypeOverTime(weather, 0.0)
+		ClearOverrideWeather()
+		ClearWeatherTypePersist()
+		SetWeatherTypePersist(weather)
+		SetWeatherTypeNow(weather)
+		SetWeatherTypeNowPersist(weather)
+		NetworkOverrideClockTime(time, 0, 0)
 	end
-	SetWeatherTypeOverTime(weather, 0.0)
-	ClearOverrideWeather()
-	ClearWeatherTypePersist()
-	SetWeatherTypePersist(weather)
-	SetWeatherTypeNow(weather)
-	SetWeatherTypeNowPersist(weather)
-	NetworkOverrideClockTime(time, 0, 0)
-end)
+)
 
 local oldPos = nil
 local spectateInfo = { toggled = false, target = 0, targetPed = 0 }
 
-RegisterNetEvent("epyi_administration:requestSpectate", function(targetPed, target, name)
-	oldPos = GetEntityCoords(PlayerPedId())
-	spectateInfo = {
-		toggled = true,
-		target = target,
-		targetPed = targetPed,
-	}
-end)
+RegisterNetEvent(
+	"epyi_administration:requestSpectate",
+	function(targetPed, target, name)
+		oldPos = GetEntityCoords(PlayerPedId())
+		spectateInfo = {
+			toggled = true,
+			target = target,
+			targetPed = targetPed,
+		}
+	end
+)
 
 RegisterNetEvent("epyi_administration:cancelSpectate", function()
 	if NetworkIsInSpectatorMode() then
@@ -156,7 +196,8 @@ CreateThread(function()
 		Wait(0)
 		if spectateInfo["toggled"] then
 			local text = {}
-			local targetPed = NetworkGetEntityFromNetworkId(spectateInfo.targetPed)
+			local targetPed =
+				NetworkGetEntityFromNetworkId(spectateInfo.targetPed)
 			if DoesEntityExist(targetPed) then
 				SetEntityVisible(PlayerPedId(), false, 0)
 				if not NetworkIsInSpectatorMode() then
@@ -164,8 +205,15 @@ CreateThread(function()
 					NetworkSetInSpectatorMode(true, targetPed)
 				end
 			else
-				TriggerServerEvent("epyi_administration:spectate:teleport", spectateInfo["target"])
-				while not DoesEntityExist(NetworkGetEntityFromNetworkId(spectateInfo.targetPed)) do
+				TriggerServerEvent(
+					"epyi_administration:spectate:teleport",
+					spectateInfo["target"]
+				)
+				while
+					not DoesEntityExist(
+						NetworkGetEntityFromNetworkId(spectateInfo.targetPed)
+					)
+				do
 					Wait(100)
 				end
 			end

@@ -22,11 +22,24 @@ AddEventHandler("playerConnecting", function(name, setCallback, deferrals)
 				if tonumber(expiration) <= tonumber(time) then
 					TriggerEvent("epyi_administration:deleteData", id)
 					deferrals.done()
-					log("Player with identifier " .. identifier .. " is currently logging in for the first time since his last ban.")
+					log(
+						"Player with identifier "
+							.. identifier
+							.. " is currently logging in for the first time since his last ban."
+					)
 				else
-					local reason = _U("notif_ban_target", _data.reason, _data.duration, os.date("Month: %m, Day: %d, Year: %Y", expiration))
+					local reason = _U(
+						"notif_ban_target",
+						_data.reason,
+						_data.duration,
+						os.date("Month: %m, Day: %d, Year: %Y", expiration)
+					)
 					deferrals.done(reason)
-					log("Player with identifier " .. identifier .. " tried to connect but he is banned")
+					log(
+						"Player with identifier "
+							.. identifier
+							.. " tried to connect but he is banned"
+					)
 				end
 			end
 		end

@@ -9,7 +9,9 @@ RageUI.LastControl = false
 ---@return number
 ---@public
 function RageUI.IsMouseInBounds(X, Y, Width, Height)
-	local MX, MY = math.round(GetControlNormal(2, 239) * 1920) / 1920, math.round(GetControlNormal(2, 240) * 1080) / 1080
+	local MX, MY =
+		math.round(GetControlNormal(2, 239) * 1920) / 1920,
+		math.round(GetControlNormal(2, 240) * 1080) / 1080
 	X, Y = X / 1920, Y / 1080
 	Width, Height = Width / 1920, Height / 1080
 	return (MX >= X and MX <= X + Width) and (MY > Y and MY < Y + Height)
@@ -26,7 +28,10 @@ function RageUI.GetSafeZoneBounds()
 
 	local W, H = 1920, 1080
 
-	return { X = math.round(SafeSize * ((W / H) * 5.4)), Y = math.round(SafeSize * 5.4) }
+	return {
+		X = math.round(SafeSize * ((W / H) * 5.4)),
+		Y = math.round(SafeSize * 5.4),
+	}
 end
 ---GoUp
 ---@param Options number
@@ -38,22 +43,32 @@ function RageUI.GoUp(Options)
 		if RageUI.CurrentMenu() then
 			if Options ~= 0 then
 				if Options > RageUI.CurrentMenu.Pagination.Total then
-					if RageUI.CurrentMenu.Index <= RageUI.CurrentMenu.Pagination.Minimum then
+					if
+						RageUI.CurrentMenu.Index
+						<= RageUI.CurrentMenu.Pagination.Minimum
+					then
 						if RageUI.CurrentMenu.Index == 1 then
-							RageUI.CurrentMenu.Pagination.Minimum = Options - (RageUI.CurrentMenu.Pagination.Total - 1)
+							RageUI.CurrentMenu.Pagination.Minimum = Options
+								- (RageUI.CurrentMenu.Pagination.Total - 1)
 							RageUI.CurrentMenu.Pagination.Maximum = Options
 							RageUI.CurrentMenu.Index = Options
 						else
-							RageUI.CurrentMenu.Pagination.Minimum = (RageUI.CurrentMenu.Pagination.Minimum - 1)
-							RageUI.CurrentMenu.Pagination.Maximum = (RageUI.CurrentMenu.Pagination.Maximum - 1)
-							RageUI.CurrentMenu.Index = RageUI.CurrentMenu.Index - 1
+							RageUI.CurrentMenu.Pagination.Minimum = (
+								RageUI.CurrentMenu.Pagination.Minimum - 1
+							)
+							RageUI.CurrentMenu.Pagination.Maximum = (
+								RageUI.CurrentMenu.Pagination.Maximum - 1
+							)
+							RageUI.CurrentMenu.Index = RageUI.CurrentMenu.Index
+								- 1
 						end
 					else
 						RageUI.CurrentMenu.Index = RageUI.CurrentMenu.Index - 1
 					end
 				else
 					if RageUI.CurrentMenu.Index == 1 then
-						RageUI.CurrentMenu.Pagination.Minimum = Options - (RageUI.CurrentMenu.Pagination.Total - 1)
+						RageUI.CurrentMenu.Pagination.Minimum = Options
+							- (RageUI.CurrentMenu.Pagination.Total - 1)
 						RageUI.CurrentMenu.Pagination.Maximum = Options
 						RageUI.CurrentMenu.Index = Options
 					else
@@ -62,14 +77,20 @@ function RageUI.GoUp(Options)
 				end
 
 				local Audio = RageUI.Settings.Audio
-				RageUI.PlaySound(Audio[Audio.Use].UpDown.audioName, Audio[Audio.Use].UpDown.audioRef)
+				RageUI.PlaySound(
+					Audio[Audio.Use].UpDown.audioName,
+					Audio[Audio.Use].UpDown.audioRef
+				)
 				RageUI.LastControl = true
 				if RageUI.CurrentMenu.onIndexChange ~= nil then
 					RageUI.CurrentMenu.onIndexChange(RageUI.CurrentMenu.Index)
 				end
 			else
 				local Audio = RageUI.Settings.Audio
-				RageUI.PlaySound(Audio[Audio.Use].Error.audioName, Audio[Audio.Use].Error.audioRef)
+				RageUI.PlaySound(
+					Audio[Audio.Use].Error.audioName,
+					Audio[Audio.Use].Error.audioRef
+				)
 			end
 		end
 	end
@@ -85,15 +106,23 @@ function RageUI.GoDown(Options)
 		if RageUI.CurrentMenu() then
 			if Options ~= 0 then
 				if Options > RageUI.CurrentMenu.Pagination.Total then
-					if RageUI.CurrentMenu.Index >= RageUI.CurrentMenu.Pagination.Maximum then
+					if
+						RageUI.CurrentMenu.Index
+						>= RageUI.CurrentMenu.Pagination.Maximum
+					then
 						if RageUI.CurrentMenu.Index == Options then
 							RageUI.CurrentMenu.Pagination.Minimum = 1
-							RageUI.CurrentMenu.Pagination.Maximum = RageUI.CurrentMenu.Pagination.Total
+							RageUI.CurrentMenu.Pagination.Maximum =
+								RageUI.CurrentMenu.Pagination.Total
 							RageUI.CurrentMenu.Index = 1
 						else
-							RageUI.CurrentMenu.Pagination.Maximum = (RageUI.CurrentMenu.Pagination.Maximum + 1)
-							RageUI.CurrentMenu.Pagination.Minimum = RageUI.CurrentMenu.Pagination.Maximum - (RageUI.CurrentMenu.Pagination.Total - 1)
-							RageUI.CurrentMenu.Index = RageUI.CurrentMenu.Index + 1
+							RageUI.CurrentMenu.Pagination.Maximum = (
+								RageUI.CurrentMenu.Pagination.Maximum + 1
+							)
+							RageUI.CurrentMenu.Pagination.Minimum = RageUI.CurrentMenu.Pagination.Maximum
+								- (RageUI.CurrentMenu.Pagination.Total - 1)
+							RageUI.CurrentMenu.Index = RageUI.CurrentMenu.Index
+								+ 1
 						end
 					else
 						RageUI.CurrentMenu.Index = RageUI.CurrentMenu.Index + 1
@@ -101,21 +130,28 @@ function RageUI.GoDown(Options)
 				else
 					if RageUI.CurrentMenu.Index == Options then
 						RageUI.CurrentMenu.Pagination.Minimum = 1
-						RageUI.CurrentMenu.Pagination.Maximum = RageUI.CurrentMenu.Pagination.Total
+						RageUI.CurrentMenu.Pagination.Maximum =
+							RageUI.CurrentMenu.Pagination.Total
 						RageUI.CurrentMenu.Index = 1
 					else
 						RageUI.CurrentMenu.Index = RageUI.CurrentMenu.Index + 1
 					end
 				end
 				local Audio = RageUI.Settings.Audio
-				RageUI.PlaySound(Audio[Audio.Use].UpDown.audioName, Audio[Audio.Use].UpDown.audioRef)
+				RageUI.PlaySound(
+					Audio[Audio.Use].UpDown.audioName,
+					Audio[Audio.Use].UpDown.audioRef
+				)
 				RageUI.LastControl = false
 				if RageUI.CurrentMenu.onIndexChange ~= nil then
 					RageUI.CurrentMenu.onIndexChange(RageUI.CurrentMenu.Index)
 				end
 			else
 				local Audio = RageUI.Settings.Audio
-				RageUI.PlaySound(Audio[Audio.Use].Error.audioName, Audio[Audio.Use].Error.audioRef)
+				RageUI.PlaySound(
+					Audio[Audio.Use].Error.audioName,
+					Audio[Audio.Use].Error.audioRef
+				)
 			end
 		end
 	end
@@ -125,7 +161,12 @@ function RageUI.GoLeft(Controls)
 	if Controls.Left.Enabled then
 		for Index = 1, #Controls.Left.Keys do
 			if not Controls.Left.Pressed then
-				if IsDisabledControlJustPressed(Controls.Left.Keys[Index][1], Controls.Left.Keys[Index][2]) then
+				if
+					IsDisabledControlJustPressed(
+						Controls.Left.Keys[Index][1],
+						Controls.Left.Keys[Index][2]
+					)
+				then
 					Controls.Left.Pressed = true
 
 					Citizen.CreateThread(function()
@@ -137,7 +178,13 @@ function RageUI.GoLeft(Controls)
 
 						Citizen.Wait(174.99)
 
-						while Controls.Left.Enabled and IsDisabledControlPressed(Controls.Left.Keys[Index][1], Controls.Left.Keys[Index][2]) do
+						while
+							Controls.Left.Enabled
+							and IsDisabledControlPressed(
+								Controls.Left.Keys[Index][1],
+								Controls.Left.Keys[Index][2]
+							)
+						do
 							Controls.Left.Active = true
 
 							Citizen.Wait(0.01)
@@ -162,7 +209,12 @@ function RageUI.GoRight(Controls)
 	if Controls.Right.Enabled then
 		for Index = 1, #Controls.Right.Keys do
 			if not Controls.Right.Pressed then
-				if IsDisabledControlJustPressed(Controls.Right.Keys[Index][1], Controls.Right.Keys[Index][2]) then
+				if
+					IsDisabledControlJustPressed(
+						Controls.Right.Keys[Index][1],
+						Controls.Right.Keys[Index][2]
+					)
+				then
 					Controls.Right.Pressed = true
 
 					Citizen.CreateThread(function()
@@ -174,7 +226,13 @@ function RageUI.GoRight(Controls)
 
 						Citizen.Wait(174.99)
 
-						while Controls.Right.Enabled and IsDisabledControlPressed(Controls.Right.Keys[Index][1], Controls.Right.Keys[Index][2]) do
+						while
+							Controls.Right.Enabled
+							and IsDisabledControlPressed(
+								Controls.Right.Keys[Index][1],
+								Controls.Right.Keys[Index][2]
+							)
+						do
 							Controls.Right.Active = true
 
 							Citizen.Wait(1)
@@ -199,13 +257,24 @@ function RageUI.GoSliderLeft(Controls)
 	if Controls.SliderLeft.Enabled then
 		for Index = 1, #Controls.SliderLeft.Keys do
 			if not Controls.SliderLeft.Pressed then
-				if IsDisabledControlJustPressed(Controls.SliderLeft.Keys[Index][1], Controls.SliderLeft.Keys[Index][2]) then
+				if
+					IsDisabledControlJustPressed(
+						Controls.SliderLeft.Keys[Index][1],
+						Controls.SliderLeft.Keys[Index][2]
+					)
+				then
 					Controls.SliderLeft.Pressed = true
 					Citizen.CreateThread(function()
 						Controls.SliderLeft.Active = true
 						Citizen.Wait(1)
 						Controls.SliderLeft.Active = false
-						while Controls.SliderLeft.Enabled and IsDisabledControlPressed(Controls.SliderLeft.Keys[Index][1], Controls.SliderLeft.Keys[Index][2]) do
+						while
+							Controls.SliderLeft.Enabled
+							and IsDisabledControlPressed(
+								Controls.SliderLeft.Keys[Index][1],
+								Controls.SliderLeft.Keys[Index][2]
+							)
+						do
 							Controls.SliderLeft.Active = true
 							Citizen.Wait(1)
 							Controls.SliderLeft.Active = false
@@ -223,13 +292,24 @@ function RageUI.GoSliderRight(Controls)
 	if Controls.SliderRight.Enabled then
 		for Index = 1, #Controls.SliderRight.Keys do
 			if not Controls.SliderRight.Pressed then
-				if IsDisabledControlJustPressed(Controls.SliderRight.Keys[Index][1], Controls.SliderRight.Keys[Index][2]) then
+				if
+					IsDisabledControlJustPressed(
+						Controls.SliderRight.Keys[Index][1],
+						Controls.SliderRight.Keys[Index][2]
+					)
+				then
 					Controls.SliderRight.Pressed = true
 					Citizen.CreateThread(function()
 						Controls.SliderRight.Active = true
 						Citizen.Wait(1)
 						Controls.SliderRight.Active = false
-						while Controls.SliderRight.Enabled and IsDisabledControlPressed(Controls.SliderRight.Keys[Index][1], Controls.SliderRight.Keys[Index][2]) do
+						while
+							Controls.SliderRight.Enabled
+							and IsDisabledControlPressed(
+								Controls.SliderRight.Keys[Index][1],
+								Controls.SliderRight.Keys[Index][2]
+							)
+						do
 							Controls.SliderRight.Active = true
 							Citizen.Wait(1)
 							Controls.SliderRight.Active = false
@@ -260,18 +340,31 @@ function RageUI.Controls()
 
 				if not IsInputDisabled(2) then
 					for Index = 1, #Controls.Enabled.Controller do
-						EnableControlAction(Controls.Enabled.Controller[Index][1], Controls.Enabled.Controller[Index][2], true)
+						EnableControlAction(
+							Controls.Enabled.Controller[Index][1],
+							Controls.Enabled.Controller[Index][2],
+							true
+						)
 					end
 				else
 					for Index = 1, #Controls.Enabled.Keyboard do
-						EnableControlAction(Controls.Enabled.Keyboard[Index][1], Controls.Enabled.Keyboard[Index][2], true)
+						EnableControlAction(
+							Controls.Enabled.Keyboard[Index][1],
+							Controls.Enabled.Keyboard[Index][2],
+							true
+						)
 					end
 				end
 
 				if Controls.Up.Enabled then
 					for Index = 1, #Controls.Up.Keys do
 						if not Controls.Up.Pressed then
-							if IsDisabledControlJustPressed(Controls.Up.Keys[Index][1], Controls.Up.Keys[Index][2]) then
+							if
+								IsDisabledControlJustPressed(
+									Controls.Up.Keys[Index][1],
+									Controls.Up.Keys[Index][2]
+								)
+							then
 								Controls.Up.Pressed = true
 
 								Citizen.CreateThread(function()
@@ -279,7 +372,13 @@ function RageUI.Controls()
 
 									Citizen.Wait(175)
 
-									while Controls.Up.Enabled and IsDisabledControlPressed(Controls.Up.Keys[Index][1], Controls.Up.Keys[Index][2]) do
+									while
+										Controls.Up.Enabled
+										and IsDisabledControlPressed(
+											Controls.Up.Keys[Index][1],
+											Controls.Up.Keys[Index][2]
+										)
+									do
 										RageUI.GoUp(Options)
 
 										Citizen.Wait(50)
@@ -297,7 +396,12 @@ function RageUI.Controls()
 				if Controls.Down.Enabled then
 					for Index = 1, #Controls.Down.Keys do
 						if not Controls.Down.Pressed then
-							if IsDisabledControlJustPressed(Controls.Down.Keys[Index][1], Controls.Down.Keys[Index][2]) then
+							if
+								IsDisabledControlJustPressed(
+									Controls.Down.Keys[Index][1],
+									Controls.Down.Keys[Index][2]
+								)
+							then
 								Controls.Down.Pressed = true
 
 								Citizen.CreateThread(function()
@@ -305,7 +409,13 @@ function RageUI.Controls()
 
 									Citizen.Wait(175)
 
-									while Controls.Down.Enabled and IsDisabledControlPressed(Controls.Down.Keys[Index][1], Controls.Down.Keys[Index][2]) do
+									while
+										Controls.Down.Enabled
+										and IsDisabledControlPressed(
+											Controls.Down.Keys[Index][1],
+											Controls.Down.Keys[Index][2]
+										)
+									do
 										RageUI.GoDown(Options)
 
 										Citizen.Wait(50)
@@ -330,7 +440,12 @@ function RageUI.Controls()
 				if Controls.Select.Enabled then
 					for Index = 1, #Controls.Select.Keys do
 						if not Controls.Select.Pressed then
-							if IsDisabledControlJustPressed(Controls.Select.Keys[Index][1], Controls.Select.Keys[Index][2]) then
+							if
+								IsDisabledControlJustPressed(
+									Controls.Select.Keys[Index][1],
+									Controls.Select.Keys[Index][2]
+								)
+							then
 								Controls.Select.Pressed = true
 
 								Citizen.CreateThread(function()
@@ -342,7 +457,13 @@ function RageUI.Controls()
 
 									Citizen.Wait(174.99)
 
-									while Controls.Select.Enabled and IsDisabledControlPressed(Controls.Select.Keys[Index][1], Controls.Select.Keys[Index][2]) do
+									while
+										Controls.Select.Enabled
+										and IsDisabledControlPressed(
+											Controls.Select.Keys[Index][1],
+											Controls.Select.Keys[Index][2]
+										)
+									do
 										Controls.Select.Active = true
 
 										Citizen.Wait(0.01)
@@ -364,7 +485,12 @@ function RageUI.Controls()
 				if Controls.Click.Enabled then
 					for Index = 1, #Controls.Click.Keys do
 						if not Controls.Click.Pressed then
-							if IsDisabledControlJustPressed(Controls.Click.Keys[Index][1], Controls.Click.Keys[Index][2]) then
+							if
+								IsDisabledControlJustPressed(
+									Controls.Click.Keys[Index][1],
+									Controls.Click.Keys[Index][2]
+								)
+							then
 								Controls.Click.Pressed = true
 
 								Citizen.CreateThread(function()
@@ -376,7 +502,13 @@ function RageUI.Controls()
 
 									Citizen.Wait(174.99)
 
-									while Controls.Click.Enabled and IsDisabledControlPressed(Controls.Click.Keys[Index][1], Controls.Click.Keys[Index][2]) do
+									while
+										Controls.Click.Enabled
+										and IsDisabledControlPressed(
+											Controls.Click.Keys[Index][1],
+											Controls.Click.Keys[Index][2]
+										)
+									do
 										Controls.Click.Active = true
 
 										Citizen.Wait(0.01)
@@ -397,7 +529,12 @@ function RageUI.Controls()
 				if Controls.Back.Enabled then
 					for Index = 1, #Controls.Back.Keys do
 						if not Controls.Back.Pressed then
-							if IsDisabledControlJustPressed(Controls.Back.Keys[Index][1], Controls.Back.Keys[Index][2]) then
+							if
+								IsDisabledControlJustPressed(
+									Controls.Back.Keys[Index][1],
+									Controls.Back.Keys[Index][2]
+								)
+							then
 								Controls.Back.Pressed = true
 								Wait(10)
 								break
@@ -430,7 +567,8 @@ function RageUI.Navigation()
 					RageUI.CurrentMenu.SafeZoneSize = { X = 0, Y = 0 }
 
 					if RageUI.CurrentMenu.Safezone then
-						RageUI.CurrentMenu.SafeZoneSize = RageUI.GetSafeZoneBounds()
+						RageUI.CurrentMenu.SafeZoneSize =
+							RageUI.GetSafeZoneBounds()
 
 						SetScriptGfxAlign(76, 84)
 						SetScriptGfxAlignParams(0, 0, 0, 0)
@@ -439,14 +577,23 @@ function RageUI.Navigation()
 
 				UpHovered = RageUI.IsMouseInBounds(
 					RageUI.CurrentMenu.X + RageUI.CurrentMenu.SafeZoneSize.X,
-					RageUI.CurrentMenu.Y + RageUI.CurrentMenu.SafeZoneSize.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-					RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset,
+					RageUI.CurrentMenu.Y
+						+ RageUI.CurrentMenu.SafeZoneSize.Y
+						+ RageUI.CurrentMenu.SubtitleHeight
+						+ RageUI.ItemOffset,
+					RageUI.Settings.Items.Navigation.Rectangle.Width
+						+ RageUI.CurrentMenu.WidthOffset,
 					RageUI.Settings.Items.Navigation.Rectangle.Height
 				)
 				DownHovered = RageUI.IsMouseInBounds(
 					RageUI.CurrentMenu.X + RageUI.CurrentMenu.SafeZoneSize.X,
-					RageUI.CurrentMenu.Y + RageUI.Settings.Items.Navigation.Rectangle.Height + RageUI.CurrentMenu.SafeZoneSize.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-					RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset,
+					RageUI.CurrentMenu.Y
+						+ RageUI.Settings.Items.Navigation.Rectangle.Height
+						+ RageUI.CurrentMenu.SafeZoneSize.Y
+						+ RageUI.CurrentMenu.SubtitleHeight
+						+ RageUI.ItemOffset,
+					RageUI.Settings.Items.Navigation.Rectangle.Width
+						+ RageUI.CurrentMenu.WidthOffset,
 					RageUI.Settings.Items.Navigation.Rectangle.Height
 				)
 
@@ -460,16 +607,13 @@ function RageUI.Navigation()
 					end
 
 					if UpHovered then
-						RenderRectangle(RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset, RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset, RageUI.Settings.Items.Navigation.Rectangle.Height, 30, 30, 30, 255)
-					else
-						RenderRectangle(RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset, RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset, RageUI.Settings.Items.Navigation.Rectangle.Height, 0, 0, 0, 200)
-					end
-
-					if DownHovered then
 						RenderRectangle(
 							RageUI.CurrentMenu.X,
-							RageUI.CurrentMenu.Y + RageUI.Settings.Items.Navigation.Rectangle.Height + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-							RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset,
+							RageUI.CurrentMenu.Y
+								+ RageUI.CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							RageUI.Settings.Items.Navigation.Rectangle.Width
+								+ RageUI.CurrentMenu.WidthOffset,
 							RageUI.Settings.Items.Navigation.Rectangle.Height,
 							30,
 							30,
@@ -479,8 +623,43 @@ function RageUI.Navigation()
 					else
 						RenderRectangle(
 							RageUI.CurrentMenu.X,
-							RageUI.CurrentMenu.Y + RageUI.Settings.Items.Navigation.Rectangle.Height + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-							RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset,
+							RageUI.CurrentMenu.Y
+								+ RageUI.CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							RageUI.Settings.Items.Navigation.Rectangle.Width
+								+ RageUI.CurrentMenu.WidthOffset,
+							RageUI.Settings.Items.Navigation.Rectangle.Height,
+							0,
+							0,
+							0,
+							200
+						)
+					end
+
+					if DownHovered then
+						RenderRectangle(
+							RageUI.CurrentMenu.X,
+							RageUI.CurrentMenu.Y
+								+ RageUI.Settings.Items.Navigation.Rectangle.Height
+								+ RageUI.CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							RageUI.Settings.Items.Navigation.Rectangle.Width
+								+ RageUI.CurrentMenu.WidthOffset,
+							RageUI.Settings.Items.Navigation.Rectangle.Height,
+							30,
+							30,
+							30,
+							255
+						)
+					else
+						RenderRectangle(
+							RageUI.CurrentMenu.X,
+							RageUI.CurrentMenu.Y
+								+ RageUI.Settings.Items.Navigation.Rectangle.Height
+								+ RageUI.CurrentMenu.SubtitleHeight
+								+ RageUI.ItemOffset,
+							RageUI.Settings.Items.Navigation.Rectangle.Width
+								+ RageUI.CurrentMenu.WidthOffset,
 							RageUI.Settings.Items.Navigation.Rectangle.Height,
 							0,
 							0,
@@ -489,11 +668,27 @@ function RageUI.Navigation()
 						)
 					end
 				else
-					RenderRectangle(RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset, RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset, RageUI.Settings.Items.Navigation.Rectangle.Height, 0, 0, 0, 200)
 					RenderRectangle(
 						RageUI.CurrentMenu.X,
-						RageUI.CurrentMenu.Y + RageUI.Settings.Items.Navigation.Rectangle.Height + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-						RageUI.Settings.Items.Navigation.Rectangle.Width + RageUI.CurrentMenu.WidthOffset,
+						RageUI.CurrentMenu.Y
+							+ RageUI.CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
+						RageUI.Settings.Items.Navigation.Rectangle.Width
+							+ RageUI.CurrentMenu.WidthOffset,
+						RageUI.Settings.Items.Navigation.Rectangle.Height,
+						0,
+						0,
+						0,
+						200
+					)
+					RenderRectangle(
+						RageUI.CurrentMenu.X,
+						RageUI.CurrentMenu.Y
+							+ RageUI.Settings.Items.Navigation.Rectangle.Height
+							+ RageUI.CurrentMenu.SubtitleHeight
+							+ RageUI.ItemOffset,
+						RageUI.Settings.Items.Navigation.Rectangle.Width
+							+ RageUI.CurrentMenu.WidthOffset,
 						RageUI.Settings.Items.Navigation.Rectangle.Height,
 						0,
 						0,
@@ -504,13 +699,19 @@ function RageUI.Navigation()
 				RenderSprite(
 					RageUI.Settings.Items.Navigation.Arrows.Dictionary,
 					RageUI.Settings.Items.Navigation.Arrows.Texture,
-					RageUI.CurrentMenu.X + RageUI.Settings.Items.Navigation.Arrows.X + (RageUI.CurrentMenu.WidthOffset / 2),
-					RageUI.CurrentMenu.Y + RageUI.Settings.Items.Navigation.Arrows.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+					RageUI.CurrentMenu.X
+						+ RageUI.Settings.Items.Navigation.Arrows.X
+						+ (RageUI.CurrentMenu.WidthOffset / 2),
+					RageUI.CurrentMenu.Y
+						+ RageUI.Settings.Items.Navigation.Arrows.Y
+						+ RageUI.CurrentMenu.SubtitleHeight
+						+ RageUI.ItemOffset,
 					RageUI.Settings.Items.Navigation.Arrows.Width,
 					RageUI.Settings.Items.Navigation.Arrows.Height
 				)
 
-				RageUI.ItemOffset = RageUI.ItemOffset + (RageUI.Settings.Items.Navigation.Rectangle.Height * 2)
+				RageUI.ItemOffset = RageUI.ItemOffset
+					+ (RageUI.Settings.Items.Navigation.Rectangle.Height * 2)
 			end
 		end
 	end
@@ -522,7 +723,10 @@ end
 function RageUI.GoBack()
 	if RageUI.CurrentMenu ~= nil then
 		local Audio = RageUI.Settings.Audio
-		RageUI.PlaySound(Audio[Audio.Use].Back.audioName, Audio[Audio.Use].Back.audioRef)
+		RageUI.PlaySound(
+			Audio[Audio.Use].Back.audioName,
+			Audio[Audio.Use].Back.audioRef
+		)
 		if RageUI.CurrentMenu.Parent ~= nil then
 			if RageUI.CurrentMenu.Parent() then
 				RageUI.NextMenu = RageUI.CurrentMenu.Parent
