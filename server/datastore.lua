@@ -1,9 +1,5 @@
 _datastore = _datastore or {}
 
-local function sendDatasToStatebag()
-	GlobalState:set("epyi_administration:datastore", _datastore, true)
-end
-
 Citizen.CreateThread(function()
 	local response = MySQL.query.await("SELECT * FROM `epyi_administration`", {})
 
@@ -18,7 +14,6 @@ Citizen.CreateThread(function()
 				owner = row.owner or "server",
 			}
 		end
-		sendDatasToStatebag()
 	end
 end)
 
@@ -73,7 +68,6 @@ AddEventHandler("epyi_administration:saveData", function(type, data, owner)
 		data = json.encode(data),
 		owner = owner,
 	}
-	sendDatasToStatebag()
 end)
 
 AddEventHandler("epyi_administration:editData", function(id, type, date_unix, data, owner)
@@ -86,13 +80,12 @@ AddEventHandler("epyi_administration:editData", function(id, type, date_unix, da
 		data = data,
 		owner = owner,
 	}
-	sendDatasToStatebag()
 end)
 
 AddEventHandler("epyi_administration:deleteData", function(id)
 	if not _datastore[id] then
+		log("Attempt to delete a non-existent data, id: " .. id)
 		return
 	end
 	_datastore[id].type = "D_" .. _datastore[id].type
-	sendDatasToStatebag()
 end)
