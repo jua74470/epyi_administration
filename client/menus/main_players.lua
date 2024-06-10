@@ -33,11 +33,18 @@ function main_players_showContentThisFrame(playerGroup)
 			if Config.Groups[player.group] ~= nil then
 				group = Config.Groups[player.group].Color .. Config.Groups[player.group].Label
 			end
-			RageUI.ButtonWithStyle(player.name .. " - " .. player.ooc_name .. " ~s~[" .. group .. "~s~] - ID: " .. player.source, _U("main_players_desc", player.ooc_name .. " ~s~[" .. group .. "~s~] - ID: " .. player.source), { RightLabel = "→" }, Config.Groups[playerGroup].Access["submenu_players_interact"] and (Config.Groups[playerGroup].Access["submenu_players_interact_highergroup"] and true or targetisLower), function(_h, _a, Selected)
-				if Selected then
-					_var.players.selected = player
-				end
-			end, _var.menus.admin.objects.mainPlayersInteract)
+			RageUI.ButtonWithStyle(
+				player.name .. " - " .. player.ooc_name .. " ~s~[" .. group .. "~s~] - ID: " .. player.source,
+				_U("main_players_desc", player.ooc_name .. " ~s~[" .. group .. "~s~] - ID: " .. player.source),
+				{ RightLabel = "→" },
+				Config.Groups[playerGroup].Access["submenu_players_interact"] and (Config.Groups[playerGroup].Access["submenu_players_interact_highergroup"] and true or targetisLower),
+				function(_h, _a, Selected)
+					if Selected then
+						_var.players.selected = player
+					end
+				end,
+				_var.menus.admin.objects.mainPlayersInteract
+			)
 		end
 	end
 	if count == 0 then

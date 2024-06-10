@@ -179,17 +179,7 @@ _threads.shownames.enable = function()
 				local dist = #(selfPedCoords - targetPedCoords)
 				if dist < 400.0 then
 					local targetState = Player(GetPlayerServerId(v)).state
-					DrawText3Ds(
-						targetPedCoords.x,
-						targetPedCoords.y,
-						targetPedCoords.z + 1.2,
-						("[ID: ~r~#%s~s~] \nHRP NAME: ~r~%s~s~\nRP NAME: ~r~%s"):format(
-							GetPlayerServerId(v),
-							string.upper(GetPlayerName(v)),
-							targetState["name"]
-						),
-						0.8
-					)
+					DrawText3Ds(targetPedCoords.x, targetPedCoords.y, targetPedCoords.z + 1.2, ("[ID: ~r~#%s~s~] \nHRP NAME: ~r~%s~s~\nRP NAME: ~r~%s"):format(GetPlayerServerId(v), string.upper(GetPlayerName(v)), targetState["name"]), 0.8)
 				else
 					RemoveMpGamerTag(_threads.shownames.showed[v])
 					_threads.shownames.showed[v] = nil
@@ -214,10 +204,7 @@ _threads.vehicleboost.boostValue = nil
 _threads.vehicleboost.isActivated = false
 _threads.vehicleboost.enable = function(pedVehicle, value)
 	Citizen.CreateThread(function()
-		if
-			pedVehicle ~= _threads.vehicleboost.boostedVehicle
-			or value ~= _threads.vehicleboost.boostValue
-		then
+		if pedVehicle ~= _threads.vehicleboost.boostedVehicle or value ~= _threads.vehicleboost.boostValue then
 			_threads.vehicleboost.disable()
 		end
 		if _threads.vehicleboost.isActivated then
@@ -272,58 +259,32 @@ _threads.noclip.enable = function()
 			local zOffset = 0.0
 			setInstructionnalButtons({
 				{
-					GetControlInstructionalButton(
-						1,
-						_var.keys[Config.Keys.NoClip.forward],
-						0
-					),
+					GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.forward], 0),
 					_U("noclip_go_forward"),
 				},
 				{
-					GetControlInstructionalButton(
-						1,
-						_var.keys[Config.Keys.NoClip.backward],
-						0
-					),
+					GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.backward], 0),
 					_U("noclip_go_backward"),
 				},
 				{
-					GetControlInstructionalButton(
-						1,
-						_var.keys[Config.Keys.NoClip.left],
-						0
-					),
+					GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.left], 0),
 					_U("noclip_go_left"),
 				},
 				{
-					GetControlInstructionalButton(
-						1,
-						_var.keys[Config.Keys.NoClip.right],
-						0
-					),
+					GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.right], 0),
 					_U("noclip_go_right"),
 				},
 				{
-					GetControlInstructionalButton(
-						1,
-						_var.keys[Config.Keys.NoClip.up],
-						0
-					),
+					GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.up], 0),
 					_U("noclip_go_up"),
 				},
 				{
-					GetControlInstructionalButton(
-						1,
-						_var.keys[Config.Keys.NoClip.down],
-						0
-					),
+					GetControlInstructionalButton(1, _var.keys[Config.Keys.NoClip.down], 0),
 					_U("noclip_go_down"),
 				},
 				{
 					261,
-					"Changer vitesse (Actuelle: x"
-						.. round(_var.noclip.currentSpeed, 1)
-						.. ")",
+					"Changer vitesse (Actuelle: x" .. round(_var.noclip.currentSpeed, 1) .. ")",
 				},
 			}, 0)
 			drawInstructionnalButtons()
@@ -351,46 +312,22 @@ _threads.noclip.enable = function()
 			EnableControlAction(0, 249, true) -- PUSH TO TALK
 			EnableControlAction(0, 23, true)
 			EnableControlAction(0, 200, true)
-			if
-				IsDisabledControlPressed(
-					0,
-					_var.keys[Config.Keys.NoClip.forward]
-				)
-			then
+			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.forward]) then
 				yOffset = _var.noclip.offsets.y
 			end
-			if
-				IsDisabledControlPressed(
-					0,
-					_var.keys[Config.Keys.NoClip.backward]
-				)
-			then
+			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.backward]) then
 				yOffset = -_var.noclip.offsets.y
 			end
-			if
-				IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.left])
-			then
-				SetEntityHeading(
-					ped,
-					GetEntityHeading(ped) + _var.noclip.offsets.h
-				)
+			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.left]) then
+				SetEntityHeading(ped, GetEntityHeading(ped) + _var.noclip.offsets.h)
 			end
-			if
-				IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.right])
-			then
-				SetEntityHeading(
-					ped,
-					GetEntityHeading(ped) - _var.noclip.offsets.h
-				)
+			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.right]) then
+				SetEntityHeading(ped, GetEntityHeading(ped) - _var.noclip.offsets.h)
 			end
-			if
-				IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.up])
-			then
+			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.up]) then
 				zOffset = _var.noclip.offsets.z
 			end
-			if
-				IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.down])
-			then
+			if IsDisabledControlPressed(0, _var.keys[Config.Keys.NoClip.down]) then
 				zOffset = -_var.noclip.offsets.z
 			end
 			if IsDisabledControlPressed(0, 261) then
@@ -404,27 +341,11 @@ _threads.noclip.enable = function()
 					_var.noclip.currentSpeed = _var.noclip.currentSpeed / 1.2
 				end
 			end
-			local newPos = GetOffsetFromEntityInWorldCoords(
-				_var.noclip.entity,
-				0.0,
-				yOffset * (_var.noclip.currentSpeed + 0.3),
-				zOffset * (_var.noclip.currentSpeed + 0.3)
-			)
+			local newPos = GetOffsetFromEntityInWorldCoords(_var.noclip.entity, 0.0, yOffset * (_var.noclip.currentSpeed + 0.3), zOffset * (_var.noclip.currentSpeed + 0.3))
 			SetEntityVelocity(_var.noclip.entity, 0.0, 0.0, 0.0)
 			SetEntityRotation(_var.noclip.entity, 0.0, 0.0, 0.0, 0, false)
-			SetEntityHeading(
-				_var.noclip.entity,
-				GetGameplayCamRelativeHeading()
-			)
-			SetEntityCoordsNoOffset(
-				_var.noclip.entity,
-				newPos.x,
-				newPos.y,
-				newPos.z,
-				true,
-				true,
-				true
-			)
+			SetEntityHeading(_var.noclip.entity, GetGameplayCamRelativeHeading())
+			SetEntityCoordsNoOffset(_var.noclip.entity, newPos.x, newPos.y, newPos.z, true, true, true)
 			SetEntityVisible(ped, false, 0)
 			SetLocalPlayerVisibleLocally(true)
 			Citizen.Wait(0)

@@ -57,10 +57,7 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 			---@type number
 			local Option = RageUI.Options + 1
 
-			if
-				CurrentMenu.Pagination.Minimum <= Option
-				and CurrentMenu.Pagination.Maximum >= Option
-			then
+			if CurrentMenu.Pagination.Minimum <= Option and CurrentMenu.Pagination.Maximum >= Option then
 				---@type number
 				local value = Value or 0.1
 				local Selected = CurrentMenu.Index == Option
@@ -74,17 +71,8 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 				local RightOffset = 0
 
 				---@type boolean
-				if
-					CurrentMenu.EnableMouse == true
-						and (CurrentMenu.CursorStyle == 0)
-					or (CurrentMenu.CursorStyle == 1)
-				then
-					Hovered = RageUI.ItemsMouseBounds(
-						CurrentMenu,
-						Selected,
-						Option,
-						SettingsButton
-					)
+				if CurrentMenu.EnableMouse == true and (CurrentMenu.CursorStyle == 0) or (CurrentMenu.CursorStyle == 1) then
+					Hovered = RageUI.ItemsMouseBounds(CurrentMenu, Selected, Option, SettingsButton)
 				end
 
 				if Selected then
@@ -92,37 +80,19 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 						SettingsButton.SelectedSprite.Dictionary,
 						SettingsButton.SelectedSprite.Texture,
 						CurrentMenu.X,
-						CurrentMenu.Y
-							+ SettingsButton.SelectedSprite.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
-						SettingsButton.SelectedSprite.Width
-							+ CurrentMenu.WidthOffset,
+						CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
 						SettingsButton.SelectedSprite.Height
 					)
 					LeftArrowHovered = RageUI.IsMouseInBounds(
-						CurrentMenu.X
-							+ SettingsSlider.LeftArrow.X
-							+ CurrentMenu.SafeZoneSize.X
-							+ CurrentMenu.WidthOffset,
-						CurrentMenu.Y
-							+ SettingsSlider.LeftArrow.Y
-							+ CurrentMenu.SafeZoneSize.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
+						CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.SafeZoneSize.X + CurrentMenu.WidthOffset,
+						CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
 						SettingsSlider.LeftArrow.Width,
 						SettingsSlider.LeftArrow.Height
 					)
 					RightArrowHovered = RageUI.IsMouseInBounds(
-						CurrentMenu.X
-							+ SettingsSlider.RightArrow.X
-							+ CurrentMenu.SafeZoneSize.X
-							+ CurrentMenu.WidthOffset,
-						CurrentMenu.Y
-							+ SettingsSlider.RightArrow.Y
-							+ CurrentMenu.SafeZoneSize.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
+						CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.SafeZoneSize.X + CurrentMenu.WidthOffset,
+						CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
 						SettingsSlider.RightArrow.Width,
 						SettingsSlider.RightArrow.Height
 					)
@@ -131,32 +101,13 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 				RightOffset = RightOffset
 
 				if Selected then
-					RenderText(
-						Label,
-						CurrentMenu.X + SettingsButton.Text.X,
-						CurrentMenu.Y
-							+ SettingsButton.Text.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
-						0,
-						SettingsButton.Text.Scale,
-						0,
-						0,
-						0,
-						255
-					)
+					RenderText(Label, CurrentMenu.X + SettingsButton.Text.X, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 0, 0, 0, 255)
 
 					RenderSprite(
 						SettingsSlider.LeftArrow.Dictionary,
 						SettingsSlider.LeftArrow.Texture,
-						CurrentMenu.X
-							+ SettingsSlider.LeftArrow.X
-							+ CurrentMenu.WidthOffset
-							- RightOffset,
-						CurrentMenu.Y
-							+ SettingsSlider.LeftArrow.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
+						CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.WidthOffset - RightOffset,
+						CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
 						SettingsSlider.LeftArrow.Width,
 						SettingsSlider.LeftArrow.Height,
 						0,
@@ -168,14 +119,8 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 					RenderSprite(
 						SettingsSlider.RightArrow.Dictionary,
 						SettingsSlider.RightArrow.Texture,
-						CurrentMenu.X
-							+ SettingsSlider.RightArrow.X
-							+ CurrentMenu.WidthOffset
-							- RightOffset,
-						CurrentMenu.Y
-							+ SettingsSlider.RightArrow.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
+						CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.WidthOffset - RightOffset,
+						CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
 						SettingsSlider.RightArrow.Width,
 						SettingsSlider.RightArrow.Height,
 						0,
@@ -185,32 +130,13 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 						255
 					)
 				else
-					RenderText(
-						Label,
-						CurrentMenu.X + SettingsButton.Text.X,
-						CurrentMenu.Y
-							+ SettingsButton.Text.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
-						0,
-						SettingsButton.Text.Scale,
-						245,
-						245,
-						245,
-						255
-					)
+					RenderText(Label, CurrentMenu.X + SettingsButton.Text.X, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 245, 245, 245, 255)
 
 					RenderSprite(
 						SettingsSlider.LeftArrow.Dictionary,
 						SettingsSlider.LeftArrow.Texture,
-						CurrentMenu.X
-							+ SettingsSlider.LeftArrow.X
-							+ CurrentMenu.WidthOffset
-							- RightOffset,
-						CurrentMenu.Y
-							+ SettingsSlider.LeftArrow.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
+						CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.WidthOffset - RightOffset,
+						CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
 						SettingsSlider.LeftArrow.Width,
 						SettingsSlider.LeftArrow.Height,
 						0,
@@ -222,14 +148,8 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 					RenderSprite(
 						SettingsSlider.RightArrow.Dictionary,
 						SettingsSlider.RightArrow.Texture,
-						CurrentMenu.X
-							+ SettingsSlider.RightArrow.X
-							+ CurrentMenu.WidthOffset
-							- RightOffset,
-						CurrentMenu.Y
-							+ SettingsSlider.RightArrow.Y
-							+ CurrentMenu.SubtitleHeight
-							+ RageUI.ItemOffset,
+						CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.WidthOffset - RightOffset,
+						CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
 						SettingsSlider.RightArrow.Width,
 						SettingsSlider.RightArrow.Height,
 						0,
@@ -240,32 +160,10 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 					)
 				end
 
+				RenderRectangle(CurrentMenu.X + SettingsSlider.Background.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Background.Width, SettingsSlider.Background.Height, 4, 32, 57, 255)
 				RenderRectangle(
-					CurrentMenu.X
-						+ SettingsSlider.Background.X
-						+ CurrentMenu.WidthOffset
-						- RightOffset,
-					CurrentMenu.Y
-						+ SettingsSlider.Background.Y
-						+ CurrentMenu.SubtitleHeight
-						+ RageUI.ItemOffset,
-					SettingsSlider.Background.Width,
-					SettingsSlider.Background.Height,
-					4,
-					32,
-					57,
-					255
-				)
-				RenderRectangle(
-					CurrentMenu.X
-						+ SettingsSlider.Slider.X
-						+ (((SettingsSlider.Background.Width - SettingsSlider.Slider.Width) / #Items) * ItemIndex)
-						+ CurrentMenu.WidthOffset
-						- RightOffset,
-					CurrentMenu.Y
-						+ SettingsSlider.Slider.Y
-						+ CurrentMenu.SubtitleHeight
-						+ RageUI.ItemOffset,
+					CurrentMenu.X + SettingsSlider.Slider.X + (((SettingsSlider.Background.Width - SettingsSlider.Slider.Width) / #Items) * ItemIndex) + CurrentMenu.WidthOffset - RightOffset,
+					CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
 					SettingsSlider.Slider.Width,
 					SettingsSlider.Slider.Height,
 					57,
@@ -274,106 +172,33 @@ function RageUI.UISliderHeritage(Label, ItemIndex, Description, Callback, Value)
 					255
 				)
 
-				RenderRectangle(
-					CurrentMenu.X
-						+ SettingsSlider.Divider.X
-						+ CurrentMenu.WidthOffset,
-					CurrentMenu.Y
-						+ SettingsSlider.Divider.Y
-						+ CurrentMenu.SubtitleHeight
-						+ RageUI.ItemOffset,
-					SettingsSlider.Divider.Width,
-					SettingsSlider.Divider.Height,
-					245,
-					245,
-					245,
-					255
-				)
+				RenderRectangle(CurrentMenu.X + SettingsSlider.Divider.X + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsSlider.Divider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Divider.Width, SettingsSlider.Divider.Height, 245, 245, 245, 255)
 
-				RageUI.ItemOffset = RageUI.ItemOffset
-					+ SettingsButton.Rectangle.Height
+				RageUI.ItemOffset = RageUI.ItemOffset + SettingsButton.Rectangle.Height
 
 				RageUI.ItemsDescription(CurrentMenu, Description, Selected)
 
-				if
-					Selected
-					and (CurrentMenu.Controls.SliderLeft.Active or (CurrentMenu.Controls.Click.Active and LeftArrowHovered))
-					and not (
-						CurrentMenu.Controls.SliderRight.Active
-						or (
-							CurrentMenu.Controls.Click.Active
-							and RightArrowHovered
-						)
-					)
-				then
+				if Selected and (CurrentMenu.Controls.SliderLeft.Active or (CurrentMenu.Controls.Click.Active and LeftArrowHovered)) and not (CurrentMenu.Controls.SliderRight.Active or (CurrentMenu.Controls.Click.Active and RightArrowHovered)) then
 					ItemIndex = ItemIndex - value
 					if ItemIndex < 0.1 then
 						ItemIndex = 0.0
 					else
-						RageUI.PlaySound(
-							Audio[Audio.Use].Slider.audioName,
-							Audio[Audio.Use].Slider.audioRef,
-							true
-						)
+						RageUI.PlaySound(Audio[Audio.Use].Slider.audioName, Audio[Audio.Use].Slider.audioRef, true)
 					end
-				elseif
-					Selected
-					and (CurrentMenu.Controls.SliderRight.Active or (CurrentMenu.Controls.Click.Active and RightArrowHovered))
-					and not (
-						CurrentMenu.Controls.SliderLeft.Active
-						or (
-							CurrentMenu.Controls.Click.Active
-							and LeftArrowHovered
-						)
-					)
-				then
+				elseif Selected and (CurrentMenu.Controls.SliderRight.Active or (CurrentMenu.Controls.Click.Active and RightArrowHovered)) and not (CurrentMenu.Controls.SliderLeft.Active or (CurrentMenu.Controls.Click.Active and LeftArrowHovered)) then
 					ItemIndex = ItemIndex + value
 					if ItemIndex > #Items then
 						ItemIndex = 10
 					else
-						RageUI.PlaySound(
-							Audio[Audio.Use].Slider.audioName,
-							Audio[Audio.Use].Slider.audioRef,
-							true
-						)
+						RageUI.PlaySound(Audio[Audio.Use].Slider.audioName, Audio[Audio.Use].Slider.audioRef, true)
 					end
 				end
 
-				if
-					Selected
-					and (
-						CurrentMenu.Controls.Select.Active
-						or (
-							(Hovered and CurrentMenu.Controls.Click.Active)
-							and (not LeftArrowHovered and not RightArrowHovered)
-						)
-					)
-				then
-					RageUI.PlaySound(
-						Audio[Audio.Use].Select.audioName,
-						Audio[Audio.Use].Select.audioRef,
-						false
-					)
+				if Selected and (CurrentMenu.Controls.Select.Active or ((Hovered and CurrentMenu.Controls.Click.Active) and (not LeftArrowHovered and not RightArrowHovered))) then
+					RageUI.PlaySound(Audio[Audio.Use].Select.audioName, Audio[Audio.Use].Select.audioRef, false)
 				end
 
-				Callback(
-					Hovered,
-					Selected,
-					(
-						(
-							CurrentMenu.Controls.Select.Active
-							or (
-								(Hovered and CurrentMenu.Controls.Click.Active)
-								and (
-									not LeftArrowHovered
-									and not RightArrowHovered
-								)
-							)
-						) and Selected
-					),
-					ItemIndex / 10,
-					ItemIndex
-				)
+				Callback(Hovered, Selected, ((CurrentMenu.Controls.Select.Active or ((Hovered and CurrentMenu.Controls.Click.Active) and (not LeftArrowHovered and not RightArrowHovered))) and Selected), ItemIndex / 10, ItemIndex)
 			end
 
 			RageUI.Options = RageUI.Options + 1

@@ -17,18 +17,7 @@
 ---@param A number
 ---@return table
 ---@public
-function RageUI.CreateMenu(
-	Title,
-	Subtitle,
-	X,
-	Y,
-	TextureDictionary,
-	TextureName,
-	R,
-	G,
-	B,
-	A
-)
+function RageUI.CreateMenu(Title, Subtitle, X, Y, TextureDictionary, TextureName, R, G, B, A)
 	---@type table
 	local Menu = {}
 	Menu.InstructionalButtons = {}
@@ -66,21 +55,8 @@ function RageUI.CreateMenu(
 	end
 
 	if Menu.Subtitle ~= "" then
-		local SubtitleLineCount = GetLineCount(
-			Menu.Subtitle,
-			Menu.X + RageUI.Settings.Items.Subtitle.Text.X,
-			Menu.Y + RageUI.Settings.Items.Subtitle.Text.Y,
-			0,
-			RageUI.Settings.Items.Subtitle.Text.Scale,
-			245,
-			245,
-			245,
-			255,
-			nil,
-			false,
-			false,
-			RageUI.Settings.Items.Subtitle.Background.Width + Menu.WidthOffset
-		)
+		local SubtitleLineCount =
+			GetLineCount(Menu.Subtitle, Menu.X + RageUI.Settings.Items.Subtitle.Text.X, Menu.Y + RageUI.Settings.Items.Subtitle.Text.Y, 0, RageUI.Settings.Items.Subtitle.Text.Scale, 245, 245, 245, 255, nil, false, false, RageUI.Settings.Items.Subtitle.Background.Width + Menu.WidthOffset)
 
 		if SubtitleLineCount > 1 then
 			Menu.SubtitleHeight = 18 * SubtitleLineCount
@@ -91,8 +67,7 @@ function RageUI.CreateMenu(
 
 	Citizen.CreateThread(function()
 		if not HasScaleformMovieLoaded(Menu.InstructionalScaleform) then
-			Menu.InstructionalScaleform =
-				RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
+			Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
 			while not HasScaleformMovieLoaded(Menu.InstructionalScaleform) do
 				Citizen.Wait(0)
 			end
@@ -116,19 +91,7 @@ end
 ---@param A number
 ---@return table
 ---@public
-function RageUI.CreateSubMenu(
-	ParentMenu,
-	Title,
-	Subtitle,
-	X,
-	Y,
-	TextureDictionary,
-	TextureName,
-	R,
-	G,
-	B,
-	A
-)
+function RageUI.CreateSubMenu(ParentMenu, Title, Subtitle, X, Y, TextureDictionary, TextureName, R, G, B, A)
 	if ParentMenu ~= nil then
 		if ParentMenu() then
 			---@type table
@@ -138,8 +101,7 @@ function RageUI.CreateSubMenu(
 			Menu.Subtitle = Subtitle or ParentMenu.Subtitle
 			Menu.SubtitleHeight = -37
 			Menu.Description = nil
-			Menu.DescriptionHeight =
-				RageUI.Settings.Items.Description.Background.Height
+			Menu.DescriptionHeight = RageUI.Settings.Items.Description.Background.Height
 			Menu.X = X or ParentMenu.X
 			Menu.Y = Y or ParentMenu.Y
 			Menu.Parent = ParentMenu
@@ -153,8 +115,7 @@ function RageUI.CreateSubMenu(
 			Menu.EnableMouse = false
 			Menu.Options = 0
 			Menu.Closable = true
-			Menu.InstructionalScaleform =
-				RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
+			Menu.InstructionalScaleform = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
 			Menu.CursorStyle = 1
 
 			if string.starts(Menu.Subtitle, "~") then
@@ -164,22 +125,8 @@ function RageUI.CreateSubMenu(
 			end
 
 			if Menu.Subtitle ~= "" then
-				local SubtitleLineCount = GetLineCount(
-					Menu.Subtitle,
-					Menu.X + RageUI.Settings.Items.Subtitle.Text.X,
-					Menu.Y + RageUI.Settings.Items.Subtitle.Text.Y,
-					0,
-					RageUI.Settings.Items.Subtitle.Text.Scale,
-					245,
-					245,
-					245,
-					255,
-					nil,
-					false,
-					false,
-					RageUI.Settings.Items.Subtitle.Background.Width
-						+ Menu.WidthOffset
-				)
+				local SubtitleLineCount =
+					GetLineCount(Menu.Subtitle, Menu.X + RageUI.Settings.Items.Subtitle.Text.X, Menu.Y + RageUI.Settings.Items.Subtitle.Text.Y, 0, RageUI.Settings.Items.Subtitle.Text.Scale, 245, 245, 245, 255, nil, false, false, RageUI.Settings.Items.Subtitle.Background.Width + Menu.WidthOffset)
 
 				if SubtitleLineCount > 1 then
 					Menu.SubtitleHeight = 18 * SubtitleLineCount
@@ -190,8 +137,7 @@ function RageUI.CreateSubMenu(
 
 			if ParentMenu.Sprite then
 				Menu.Sprite = {
-					Dictionary = TextureDictionary
-						or ParentMenu.Sprite.Dictionary,
+					Dictionary = TextureDictionary or ParentMenu.Sprite.Dictionary,
 					Texture = TextureName or ParentMenu.Sprite.Texture,
 					Color = {
 						R = R or ParentMenu.Sprite.Color.R,
@@ -293,21 +239,8 @@ function RageUI.Menus:SetSubtitle(Subtitle)
 	end
 
 	if self.Subtitle ~= "" then
-		local SubtitleLineCount = GetLineCount(
-			self.Subtitle,
-			self.X + RageUI.Settings.Items.Subtitle.Text.X,
-			self.Y + RageUI.Settings.Items.Subtitle.Text.Y,
-			0,
-			RageUI.Settings.Items.Subtitle.Text.Scale,
-			245,
-			245,
-			245,
-			255,
-			nil,
-			false,
-			false,
-			RageUI.Settings.Items.Subtitle.Background.Width + self.WidthOffset
-		)
+		local SubtitleLineCount =
+			GetLineCount(self.Subtitle, self.X + RageUI.Settings.Items.Subtitle.Text.X, self.Y + RageUI.Settings.Items.Subtitle.Text.Y, 0, RageUI.Settings.Items.Subtitle.Text.Scale, 245, 245, 245, 255, nil, false, false, RageUI.Settings.Items.Subtitle.Background.Width + self.WidthOffset)
 
 		if SubtitleLineCount > 1 then
 			self.SubtitleHeight = 18 * SubtitleLineCount
@@ -426,10 +359,7 @@ function RageUI.Menus:UpdateInstructionalButtons(Visible)
 	BeginScaleformMovieMethod(self.InstructionalScaleform, "CLEAR_ALL")
 	EndScaleformMovieMethod()
 
-	BeginScaleformMovieMethod(
-		self.InstructionalScaleform,
-		"TOGGLE_MOUSE_BUTTONS"
-	)
+	BeginScaleformMovieMethod(self.InstructionalScaleform, "TOGGLE_MOUSE_BUTTONS")
 	ScaleformMovieMethodAddParamInt(0)
 	EndScaleformMovieMethod()
 
@@ -438,18 +368,14 @@ function RageUI.Menus:UpdateInstructionalButtons(Visible)
 
 	BeginScaleformMovieMethod(self.InstructionalScaleform, "SET_DATA_SLOT")
 	ScaleformMovieMethodAddParamInt(0)
-	PushScaleformMovieMethodParameterButtonName(
-		GetControlInstructionalButton(2, 176, 0)
-	)
+	PushScaleformMovieMethodParameterButtonName(GetControlInstructionalButton(2, 176, 0))
 	PushScaleformMovieMethodParameterString(GetLabelText("HUD_INPUT2"))
 	EndScaleformMovieMethod()
 
 	if self.Closable then
 		BeginScaleformMovieMethod(self.InstructionalScaleform, "SET_DATA_SLOT")
 		ScaleformMovieMethodAddParamInt(1)
-		PushScaleformMovieMethodParameterButtonName(
-			GetControlInstructionalButton(2, 177, 0)
-		)
+		PushScaleformMovieMethodParameterButtonName(GetControlInstructionalButton(2, 177, 0))
 		PushScaleformMovieMethodParameterString(GetLabelText("HUD_INPUT3"))
 		EndScaleformMovieMethod()
 	end
@@ -460,17 +386,10 @@ function RageUI.Menus:UpdateInstructionalButtons(Visible)
 		for i = 1, #self.InstructionalButtons do
 			if self.InstructionalButtons[i] then
 				if #self.InstructionalButtons[i] == 2 then
-					BeginScaleformMovieMethod(
-						self.InstructionalScaleform,
-						"SET_DATA_SLOT"
-					)
+					BeginScaleformMovieMethod(self.InstructionalScaleform, "SET_DATA_SLOT")
 					ScaleformMovieMethodAddParamInt(count)
-					PushScaleformMovieMethodParameterButtonName(
-						self.InstructionalButtons[i][1]
-					)
-					PushScaleformMovieMethodParameterString(
-						self.InstructionalButtons[i][2]
-					)
+					PushScaleformMovieMethodParameterButtonName(self.InstructionalButtons[i][1])
+					PushScaleformMovieMethodParameterString(self.InstructionalButtons[i][2])
 					EndScaleformMovieMethod()
 					count = count + 1
 				end
@@ -478,10 +397,7 @@ function RageUI.Menus:UpdateInstructionalButtons(Visible)
 		end
 	end
 
-	BeginScaleformMovieMethod(
-		self.InstructionalScaleform,
-		"DRAW_INSTRUCTIONAL_BUTTONS"
-	)
+	BeginScaleformMovieMethod(self.InstructionalScaleform, "DRAW_INSTRUCTIONAL_BUTTONS")
 	ScaleformMovieMethodAddParamInt(-1)
 	EndScaleformMovieMethod()
 end

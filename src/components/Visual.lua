@@ -24,12 +24,7 @@ function RageUI.Popup(array)
 	if array.sound ~= nil then
 		if array.sound.audio_name ~= nil then
 			if array.sound.audio_ref ~= nil then
-				PlaySoundFrontend(
-					-1,
-					array.sound.audio_name,
-					array.sound.audio_ref,
-					true
-				)
+				PlaySoundFrontend(-1, array.sound.audio_name, array.sound.audio_ref, true)
 			else
 				error("Missing arguments, audio_ref")
 			end
@@ -58,69 +53,22 @@ function RageUI.PopupChar(array)
 		RequestStreamedTextureDict(array.request_stream_texture_dics)
 	end
 	if array.picture ~= nil then
-		if
-			(array.iconTypes == 1)
-			or (array.iconTypes == 2)
-			or (array.iconTypes == 3)
-			or (array.iconTypes == 7)
-			or (array.iconTypes == 8)
-			or (array.iconTypes == 9)
-		then
-			SetNotificationMessage(
-				tostring(array.picture),
-				tostring(array.picture),
-				true,
-				array.iconTypes,
-				array.sender,
-				array.title
-			)
+		if (array.iconTypes == 1) or (array.iconTypes == 2) or (array.iconTypes == 3) or (array.iconTypes == 7) or (array.iconTypes == 8) or (array.iconTypes == 9) then
+			SetNotificationMessage(tostring(array.picture), tostring(array.picture), true, array.iconTypes, array.sender, array.title)
 		else
-			SetNotificationMessage(
-				tostring(array.picture),
-				tostring(array.picture),
-				true,
-				4,
-				array.sender,
-				array.title
-			)
+			SetNotificationMessage(tostring(array.picture), tostring(array.picture), true, 4, array.sender, array.title)
 		end
 	else
-		if
-			(array.iconTypes == 1)
-			or (array.iconTypes == 2)
-			or (array.iconTypes == 3)
-			or (array.iconTypes == 7)
-			or (array.iconTypes == 8)
-			or (array.iconTypes == 9)
-		then
-			SetNotificationMessage(
-				"CHAR_ALL_PLAYERS_CONF",
-				"CHAR_ALL_PLAYERS_CONF",
-				true,
-				array.iconTypes,
-				array.sender,
-				array.title
-			)
+		if (array.iconTypes == 1) or (array.iconTypes == 2) or (array.iconTypes == 3) or (array.iconTypes == 7) or (array.iconTypes == 8) or (array.iconTypes == 9) then
+			SetNotificationMessage("CHAR_ALL_PLAYERS_CONF", "CHAR_ALL_PLAYERS_CONF", true, array.iconTypes, array.sender, array.title)
 		else
-			SetNotificationMessage(
-				"CHAR_ALL_PLAYERS_CONF",
-				"CHAR_ALL_PLAYERS_CONF",
-				true,
-				4,
-				array.sender,
-				array.title
-			)
+			SetNotificationMessage("CHAR_ALL_PLAYERS_CONF", "CHAR_ALL_PLAYERS_CONF", true, 4, array.sender, array.title)
 		end
 	end
 	if array.sound ~= nil then
 		if array.sound.audio_name ~= nil then
 			if array.sound.audio_ref ~= nil then
-				PlaySoundFrontend(
-					-1,
-					array.sound.audio_name,
-					array.sound.audio_ref,
-					true
-				)
+				PlaySoundFrontend(-1, array.sound.audio_name, array.sound.audio_ref, true)
 			else
 				error("Missing arguments, audio_ref")
 			end
@@ -150,12 +98,7 @@ function RageUI.Text(array)
 	if array.sound ~= nil then
 		if array.sound.audio_name ~= nil then
 			if array.sound.audio_ref ~= nil then
-				PlaySoundFrontend(
-					-1,
-					array.sound.audio_name,
-					array.sound.audio_ref,
-					true
-				)
+				PlaySoundFrontend(-1, array.sound.audio_name, array.sound.audio_ref, true)
 			else
 				error("Missing arguments, audio_ref")
 			end

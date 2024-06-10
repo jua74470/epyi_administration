@@ -14,13 +14,7 @@ RegisterNetEvent("epyi_administration:spectate", function(target)
 			spectating[_source] = false
 			FreezeEntityPosition(GetPlayerPed(_source), false)
 		elseif on then
-			TriggerClientEvent(
-				"epyi_administration:requestSpectate",
-				_source,
-				NetworkGetNetworkIdFromEntity(tPed),
-				target,
-				GetPlayerName(target)
-			)
+			TriggerClientEvent("epyi_administration:requestSpectate", _source, NetworkGetNetworkIdFromEntity(tPed), target, GetPlayerName(target))
 			spectating[_source] = true
 		end
 	end
@@ -31,12 +25,7 @@ RegisterNetEvent("epyi_administration:spectate:teleport", function(target)
 	local ped = GetPlayerPed(target)
 	if DoesEntityExist(ped) then
 		local targetCoords = GetEntityCoords(ped)
-		SetEntityCoords(
-			GetPlayerPed(source),
-			targetCoords.x,
-			targetCoords.y,
-			targetCoords.z - 10
-		)
+		SetEntityCoords(GetPlayerPed(source), targetCoords.x, targetCoords.y, targetCoords.z - 10)
 		FreezeEntityPosition(GetPlayerPed(source), true)
 	end
 end)

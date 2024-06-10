@@ -5,8 +5,7 @@
 function setInstructionnalButtons(buttons, layout)
 	Citizen.CreateThread(function()
 		if not HasScaleformMovieLoaded(_var.instructionnal.buttons) then
-			_var.instructionnal.buttons =
-				RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
+			_var.instructionnal.buttons = RequestScaleformMovie("INSTRUCTIONAL_BUTTONS")
 			while not HasScaleformMovieLoaded(_var.instructionnal.buttons) do
 				Citizen.Wait(0)
 			end
@@ -53,16 +52,6 @@ end
 ---@return void
 function drawInstructionnalButtons()
 	if HasScaleformMovieLoaded(_var.instructionnal.buttons) then
-		DrawScaleformMovie(
-			_var.instructionnal.buttons,
-			0.5,
-			0.5,
-			1.0,
-			1.0,
-			255,
-			255,
-			255,
-			255
-		)
+		DrawScaleformMovie(_var.instructionnal.buttons, 0.5, 0.5, 1.0, 1.0, 255, 255, 255, 255)
 	end
 end

@@ -47,12 +47,9 @@ function AddText(Text)
 		AddTextComponentSubstringPlayerName(Text)
 	else
 		---@type number
-		local StringsNeeded = (Characters % 100 == 0) and Characters / 100
-			or (Characters / 100) + 1
+		local StringsNeeded = (Characters % 100 == 0) and Characters / 100 or (Characters / 100) + 1
 		for Index = 0, StringsNeeded do
-			AddTextComponentSubstringPlayerName(
-				Text:sub(Index * 100, (Index * 100) + 100)
-			)
+			AddTextComponentSubstringPlayerName(Text:sub(Index * 100, (Index * 100) + 100))
 		end
 	end
 end
@@ -76,33 +73,13 @@ end
 ---@param WordWrap number
 ---@return function
 ---@public
-function GetLineCount(
-	Text,
-	X,
-	Y,
-	Font,
-	Scale,
-	R,
-	G,
-	B,
-	A,
-	Alignment,
-	DropShadow,
-	Outline,
-	WordWrap
-)
+function GetLineCount(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
 	---@type table
-	local Text, X, Y =
-		tostring(Text), (tonumber(X) or 0) / 1920, (tonumber(Y) or 0) / 1080
+	local Text, X, Y = tostring(Text), (tonumber(X) or 0) / 1920, (tonumber(Y) or 0) / 1080
 
 	SetTextFont(Font or 0)
 	SetTextScale(1.0, Scale or 0)
-	SetTextColour(
-		tonumber(R) or 255,
-		tonumber(G) or 255,
-		tonumber(B) or 255,
-		tonumber(A) or 255
-	)
+	SetTextColour(tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
 
 	if DropShadow then
 		SetTextDropShadow()
@@ -122,10 +99,7 @@ function GetLineCount(
 
 	if tonumber(WordWrap) and tonumber(WordWrap) ~= 0 then
 		if Alignment == 1 or Alignment == "Center" or Alignment == "Centre" then
-			SetTextWrap(
-				X - ((WordWrap / 1920) / 2),
-				X + ((WordWrap / 1920) / 2)
-			)
+			SetTextWrap(X - ((WordWrap / 1920) / 2), X + ((WordWrap / 1920) / 2))
 		elseif Alignment == 2 or Alignment == "Right" then
 			SetTextWrap(0, X)
 		else
@@ -161,33 +135,13 @@ end
 ---@param WordWrap number
 ---@return nil
 ---@public
-function RenderText(
-	Text,
-	X,
-	Y,
-	Font,
-	Scale,
-	R,
-	G,
-	B,
-	A,
-	Alignment,
-	DropShadow,
-	Outline,
-	WordWrap
-)
+function RenderText(Text, X, Y, Font, Scale, R, G, B, A, Alignment, DropShadow, Outline, WordWrap)
 	---@type table
-	local Text, X, Y =
-		tostring(Text), (tonumber(X) or 0) / 1920, (tonumber(Y) or 0) / 1080
+	local Text, X, Y = tostring(Text), (tonumber(X) or 0) / 1920, (tonumber(Y) or 0) / 1080
 
 	SetTextFont(Font or 0)
 	SetTextScale(1.0, Scale or 0)
-	SetTextColour(
-		tonumber(R) or 255,
-		tonumber(G) or 255,
-		tonumber(B) or 255,
-		tonumber(A) or 255
-	)
+	SetTextColour(tonumber(R) or 255, tonumber(G) or 255, tonumber(B) or 255, tonumber(A) or 255)
 
 	if DropShadow then
 		SetTextDropShadow()
@@ -207,10 +161,7 @@ function RenderText(
 
 	if tonumber(WordWrap) and tonumber(WordWrap) ~= 0 then
 		if Alignment == 1 or Alignment == "Center" or Alignment == "Centre" then
-			SetTextWrap(
-				X - ((WordWrap / 1920) / 2),
-				X + ((WordWrap / 1920) / 2)
-			)
+			SetTextWrap(X - ((WordWrap / 1920) / 2), X + ((WordWrap / 1920) / 2))
 		elseif Alignment == 2 or Alignment == "Right" then
 			SetTextWrap(0, X)
 		else
