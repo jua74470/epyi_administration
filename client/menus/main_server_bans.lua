@@ -3,7 +3,6 @@
 ---@return void
 function main_server_bans_showContentThisFrame(playerGroup)
 	_var.client.playerData = ESX.GetPlayerData()
-	_var.datas.list = GlobalState["epyi_administration:datastore"] or {}
 	RageUI.ButtonWithStyle(
 		_U("search"),
 		_U("main_server_bans_filter_desc"),
@@ -24,29 +23,24 @@ function main_server_bans_showContentThisFrame(playerGroup)
 	)
 	RageUI.Separator(_U("filter_result"))
 	local count = 0
-	for id, content in pairs(_var.datas.list) do
+	for _, content in pairs(_var.bans.list) do
 		local datas = json.decode(content.data)
-		if content.type == "BAN" or content.type == "D_BAN" then
-			if
-				_var.menu.bansFilter == ""
-				or string.find(string.lower(datas.id .. datas.targetName .. datas.staffName .. datas.reason .. content.type .. (content.type == "BAN" and _U("main_server_bans_unit_valid") or _U("main_server_bans_unit_finished"))), string.lower(_var.menu.bansFilter)) ~= nil
-			then
-				count = count + 1
-				RageUI.ButtonWithStyle(
-					"~c~[#" .. id .. "] ~s~" .. datas.targetName,
-					_U("main_server_bans_unit_desc"),
-					{
-						RightLabel = content.type == "BAN" and _U("main_server_bans_unit_valid") or _U("main_server_bans_unit_finished"),
-					},
-					true,
-					function(_h, _a, s)
-						if s then
-							_var.bans.selectedBan = content
-						end
-					end,
-					_var.menus.admin.objects.mainServerBansDetails
-				)
-			end
+		if _var.menu.bansFilter == "" or string.find(string.lower(datas.id .. datas.targetName .. datas.staffName .. datas.reason .. content.type .. (content.type == "BAN" and _U("main_server_bans_unit_valid") or _U("main_server_bans_unit_finished"))), string.lower(_var.menu.bansFilter)) ~= nil then
+			count = count + 1
+			RageUI.ButtonWithStyle(
+				"~c~[#" .. content.id .. "] ~s~" .. datas.targetName,
+				_U("main_server_bans_unit_desc"),
+				{
+					RightLabel = content.type == "BAN" and _U("main_server_bans_unit_valid") or _U("main_server_bans_unit_finished"),
+				},
+				true,
+				function(_h, _a, s)
+					if s then
+						_var.bans.selectedBan = content
+					end
+				end,
+				_var.menus.admin.objects.mainServerBansDetails
+			)
 		end
 	end
 	if count == 0 then

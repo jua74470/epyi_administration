@@ -2,13 +2,11 @@
 ---@param playerGroup string
 ---@return void
 function main_server_bans_details_showContentThisFrame(playerGroup)
-	_var.datas.list = GlobalState["epyi_administration:datastore"] or {}
 	local datas = json.decode(_var.bans.selectedBan.data)
-	_var.bans.selectedBan = _var.datas.list[datas.id]
 	RageUI.Separator(_U("main_server_bans_details_target", datas.targetName))
 	RageUI.Separator(_U("main_server_bans_details_author", datas.staffName))
 	RageUI.Separator(_U("main_server_bans_details_validity", _var.bans.selectedBan.type == "BAN" and _U("main_server_bans_unit_valid") or _U("main_server_bans_unit_finished")))
-	RageUI.Separator(_U("main_server_bans_details_id", datas.id))
+	RageUI.Separator(_U("main_server_bans_details_id", _var.bans.selectedBan.id))
 	RageUI.Separator(_U("main_server_bans_details_date", timeFormat(_U("date_format_long"), datas.writeDetails)))
 	RageUI.Separator(_U("main_server_bans_details_time", datas.duration))
 	RageUI.Separator(_U("main_server_bans_details_expiration", timeFormat(_U("date_format_long"), datas.expirationDetails)))
@@ -22,7 +20,7 @@ function main_server_bans_details_showContentThisFrame(playerGroup)
 					_var.menus.admin.cooldowns.items = false
 					return
 				end
-				TriggerServerEvent("epyi_administration:editBan", datas.id, "editReason", { reason = _reason })
+				TriggerServerEvent("epyi_administration:editBan", _var.bans.selectedBan.id, "editReason", { reason = _reason })
 				_var.menus.admin.cooldowns.items = false
 			end)
 		end

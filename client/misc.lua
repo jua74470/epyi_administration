@@ -183,3 +183,10 @@ end)
 RegisterNetEvent("epyi_administration:reportUpdated", function(reportId, report)
 	_var.reports.list[reportId] = report
 end)
+
+RegisterNetEvent("epyi_administration:updateBans", function(bans)
+	_var.bans.list = bans
+	if _var.bans.selectedBan and _var.bans.selectedBan.id then
+		_var.bans.selectedBan = bans[_var.bans.selectedBan.id]
+	end
+end)

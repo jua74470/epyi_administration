@@ -135,5 +135,11 @@ function main_server_showContentThisFrame(playerGroup)
 			end)
 		end
 	end)
-	RageUI.ButtonWithStyle(_U("main_server_bans"), _U("main_server_bans_desc"), { RightLabel = "→" }, Config.Groups[playerGroup].Access["submenu_server_bans"] and not _var.menus.admin.cooldowns.items, function(_h, _a, _s) end, _var.menus.admin.objects.mainServerBans)
+	RageUI.ButtonWithStyle(_U("main_server_bans"), _U("main_server_bans_desc"), { RightLabel = "→" }, Config.Groups[playerGroup].Access["submenu_server_bans"] and not _var.menus.admin.cooldowns.items, function(_, _, s)
+		if s then
+			ESX.TriggerServerCallback("epyi_administration:getBans", function(bans)
+				_var.bans.list = bans
+			end)
+		end
+	end, _var.menus.admin.objects.mainServerBans)
 end

@@ -62,7 +62,7 @@ AddEventHandler("epyi_administration:saveData", function(type, data, owner)
 	local _id = #_datastore + 1
 	data.id = _id
 	_datastore[_id] = {
-		id = _id + 1,
+		id = _id,
 		type = type,
 		date_unix = os.time(),
 		data = json.encode(data),
@@ -75,6 +75,7 @@ AddEventHandler("epyi_administration:editData", function(id, type, date_unix, da
 		return
 	end
 	_datastore[id] = {
+		id = id,
 		type = type,
 		date_unix = date_unix,
 		data = data,

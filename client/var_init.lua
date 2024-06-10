@@ -33,6 +33,7 @@ _var.reports.count = 0
 _var.reports.countHiden = 0
 _var.reports.selectedReport = 1
 _var.bans.selectedBan = {}
+_var.bans.list = {}
 _var.menus.admin = {
 	isOpened = false,
 	bannerTexture = nil,

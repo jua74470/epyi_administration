@@ -36,3 +36,24 @@ function timeExpression(expression)
 	end
 	return timestamp
 end
+
+---timeFormat
+---@param format string
+---@param params table
+---@return string
+---@public
+function timeFormat(format, params)
+	local day = params.day or os.date("%d")
+	local month = params.month or os.date("%m")
+	local year = params.year or os.date("%Y")
+	local hour = params.hour or os.date("%H")
+	local minute = params.minute or os.date("%M")
+
+	local formatted = format:gsub("_d", string.format("%02d", day))
+	formatted = formatted:gsub("_m", string.format("%02d", month))
+	formatted = formatted:gsub("_Y", year)
+	formatted = formatted:gsub("_H", string.format("%02d", hour))
+	formatted = formatted:gsub("_M", string.format("%02d", minute))
+
+	return formatted
+end
