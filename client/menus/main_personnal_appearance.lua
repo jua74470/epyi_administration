@@ -46,7 +46,7 @@ function main_personnal_appearance_showContentThisFrame(playerGroup)
 						if Selected then
 							_var.menus.admin.cooldowns.items = true
 							Citizen.CreateThread(function()
-								local pedHash = GetHashKey(model.model)
+								local pedHash = joaat(model.model)
 								RequestModel(pedHash)
 								while not HasModelLoaded(pedHash) do
 									Citizen.Wait(1000)
