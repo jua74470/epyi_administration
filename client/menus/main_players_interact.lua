@@ -19,6 +19,7 @@ function main_players_interact_showContentThisFrame(playerGroup)
 	RageUI.Separator(_U("main_players_interact_ooc_name", player.ooc_name .. " ~s~[" .. group .. "~s~]"))
 	RageUI.Separator(_U("main_players_interact_rp_name", player.name))
 	RageUI.Separator(_U("main_players_interact_id", player.source))
+	RageUI.Separator(_U("main_players_interact_job", player.job.label, player.job.grade_label))
 	if GetResourceState("epyi_simplefaction") == "started" then
 		RageUI.Separator(_U("main_players_interact_faction", player.faction.label, player.faction.grade_label))
 	end

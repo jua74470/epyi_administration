@@ -113,6 +113,7 @@ locales["en"] = {
 	["main_players_interact_ooc_name"] = "His username: ~r~%s",
 	["main_players_interact_rp_name"] = "His rp name: ~r~%s",
 	["main_players_interact_id"] = "His id: ~r~%s",
+	["main_players_interact_job"] = "His job: ~r~%s ~c~[%s]",
 	["main_players_interact_faction"] = "His faction: ~r~%s ~c~[%s]",
 	["main_players_interact_money_action_add"] = "Add",
 	["main_players_interact_money_action_remove"] = "Remove",
