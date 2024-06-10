@@ -23,12 +23,7 @@ function RageUI.GridPanelHorizontal(X, LeftText, RightText, Callback, Index)
     if CurrentMenu ~= nil then
         if CurrentMenu() and (Index == nil or (CurrentMenu.Index == Index)) then
             ---@type boolean
-            local Hovered = RageUI.IsMouseInBounds(
-                CurrentMenu.X + GridPanelHorizontal.Grid.X + CurrentMenu.SafeZoneSize.X + 20,
-                CurrentMenu.Y + GridPanelHorizontal.Grid.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 20,
-                GridPanelHorizontal.Grid.Width + CurrentMenu.WidthOffset - 40,
-                GridPanelHorizontal.Grid.Height - 40
-            )
+            local Hovered = RageUI.IsMouseInBounds(CurrentMenu.X + GridPanelHorizontal.Grid.X + CurrentMenu.SafeZoneSize.X + 20, CurrentMenu.Y + GridPanelHorizontal.Grid.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset + 20, GridPanelHorizontal.Grid.Width + CurrentMenu.WidthOffset - 40, GridPanelHorizontal.Grid.Height - 40)
 
             ---@type boolean
             local Selected = false
@@ -48,22 +43,8 @@ function RageUI.GridPanelHorizontal(X, LeftText, RightText, Callback, Index)
             CircleX = CircleX + ((GridPanelHorizontal.Grid.Width - 40) * X) - (GridPanelHorizontal.Circle.Width / 2)
             CircleY = CircleY + ((GridPanelHorizontal.Grid.Height - 40) * Y) - (GridPanelHorizontal.Circle.Height / 2)
 
-            RenderSprite(
-                GridPanelHorizontal.Background.Dictionary,
-                GridPanelHorizontal.Background.Texture,
-                CurrentMenu.X,
-                CurrentMenu.Y + GridPanelHorizontal.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-                GridPanelHorizontal.Background.Width + CurrentMenu.WidthOffset,
-                GridPanelHorizontal.Background.Height
-            )
-            RenderSprite(
-                GridPanelHorizontal.Grid.Dictionary,
-                GridPanelHorizontal.Grid.Texture,
-                CurrentMenu.X + GridPanelHorizontal.Grid.X + (CurrentMenu.WidthOffset / 2),
-                CurrentMenu.Y + GridPanelHorizontal.Grid.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-                GridPanelHorizontal.Grid.Width,
-                GridPanelHorizontal.Grid.Height
-            )
+            RenderSprite(GridPanelHorizontal.Background.Dictionary, GridPanelHorizontal.Background.Texture, CurrentMenu.X, CurrentMenu.Y + GridPanelHorizontal.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, GridPanelHorizontal.Background.Width + CurrentMenu.WidthOffset, GridPanelHorizontal.Background.Height)
+            RenderSprite(GridPanelHorizontal.Grid.Dictionary, GridPanelHorizontal.Grid.Texture, CurrentMenu.X + GridPanelHorizontal.Grid.X + (CurrentMenu.WidthOffset / 2), CurrentMenu.Y + GridPanelHorizontal.Grid.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, GridPanelHorizontal.Grid.Width, GridPanelHorizontal.Grid.Height)
             RenderSprite(GridPanelHorizontal.Circle.Dictionary, GridPanelHorizontal.Circle.Texture, CircleX, CircleY, GridPanelHorizontal.Circle.Width, GridPanelHorizontal.Circle.Height)
 
             RenderText(LeftText or "", CurrentMenu.X + GridPanelHorizontal.Text.Left.X + (CurrentMenu.WidthOffset / 2), CurrentMenu.Y + GridPanelHorizontal.Text.Left.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, GridPanelHorizontal.Text.Left.Scale, 245, 245, 245, 255, 1)

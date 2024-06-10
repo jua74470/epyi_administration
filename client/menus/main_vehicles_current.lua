@@ -130,12 +130,7 @@ function main_vehicles_current_showContentThisFrame(playerGroup)
                 end
                 SetVehicleDoorOpen(pedVehicle, 5, false, false)
             elseif _var.vehicle.doorArray[_var.vehicle.doorArrayIndex] == _("door_all") then
-                local doorState = GetVehicleDoorAngleRatio(pedVehicle, 0) < 0.1
-                    and GetVehicleDoorAngleRatio(pedVehicle, 1) < 0.1
-                    and GetVehicleDoorAngleRatio(pedVehicle, 2) < 0.1
-                    and GetVehicleDoorAngleRatio(pedVehicle, 3) < 0.1
-                    and GetVehicleDoorAngleRatio(pedVehicle, 4) < 0.1
-                    and GetVehicleDoorAngleRatio(pedVehicle, 5) < 0.1
+                local doorState = GetVehicleDoorAngleRatio(pedVehicle, 0) < 0.1 and GetVehicleDoorAngleRatio(pedVehicle, 1) < 0.1 and GetVehicleDoorAngleRatio(pedVehicle, 2) < 0.1 and GetVehicleDoorAngleRatio(pedVehicle, 3) < 0.1 and GetVehicleDoorAngleRatio(pedVehicle, 4) < 0.1 and GetVehicleDoorAngleRatio(pedVehicle, 5) < 0.1
                 for i = 0, 5 do
                     if not doorState then
                         SetVehicleDoorShut(pedVehicle, i, false, false)
@@ -157,17 +152,5 @@ function main_vehicles_current_showContentThisFrame(playerGroup)
             ESX.ShowNotification(_U("notif_vehicleboost_success", _var.vehicle.boostArray[_var.vehicle.boostArrayIndex]))
         end
     end)
-    RageUI.ButtonWithStyle(
-        _U("main_vehicles_current_custom"),
-        _U("main_vehicles_current_custom_desc"),
-        { RightLabel = "→" },
-        Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_color_main"]
-            or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_color_secondary"]
-            or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_fullperf"]
-            or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_livery"]
-            or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_plate"]
-            or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_mods"],
-        function(_h, _a, _s) end,
-        _var.menus.admin.objects.mainVehiclesCurrentCustom
-    )
+    RageUI.ButtonWithStyle(_U("main_vehicles_current_custom"), _U("main_vehicles_current_custom_desc"), { RightLabel = "→" }, Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_color_main"] or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_color_secondary"] or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_fullperf"] or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_livery"] or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_plate"] or Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_mods"], function(_h, _a, _s) end, _var.menus.admin.objects.mainVehiclesCurrentCustom)
 end

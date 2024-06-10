@@ -105,35 +105,27 @@ function main_vehicles_current_custom_showContentThisFrame(playerGroup)
             end
         end
     end)
-    RageUI.List(
-        _U("main_vehicles_current_color_secondary"),
-        _var.vehicle.paintColorsArray,
-        _var.vehicle.paintColorsArrayIndexSecondary,
-        _U("main_vehicles_current_color_secondary_desc"),
-        {},
-        Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_color_secondary"],
-        function(_h, Active, _s, Index)
-            _var.vehicle.paintColorsArrayIndexSecondary = Index
-            if Active then
-                if not pedVehicle or GetPedInVehicleSeat(pedVehicle, -1) ~= ped then
-                    return
-                end
-                local colorPrimary, _ = GetVehicleColours(pedVehicle)
-                SetVehicleColours(pedVehicle, colorPrimary, _var.vehicle.paintColors[_var.vehicle.paintColorsArrayIndexSecondary][2])
+    RageUI.List(_U("main_vehicles_current_color_secondary"), _var.vehicle.paintColorsArray, _var.vehicle.paintColorsArrayIndexSecondary, _U("main_vehicles_current_color_secondary_desc"), {}, Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_color_secondary"], function(_h, Active, _s, Index)
+        _var.vehicle.paintColorsArrayIndexSecondary = Index
+        if Active then
+            if not pedVehicle or GetPedInVehicleSeat(pedVehicle, -1) ~= ped then
+                return
             end
-            if not Active then
-                if not pedVehicle or GetPedInVehicleSeat(pedVehicle, -1) ~= ped then
-                    return
-                end
-                local _, colorSecondary = GetVehicleColours(pedVehicle)
-                for key, color in pairs(_var.vehicle.paintColors) do
-                    if color[2] == colorSecondary then
-                        _var.vehicle.paintColorsArrayIndexSecondary = key
-                    end
+            local colorPrimary, _ = GetVehicleColours(pedVehicle)
+            SetVehicleColours(pedVehicle, colorPrimary, _var.vehicle.paintColors[_var.vehicle.paintColorsArrayIndexSecondary][2])
+        end
+        if not Active then
+            if not pedVehicle or GetPedInVehicleSeat(pedVehicle, -1) ~= ped then
+                return
+            end
+            local _, colorSecondary = GetVehicleColours(pedVehicle)
+            for key, color in pairs(_var.vehicle.paintColors) do
+                if color[2] == colorSecondary then
+                    _var.vehicle.paintColorsArrayIndexSecondary = key
                 end
             end
         end
-    )
+    end)
     if liveryCount > 0 then
         RageUI.List(_U("main_vehicles_current_livery"), liveryList, _var.menu.liveryArrayIndex, _U("main_vehicles_current_livery_desc"), {}, Config.Groups[playerGroup].Access["submenu_vehicles_current_custom_livery"], function(_h, _a, Selected, Index)
             _var.menu.liveryArrayIndex = Index

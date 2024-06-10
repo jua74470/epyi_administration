@@ -420,16 +420,7 @@ function RageUI.Banner(Enabled, Glare)
                     if RageUI.CurrentMenu.Sprite then
                         RenderSprite(RageUI.CurrentMenu.Sprite.Dictionary, RageUI.CurrentMenu.Sprite.Texture, RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y, RageUI.Settings.Items.Title.Background.Width + RageUI.CurrentMenu.WidthOffset, RageUI.Settings.Items.Title.Background.Height, nil)
                     else
-                        RenderRectangle(
-                            RageUI.CurrentMenu.X,
-                            RageUI.CurrentMenu.Y,
-                            RageUI.Settings.Items.Title.Background.Width + RageUI.CurrentMenu.WidthOffset,
-                            RageUI.Settings.Items.Title.Background.Height,
-                            RageUI.CurrentMenu.Rectangle.R,
-                            RageUI.CurrentMenu.Rectangle.G,
-                            RageUI.CurrentMenu.Rectangle.B,
-                            RageUI.CurrentMenu.Rectangle.A
-                        )
+                        RenderRectangle(RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y, RageUI.Settings.Items.Title.Background.Width + RageUI.CurrentMenu.WidthOffset, RageUI.Settings.Items.Title.Background.Height, RageUI.CurrentMenu.Rectangle.R, RageUI.CurrentMenu.Rectangle.G, RageUI.CurrentMenu.Rectangle.B, RageUI.CurrentMenu.Rectangle.A)
                     end
 
                     --if (RageUI.CurrentMenu.WidthOffset == 100) then
@@ -484,51 +475,15 @@ function RageUI.Subtitle()
             RageUI.ItemsSafeZone(RageUI.CurrentMenu)
             if RageUI.CurrentMenu.Subtitle ~= "" then
                 RenderRectangle(RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y + RageUI.ItemOffset, RageUI.Settings.Items.Subtitle.Background.Width + RageUI.CurrentMenu.WidthOffset, RageUI.Settings.Items.Subtitle.Background.Height + RageUI.CurrentMenu.SubtitleHeight, 0, 0, 0, 255)
-                RenderText(
-                    RageUI.CurrentMenu.Subtitle,
-                    RageUI.CurrentMenu.X + RageUI.Settings.Items.Subtitle.Text.X,
-                    RageUI.CurrentMenu.Y + RageUI.Settings.Items.Subtitle.Text.Y + RageUI.ItemOffset,
-                    0,
-                    RageUI.Settings.Items.Subtitle.Text.Scale,
-                    245,
-                    245,
-                    245,
-                    255,
-                    nil,
-                    false,
-                    false,
-                    RageUI.Settings.Items.Subtitle.Background.Width + RageUI.CurrentMenu.WidthOffset
-                )
+                RenderText(RageUI.CurrentMenu.Subtitle, RageUI.CurrentMenu.X + RageUI.Settings.Items.Subtitle.Text.X, RageUI.CurrentMenu.Y + RageUI.Settings.Items.Subtitle.Text.Y + RageUI.ItemOffset, 0, RageUI.Settings.Items.Subtitle.Text.Scale, 245, 245, 245, 255, nil, false, false, RageUI.Settings.Items.Subtitle.Background.Width + RageUI.CurrentMenu.WidthOffset)
                 if RageUI.CurrentMenu.Index > RageUI.CurrentMenu.Options or RageUI.CurrentMenu.Index < 0 then
                     RageUI.CurrentMenu.Index = 1
                 end
                 RageUI.RefreshPagination()
                 if RageUI.CurrentMenu.PageCounter == nil then
-                    RenderText(
-                        RageUI.CurrentMenu.PageCounterColour .. RageUI.CurrentMenu.Index .. " / " .. RageUI.CurrentMenu.Options,
-                        RageUI.CurrentMenu.X + RageUI.Settings.Items.Subtitle.PreText.X + RageUI.CurrentMenu.WidthOffset,
-                        RageUI.CurrentMenu.Y + RageUI.Settings.Items.Subtitle.PreText.Y + RageUI.ItemOffset,
-                        0,
-                        RageUI.Settings.Items.Subtitle.PreText.Scale,
-                        245,
-                        245,
-                        245,
-                        255,
-                        2
-                    )
+                    RenderText(RageUI.CurrentMenu.PageCounterColour .. RageUI.CurrentMenu.Index .. " / " .. RageUI.CurrentMenu.Options, RageUI.CurrentMenu.X + RageUI.Settings.Items.Subtitle.PreText.X + RageUI.CurrentMenu.WidthOffset, RageUI.CurrentMenu.Y + RageUI.Settings.Items.Subtitle.PreText.Y + RageUI.ItemOffset, 0, RageUI.Settings.Items.Subtitle.PreText.Scale, 245, 245, 245, 255, 2)
                 else
-                    RenderText(
-                        RageUI.CurrentMenu.PageCounter,
-                        RageUI.CurrentMenu.X + RageUI.Settings.Items.Subtitle.PreText.X + RageUI.CurrentMenu.WidthOffset,
-                        RageUI.CurrentMenu.Y + RageUI.Settings.Items.Subtitle.PreText.Y + RageUI.ItemOffset,
-                        0,
-                        RageUI.Settings.Items.Subtitle.PreText.Scale,
-                        245,
-                        245,
-                        245,
-                        255,
-                        2
-                    )
+                    RenderText(RageUI.CurrentMenu.PageCounter, RageUI.CurrentMenu.X + RageUI.Settings.Items.Subtitle.PreText.X + RageUI.CurrentMenu.WidthOffset, RageUI.CurrentMenu.Y + RageUI.Settings.Items.Subtitle.PreText.Y + RageUI.ItemOffset, 0, RageUI.Settings.Items.Subtitle.PreText.Scale, 245, 245, 245, 255, 2)
                 end
                 RageUI.ItemOffset = RageUI.ItemOffset + RageUI.Settings.Items.Subtitle.Background.Height
             end
@@ -544,19 +499,7 @@ function RageUI.Background()
         if RageUI.CurrentMenu() then
             RageUI.ItemsSafeZone(RageUI.CurrentMenu)
             SetScriptGfxDrawOrder(0)
-            RenderSprite(
-                RageUI.Settings.Items.Background.Dictionary,
-                RageUI.Settings.Items.Background.Texture,
-                RageUI.CurrentMenu.X,
-                RageUI.CurrentMenu.Y + RageUI.Settings.Items.Background.Y + RageUI.CurrentMenu.SubtitleHeight,
-                RageUI.Settings.Items.Background.Width + RageUI.CurrentMenu.WidthOffset,
-                RageUI.ItemOffset,
-                0,
-                0,
-                0,
-                0,
-                255
-            )
+            RenderSprite(RageUI.Settings.Items.Background.Dictionary, RageUI.Settings.Items.Background.Texture, RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y + RageUI.Settings.Items.Background.Y + RageUI.CurrentMenu.SubtitleHeight, RageUI.Settings.Items.Background.Width + RageUI.CurrentMenu.WidthOffset, RageUI.ItemOffset, 0, 0, 0, 0, 255)
             SetScriptGfxDrawOrder(1)
         end
     end
@@ -569,43 +512,9 @@ function RageUI.Description()
     if RageUI.CurrentMenu ~= nil and RageUI.CurrentMenu.Description ~= nil then
         if RageUI.CurrentMenu() then
             RageUI.ItemsSafeZone(RageUI.CurrentMenu)
-            RenderRectangle(
-                RageUI.CurrentMenu.X,
-                RageUI.CurrentMenu.Y + RageUI.Settings.Items.Description.Bar.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-                RageUI.Settings.Items.Description.Bar.Width + RageUI.CurrentMenu.WidthOffset,
-                RageUI.Settings.Items.Description.Bar.Height,
-                0,
-                0,
-                0,
-                255
-            )
-            RenderSprite(
-                RageUI.Settings.Items.Description.Background.Dictionary,
-                RageUI.Settings.Items.Description.Background.Texture,
-                RageUI.CurrentMenu.X,
-                RageUI.CurrentMenu.Y + RageUI.Settings.Items.Description.Background.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-                RageUI.Settings.Items.Description.Background.Width + RageUI.CurrentMenu.WidthOffset,
-                RageUI.CurrentMenu.DescriptionHeight,
-                0,
-                0,
-                0,
-                255
-            )
-            RenderText(
-                RageUI.CurrentMenu.Description,
-                RageUI.CurrentMenu.X + RageUI.Settings.Items.Description.Text.X,
-                RageUI.CurrentMenu.Y + RageUI.Settings.Items.Description.Text.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-                0,
-                RageUI.Settings.Items.Description.Text.Scale,
-                255,
-                255,
-                255,
-                255,
-                nil,
-                false,
-                false,
-                RageUI.Settings.Items.Description.Background.Width + RageUI.CurrentMenu.WidthOffset - 8.0
-            )
+            RenderRectangle(RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y + RageUI.Settings.Items.Description.Bar.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset, RageUI.Settings.Items.Description.Bar.Width + RageUI.CurrentMenu.WidthOffset, RageUI.Settings.Items.Description.Bar.Height, 0, 0, 0, 255)
+            RenderSprite(RageUI.Settings.Items.Description.Background.Dictionary, RageUI.Settings.Items.Description.Background.Texture, RageUI.CurrentMenu.X, RageUI.CurrentMenu.Y + RageUI.Settings.Items.Description.Background.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset, RageUI.Settings.Items.Description.Background.Width + RageUI.CurrentMenu.WidthOffset, RageUI.CurrentMenu.DescriptionHeight, 0, 0, 0, 255)
+            RenderText(RageUI.CurrentMenu.Description, RageUI.CurrentMenu.X + RageUI.Settings.Items.Description.Text.X, RageUI.CurrentMenu.Y + RageUI.Settings.Items.Description.Text.Y + RageUI.CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, RageUI.Settings.Items.Description.Text.Scale, 255, 255, 255, 255, nil, false, false, RageUI.Settings.Items.Description.Background.Width + RageUI.CurrentMenu.WidthOffset - 8.0)
             RageUI.ItemOffset = RageUI.ItemOffset + RageUI.CurrentMenu.DescriptionHeight + RageUI.Settings.Items.Description.Bar.Y
         end
     end
@@ -679,21 +588,7 @@ function RageUI.ItemsDescription(CurrentMenu, Description, Selected)
         if Selected and CurrentMenu.Description ~= Description then
             CurrentMenu.Description = Description or nil
             ---@type number
-            local DescriptionLineCount = GetLineCount(
-                CurrentMenu.Description,
-                CurrentMenu.X + SettingsDescription.Text.X,
-                CurrentMenu.Y + SettingsDescription.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
-                0,
-                SettingsDescription.Text.Scale,
-                255,
-                255,
-                255,
-                255,
-                nil,
-                false,
-                false,
-                SettingsDescription.Background.Width + (CurrentMenu.WidthOffset - 5.0)
-            )
+            local DescriptionLineCount = GetLineCount(CurrentMenu.Description, CurrentMenu.X + SettingsDescription.Text.X, CurrentMenu.Y + SettingsDescription.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsDescription.Text.Scale, 255, 255, 255, 255, nil, false, false, SettingsDescription.Background.Width + (CurrentMenu.WidthOffset - 5.0))
             if DescriptionLineCount > 1 then
                 CurrentMenu.DescriptionHeight = SettingsDescription.Background.Height * DescriptionLineCount
             else
