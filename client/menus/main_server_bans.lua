@@ -19,7 +19,10 @@ function main_server_bans_showContentThisFrame(playerGroup)
 	for id, content in pairs(_var.datas.list) do
 		local datas = json.decode(content.data)
 		if content.type == "BAN" or content.type == "D_BAN" then
-			if _var.menu.bansFilter == "" or string.find(string.lower(datas.id .. datas.targetName .. datas.staffName .. datas.reason .. content.type .. (content.type == "BAN" and _U("main_server_bans_unit_valid") or _U("main_server_bans_unit_finished"))), string.lower(_var.menu.bansFilter)) ~= nil then
+			if
+				_var.menu.bansFilter == ""
+				or string.find(string.lower(datas.id .. datas.targetName .. datas.staffName .. datas.reason .. content.type .. (content.type == "BAN" and _U("main_server_bans_unit_valid") or _U("main_server_bans_unit_finished"))), string.lower(_var.menu.bansFilter)) ~= nil
+			then
 				count = count + 1
 				RageUI.ButtonWithStyle(
 					"~c~[#" .. id .. "] ~s~" .. datas.targetName,

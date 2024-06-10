@@ -23,7 +23,8 @@ function RageUI.PercentagePanel(Percent, HeaderText, MinText, MaxText, Callback,
 	if CurrentMenu ~= nil then
 		if CurrentMenu() and (Index == nil or (CurrentMenu.Index == Index)) then
 			---@type boolean
-			local Hovered = RageUI.IsMouseInBounds(CurrentMenu.X + Percentage.Bar.X + CurrentMenu.SafeZoneSize.X, CurrentMenu.Y + Percentage.Bar.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset - 4, Percentage.Bar.Width + CurrentMenu.WidthOffset, Percentage.Bar.Height + 8)
+			local Hovered =
+				RageUI.IsMouseInBounds(CurrentMenu.X + Percentage.Bar.X + CurrentMenu.SafeZoneSize.X, CurrentMenu.Y + Percentage.Bar.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset - 4, Percentage.Bar.Width + CurrentMenu.WidthOffset, Percentage.Bar.Height + 8)
 
 			---@type boolean
 			local Selected = false

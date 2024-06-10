@@ -36,34 +36,42 @@ function main_vehicles_favorites_showContentThisFrame(playerGroup)
 	for __, content in pairs(_var.menu.favoritesVehicles) do
 		count = count + 1
 		local _datas = json.decode(content.data)
-		RageUI.List(_datas.vehicleName .. " (" .. GetDisplayNameFromVehicleModel(_datas.model) .. ")", _var.menu.favritesActionsArray, _var.menu.favritesActionsArrayIndex, _U("main_vehicles_favorites_interact_desc", _datas.vehicleName), {}, not _var.menus.admin.cooldowns.items, function(_h, _a, Selected, Index)
-			_var.menu.favritesActionsArrayIndex = Index
-			if Selected and not _var.menus.admin.cooldowns.items then
-				_var.menus.admin.cooldowns.items = true
-				Citizen.CreateThread(function()
-					if _var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex] == _("main_vehicles_favorites_interact_spawn") then
-						local ped = PlayerPedId()
-						local pedCoords = GetEntityCoords(ped)
-						local pedHeading = GetEntityHeading(ped)
-						local pedVehicle = GetVehiclePedIsIn(ped, false)
-						if pedVehicle then
-							ESX.Game.DeleteVehicle(pedVehicle)
-						end
-						ESX.Game.SpawnVehicle(_datas.model, pedCoords, pedHeading, function(callback_vehicle)
-							ESX.Game.SetVehicleProperties(callback_vehicle, _datas)
-							TaskWarpPedIntoVehicle(ped, callback_vehicle, -1)
-							SetVehicleEngineOn(callback_vehicle, true, true, false)
-						end)
-						_var.menus.admin.cooldowns.items = false
-					elseif _var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex] == _("main_vehicles_favorites_interact_delete") then
-						ESX.TriggerServerCallback("epyi_administration:deleteFavoriteVehicle", function(vehicles)
-							_var.menu.favoritesVehicles = vehicles
+		RageUI.List(
+			_datas.vehicleName .. " (" .. GetDisplayNameFromVehicleModel(_datas.model) .. ")",
+			_var.menu.favritesActionsArray,
+			_var.menu.favritesActionsArrayIndex,
+			_U("main_vehicles_favorites_interact_desc", _datas.vehicleName),
+			{},
+			not _var.menus.admin.cooldowns.items,
+			function(_h, _a, Selected, Index)
+				_var.menu.favritesActionsArrayIndex = Index
+				if Selected and not _var.menus.admin.cooldowns.items then
+					_var.menus.admin.cooldowns.items = true
+					Citizen.CreateThread(function()
+						if _var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex] == _("main_vehicles_favorites_interact_spawn") then
+							local ped = PlayerPedId()
+							local pedCoords = GetEntityCoords(ped)
+							local pedHeading = GetEntityHeading(ped)
+							local pedVehicle = GetVehiclePedIsIn(ped, false)
+							if pedVehicle then
+								ESX.Game.DeleteVehicle(pedVehicle)
+							end
+							ESX.Game.SpawnVehicle(_datas.model, pedCoords, pedHeading, function(callback_vehicle)
+								ESX.Game.SetVehicleProperties(callback_vehicle, _datas)
+								TaskWarpPedIntoVehicle(ped, callback_vehicle, -1)
+								SetVehicleEngineOn(callback_vehicle, true, true, false)
+							end)
 							_var.menus.admin.cooldowns.items = false
-						end, content.id)
-					end
-				end)
+						elseif _var.menu.favritesActionsArray[_var.menu.favritesActionsArrayIndex] == _("main_vehicles_favorites_interact_delete") then
+							ESX.TriggerServerCallback("epyi_administration:deleteFavoriteVehicle", function(vehicles)
+								_var.menu.favoritesVehicles = vehicles
+								_var.menus.admin.cooldowns.items = false
+							end, content.id)
+						end
+					end)
+				end
 			end
-		end)
+		)
 	end
 	if count == 0 then
 		RageUI.Separator("")

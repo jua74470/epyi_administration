@@ -60,26 +60,32 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 			end
 		end)
 	elseif _var.reports.list[_var.reports.selectedReport].staff.taken then
-		RageUI.ButtonWithStyle(_U("main_reports_edit_leave"), _U("main_reports_report_desc", _var.reports.list[_var.reports.selectedReport].user.reason), {}, not _var.menus.admin.cooldowns.items and _var.reports.list[_var.reports.selectedReport].staff.takerIdentifier == _var.client.playerData.identifier, function(_h, _a, Selected)
-			if Selected then
-				_var.menus.admin.cooldowns.items = true
-				_var.client.playerData = ESX.GetPlayerData()
-				local editedReport = _var.reports.list[_var.reports.selectedReport]
-				editedReport.staff.taken = false
-				editedReport.staff.takerIdentifier = nil
-				editedReport.staff.takerSource = nil
-				editedReport.staff.takerGroup = nil
-				ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
-					if result then
-						ESX.ShowNotification((_U("notif_report_status_leave", _var.reports.selectedReport)))
-						_var.menus.admin.cooldowns.items = false
-					else
-						ESX.ShowNotification(_U("notif_report_editing_error"))
-						_var.menus.admin.cooldowns.items = false
-					end
-				end, _var.client.playerData.identifier, _var.reports.selectedReport, editedReport)
+		RageUI.ButtonWithStyle(
+			_U("main_reports_edit_leave"),
+			_U("main_reports_report_desc", _var.reports.list[_var.reports.selectedReport].user.reason),
+			{},
+			not _var.menus.admin.cooldowns.items and _var.reports.list[_var.reports.selectedReport].staff.takerIdentifier == _var.client.playerData.identifier,
+			function(_h, _a, Selected)
+				if Selected then
+					_var.menus.admin.cooldowns.items = true
+					_var.client.playerData = ESX.GetPlayerData()
+					local editedReport = _var.reports.list[_var.reports.selectedReport]
+					editedReport.staff.taken = false
+					editedReport.staff.takerIdentifier = nil
+					editedReport.staff.takerSource = nil
+					editedReport.staff.takerGroup = nil
+					ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
+						if result then
+							ESX.ShowNotification((_U("notif_report_status_leave", _var.reports.selectedReport)))
+							_var.menus.admin.cooldowns.items = false
+						else
+							ESX.ShowNotification(_U("notif_report_editing_error"))
+							_var.menus.admin.cooldowns.items = false
+						end
+					end, _var.client.playerData.identifier, _var.reports.selectedReport, editedReport)
+				end
 			end
-		end)
+		)
 	end
 	RageUI.ButtonWithStyle(_U("main_reports_edit_goto"), _U("main_reports_report_desc", _var.reports.list[_var.reports.selectedReport].user.reason), {}, not _var.menus.admin.cooldowns.items, function(_h, _a, Selected)
 		if Selected then
@@ -111,17 +117,24 @@ function main_reports_edit_showContentThisFrame(playerGroup)
 			end)
 		end
 	end)
-	RageUI.ButtonWithStyle(_U("main_reports_edit_advanced"), _U("main_reports_report_desc", _var.reports.list[_var.reports.selectedReport].user.reason), {}, Config.Groups[playerGroup].Access["submenu_players_interact"] and (Config.Groups[playerGroup].Access["submenu_players_interact_highergroup"] and true or targetisLower) and not _var.menus.admin.cooldowns.items, function(_h, _a, Selected)
-		if Selected then
-			_var.client.playerData = ESX.GetPlayerData()
-			_var.players.list = GlobalState["epyi_administration:playerList"] or {}
-			for _k, player in pairs(_var.players.list) do
-				if player.identifier == _var.reports.list[_var.reports.selectedReport].user.identifier then
-					_var.players.selected = player
+	RageUI.ButtonWithStyle(
+		_U("main_reports_edit_advanced"),
+		_U("main_reports_report_desc", _var.reports.list[_var.reports.selectedReport].user.reason),
+		{},
+		Config.Groups[playerGroup].Access["submenu_players_interact"] and (Config.Groups[playerGroup].Access["submenu_players_interact_highergroup"] and true or targetisLower) and not _var.menus.admin.cooldowns.items,
+		function(_h, _a, Selected)
+			if Selected then
+				_var.client.playerData = ESX.GetPlayerData()
+				_var.players.list = GlobalState["epyi_administration:playerList"] or {}
+				for _k, player in pairs(_var.players.list) do
+					if player.identifier == _var.reports.list[_var.reports.selectedReport].user.identifier then
+						_var.players.selected = player
+					end
 				end
 			end
-		end
-	end, _var.menus.admin.objects.mainReportsEditAdvanced)
+		end,
+		_var.menus.admin.objects.mainReportsEditAdvanced
+	)
 	RageUI.ButtonWithStyle(_U("main_reports_edit_delete"), _U("main_reports_edit_delete_desc"), { Color = { BackgroundColor = { 150, 50, 50, 20 } } }, not _var.menus.admin.cooldowns.items, function(_h, _a, Selected)
 		if Selected then
 			_var.client.playerData = ESX.GetPlayerData()

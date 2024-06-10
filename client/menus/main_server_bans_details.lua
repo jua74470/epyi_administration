@@ -27,14 +27,20 @@ function main_server_bans_details_showContentThisFrame(playerGroup)
 			end)
 		end
 	end)
-	RageUI.ButtonWithStyle(_U("main_server_bans_details_delete"), _U("main_server_bans_details_delete_desc"), { Color = { BackgroundColor = { 150, 50, 50, 20 } } }, _var.bans.selectedBan.type == "BAN" and Config.Groups[playerGroup].Access["submenu_server_bans_edit"] and not _var.menus.admin.cooldowns.items, function(_h, _a, s)
-		if s then
-			Citizen.CreateThread(function()
-				_var.menus.admin.cooldowns.items = true
-				Citizen.Wait(500)
-				TriggerServerEvent("epyi_administration:editBan", datas.id, "revoke", {})
-				_var.menus.admin.cooldowns.items = false
-			end)
+	RageUI.ButtonWithStyle(
+		_U("main_server_bans_details_delete"),
+		_U("main_server_bans_details_delete_desc"),
+		{ Color = { BackgroundColor = { 150, 50, 50, 20 } } },
+		_var.bans.selectedBan.type == "BAN" and Config.Groups[playerGroup].Access["submenu_server_bans_edit"] and not _var.menus.admin.cooldowns.items,
+		function(_h, _a, s)
+			if s then
+				Citizen.CreateThread(function()
+					_var.menus.admin.cooldowns.items = true
+					Citizen.Wait(500)
+					TriggerServerEvent("epyi_administration:editBan", datas.id, "revoke", {})
+					_var.menus.admin.cooldowns.items = false
+				end)
+			end
 		end
-	end)
+	)
 end

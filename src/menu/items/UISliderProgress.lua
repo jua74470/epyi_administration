@@ -62,9 +62,26 @@ function RageUI.SliderProgress(Label, ProgressStart, ProgressMax, Description, S
 				end
 
 				if Selected then
-					RenderSprite(SettingsButton.SelectedSprite.Dictionary, SettingsButton.SelectedSprite.Texture, CurrentMenu.X, CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset, SettingsButton.SelectedSprite.Height)
-					LeftArrowHovered = RageUI.IsMouseInBounds(CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.SafeZoneSize.X + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.LeftArrow.Width, SettingsSlider.LeftArrow.Height)
-					RightArrowHovered = RageUI.IsMouseInBounds(CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.SafeZoneSize.X + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.RightArrow.Width, SettingsSlider.RightArrow.Height)
+					RenderSprite(
+						SettingsButton.SelectedSprite.Dictionary,
+						SettingsButton.SelectedSprite.Texture,
+						CurrentMenu.X,
+						CurrentMenu.Y + SettingsButton.SelectedSprite.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						SettingsButton.SelectedSprite.Width + CurrentMenu.WidthOffset,
+						SettingsButton.SelectedSprite.Height
+					)
+					LeftArrowHovered = RageUI.IsMouseInBounds(
+						CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.SafeZoneSize.X + CurrentMenu.WidthOffset,
+						CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						SettingsSlider.LeftArrow.Width,
+						SettingsSlider.LeftArrow.Height
+					)
+					RightArrowHovered = RageUI.IsMouseInBounds(
+						CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.SafeZoneSize.X + CurrentMenu.WidthOffset,
+						CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SafeZoneSize.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						SettingsSlider.RightArrow.Width,
+						SettingsSlider.RightArrow.Height
+					)
 				end
 				if Enabled == true or Enabled == nil then
 					if Selected then
@@ -84,8 +101,32 @@ function RageUI.SliderProgress(Label, ProgressStart, ProgressMax, Description, S
 					if Selected then
 						RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 0, 0, 0, 255)
 
-						RenderSprite(SettingsSlider.LeftArrow.Dictionary, SettingsSlider.LeftArrow.Texture, CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.LeftArrow.Width, SettingsSlider.LeftArrow.Height, 0, 0, 0, 0, 255)
-						RenderSprite(SettingsSlider.RightArrow.Dictionary, SettingsSlider.RightArrow.Texture, CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.RightArrow.Width, SettingsSlider.RightArrow.Height, 0, 0, 0, 0, 255)
+						RenderSprite(
+							SettingsSlider.LeftArrow.Dictionary,
+							SettingsSlider.LeftArrow.Texture,
+							CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.WidthOffset - RightOffset,
+							CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+							SettingsSlider.LeftArrow.Width,
+							SettingsSlider.LeftArrow.Height,
+							0,
+							0,
+							0,
+							0,
+							255
+						)
+						RenderSprite(
+							SettingsSlider.RightArrow.Dictionary,
+							SettingsSlider.RightArrow.Texture,
+							CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.WidthOffset - RightOffset,
+							CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+							SettingsSlider.RightArrow.Width,
+							SettingsSlider.RightArrow.Height,
+							0,
+							0,
+							0,
+							0,
+							255
+						)
 					else
 						RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 245, 245, 245, 255)
 					end
@@ -93,8 +134,30 @@ function RageUI.SliderProgress(Label, ProgressStart, ProgressMax, Description, S
 					RenderText(Label, CurrentMenu.X + SettingsButton.Text.X + LeftBadgeOffset, CurrentMenu.Y + SettingsButton.Text.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, 0, SettingsButton.Text.Scale, 163, 159, 148, 255)
 
 					if Selected then
-						RenderSprite(SettingsSlider.LeftArrow.Dictionary, SettingsSlider.LeftArrow.Texture, CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.LeftArrow.Width, SettingsSlider.LeftArrow.Height, 163, 159, 148, 255)
-						RenderSprite(SettingsSlider.RightArrow.Dictionary, SettingsSlider.RightArrow.Texture, CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.RightArrow.Width, SettingsSlider.RightArrow.Height, 163, 159, 148, 255)
+						RenderSprite(
+							SettingsSlider.LeftArrow.Dictionary,
+							SettingsSlider.LeftArrow.Texture,
+							CurrentMenu.X + SettingsSlider.LeftArrow.X + CurrentMenu.WidthOffset - RightOffset,
+							CurrentMenu.Y + SettingsSlider.LeftArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+							SettingsSlider.LeftArrow.Width,
+							SettingsSlider.LeftArrow.Height,
+							163,
+							159,
+							148,
+							255
+						)
+						RenderSprite(
+							SettingsSlider.RightArrow.Dictionary,
+							SettingsSlider.RightArrow.Texture,
+							CurrentMenu.X + SettingsSlider.RightArrow.X + CurrentMenu.WidthOffset - RightOffset,
+							CurrentMenu.Y + SettingsSlider.RightArrow.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+							SettingsSlider.RightArrow.Width,
+							SettingsSlider.RightArrow.Height,
+							163,
+							159,
+							148,
+							255
+						)
 					end
 				end
 
@@ -105,7 +168,19 @@ function RageUI.SliderProgress(Label, ProgressStart, ProgressMax, Description, S
 								if Style.LeftBadge ~= RageUI.BadgeStyle.None then
 									local BadgeData = Style.LeftBadge(Selected)
 
-									RenderSprite(BadgeData.BadgeDictionary or "commonmenu", BadgeData.BadgeTexture or "", CurrentMenu.X, CurrentMenu.Y + SettingsButton.LeftBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsButton.LeftBadge.Width, SettingsButton.LeftBadge.Height, 0, BadgeData.BadgeColour and BadgeData.BadgeColour.R or 255, BadgeData.BadgeColour and BadgeData.BadgeColour.G or 255, BadgeData.BadgeColour and BadgeData.BadgeColour.B or 255, BadgeData.BadgeColour and BadgeData.BadgeColour.A or 255)
+									RenderSprite(
+										BadgeData.BadgeDictionary or "commonmenu",
+										BadgeData.BadgeTexture or "",
+										CurrentMenu.X,
+										CurrentMenu.Y + SettingsButton.LeftBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+										SettingsButton.LeftBadge.Width,
+										SettingsButton.LeftBadge.Height,
+										0,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.R or 255,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.G or 255,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.B or 255,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.A or 255
+									)
 								end
 							end
 
@@ -113,7 +188,19 @@ function RageUI.SliderProgress(Label, ProgressStart, ProgressMax, Description, S
 								if Style.RightBadge ~= RageUI.BadgeStyle.None then
 									local BadgeData = Style.RightBadge(Selected)
 
-									RenderSprite(BadgeData.BadgeDictionary or "commonmenu", BadgeData.BadgeTexture or "", CurrentMenu.X + SettingsButton.RightBadge.X + CurrentMenu.WidthOffset, CurrentMenu.Y + SettingsButton.RightBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsButton.RightBadge.Width, SettingsButton.RightBadge.Height, 0, BadgeData.BadgeColour and BadgeData.BadgeColour.R or 255, BadgeData.BadgeColour and BadgeData.BadgeColour.G or 255, BadgeData.BadgeColour and BadgeData.BadgeColour.B or 255, BadgeData.BadgeColour and BadgeData.BadgeColour.A or 255)
+									RenderSprite(
+										BadgeData.BadgeDictionary or "commonmenu",
+										BadgeData.BadgeTexture or "",
+										CurrentMenu.X + SettingsButton.RightBadge.X + CurrentMenu.WidthOffset,
+										CurrentMenu.Y + SettingsButton.RightBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+										SettingsButton.RightBadge.Width,
+										SettingsButton.RightBadge.Height,
+										0,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.R or 255,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.G or 255,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.B or 255,
+										BadgeData.BadgeColour and BadgeData.BadgeColour.A or 255
+									)
 								end
 							end
 						end
@@ -124,7 +211,19 @@ function RageUI.SliderProgress(Label, ProgressStart, ProgressMax, Description, S
 						if LeftBadge ~= RageUI.BadgeStyle.None and LeftBadge ~= nil then
 							local BadgeData = LeftBadge(Selected)
 
-							RenderSprite(BadgeData.BadgeDictionary or "commonmenu", BadgeData.BadgeTexture or "", CurrentMenu.X, CurrentMenu.Y + SettingsButton.LeftBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsButton.LeftBadge.Width, SettingsButton.LeftBadge.Height, 0, BadgeData.BadgeColour.R or 255, BadgeData.BadgeColour.G or 255, BadgeData.BadgeColour.B or 255, BadgeData.BadgeColour.A or 255)
+							RenderSprite(
+								BadgeData.BadgeDictionary or "commonmenu",
+								BadgeData.BadgeTexture or "",
+								CurrentMenu.X,
+								CurrentMenu.Y + SettingsButton.LeftBadge.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+								SettingsButton.LeftBadge.Width,
+								SettingsButton.LeftBadge.Height,
+								0,
+								BadgeData.BadgeColour.R or 255,
+								BadgeData.BadgeColour.G or 255,
+								BadgeData.BadgeColour.B or 255,
+								BadgeData.BadgeColour.A or 255
+							)
 						end
 					end
 				else
@@ -134,13 +233,31 @@ function RageUI.SliderProgress(Label, ProgressStart, ProgressMax, Description, S
 				-- (((SettingsSlider.Slider.Width) / (#Items - 1)) * (ProgressStart - 1))
 
 				if type(Style.ProgressBackgroundColor) == "table" then
-					RenderRectangle(CurrentMenu.X + SettingsSlider.Background.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, SettingsSlider.Background.Width, SettingsSlider.Background.Height, Style.ProgressBackgroundColor.R, Style.ProgressBackgroundColor.G, Style.ProgressBackgroundColor.B, Style.ProgressBackgroundColor.A)
+					RenderRectangle(
+						CurrentMenu.X + SettingsSlider.Background.X + CurrentMenu.WidthOffset - RightOffset,
+						CurrentMenu.Y + SettingsSlider.Background.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						SettingsSlider.Background.Width,
+						SettingsSlider.Background.Height,
+						Style.ProgressBackgroundColor.R,
+						Style.ProgressBackgroundColor.G,
+						Style.ProgressBackgroundColor.B,
+						Style.ProgressBackgroundColor.A
+					)
 				else
 					error("Style ProgressBackgroundColor is not a table or undefined")
 				end
 
 				if type(Style.ProgressColor) == "table" then
-					RenderRectangle(CurrentMenu.X + SettingsSlider.Slider.X + CurrentMenu.WidthOffset - RightOffset, CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset, ((SettingsSlider.Slider.Width / (#Items - 1)) * (ProgressStart - 1)), SettingsSlider.Slider.Height, Style.ProgressColor.R, Style.ProgressColor.G, Style.ProgressColor.B, Style.ProgressColor.A)
+					RenderRectangle(
+						CurrentMenu.X + SettingsSlider.Slider.X + CurrentMenu.WidthOffset - RightOffset,
+						CurrentMenu.Y + SettingsSlider.Slider.Y + CurrentMenu.SubtitleHeight + RageUI.ItemOffset,
+						((SettingsSlider.Slider.Width / (#Items - 1)) * (ProgressStart - 1)),
+						SettingsSlider.Slider.Height,
+						Style.ProgressColor.R,
+						Style.ProgressColor.G,
+						Style.ProgressColor.B,
+						Style.ProgressColor.A
+					)
 				else
 					error("Style ProgressColor is not a table or undefined")
 				end

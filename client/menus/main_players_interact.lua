@@ -20,87 +20,111 @@ function main_players_interact_showContentThisFrame(playerGroup)
 	RageUI.Separator(_U("main_players_interact_ooc_name", player.ooc_name .. " ~s~[" .. group .. "~s~]"))
 	RageUI.Separator(_U("main_players_interact_rp_name", player.name))
 	RageUI.Separator(_U("main_players_interact_id", player.source))
-	RageUI.List(_U("main_players_interact_money_bank", playerAccounts["bank"]), _var.menu.accountsActionsArray, _var.menu.accountsActionsArrayIndex, _U("main_players_interact_money_desc"), {}, Config.Groups[playerGroup].Access["submenu_players_interact_managemoney"] and not _var.menus.admin.cooldowns.items, function(_h, _a, Selected, Index)
-		_var.menu.accountsActionsArrayIndex = Index
-		if Selected then
-			Citizen.CreateThread(function()
-				_var.menus.admin.cooldowns.items = true
-				local amount = textEntry(_U("textentry_amount"), "", 9)
-				if amount == nil or amount == "" then
-					ESX.ShowNotification(_U("textentry_number_invalid"))
+	RageUI.List(
+		_U("main_players_interact_money_bank", playerAccounts["bank"]),
+		_var.menu.accountsActionsArray,
+		_var.menu.accountsActionsArrayIndex,
+		_U("main_players_interact_money_desc"),
+		{},
+		Config.Groups[playerGroup].Access["submenu_players_interact_managemoney"] and not _var.menus.admin.cooldowns.items,
+		function(_h, _a, Selected, Index)
+			_var.menu.accountsActionsArrayIndex = Index
+			if Selected then
+				Citizen.CreateThread(function()
+					_var.menus.admin.cooldowns.items = true
+					local amount = textEntry(_U("textentry_amount"), "", 9)
+					if amount == nil or amount == "" then
+						ESX.ShowNotification(_U("textentry_number_invalid"))
+						_var.menus.admin.cooldowns.items = false
+						return
+					end
+					if string.find(amount, "[%c%p%s%z%a]") then
+						ESX.ShowNotification(_U("textentry_number_invalid"))
+						_var.menus.admin.cooldowns.items = false
+						return
+					end
+					if _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_add") then
+						TriggerServerEvent("epyi_administration:addPlayerMoney", player.source, "bank", tonumber(amount))
+					elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_remove") then
+						TriggerServerEvent("epyi_administration:removePlayerMoney", player.source, "bank", tonumber(amount))
+					elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_set") then
+						TriggerServerEvent("epyi_administration:setPlayerMoney", player.source, "bank", tonumber(amount))
+					end
 					_var.menus.admin.cooldowns.items = false
-					return
-				end
-				if string.find(amount, "[%c%p%s%z%a]") then
-					ESX.ShowNotification(_U("textentry_number_invalid"))
-					_var.menus.admin.cooldowns.items = false
-					return
-				end
-				if _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_add") then
-					TriggerServerEvent("epyi_administration:addPlayerMoney", player.source, "bank", tonumber(amount))
-				elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_remove") then
-					TriggerServerEvent("epyi_administration:removePlayerMoney", player.source, "bank", tonumber(amount))
-				elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_set") then
-					TriggerServerEvent("epyi_administration:setPlayerMoney", player.source, "bank", tonumber(amount))
-				end
-				_var.menus.admin.cooldowns.items = false
-			end)
+				end)
+			end
 		end
-	end)
-	RageUI.List(_U("main_players_interact_money_cash", playerAccounts["money"]), _var.menu.accountsActionsArray, _var.menu.accountsActionsArrayIndex, _U("main_players_interact_money_desc"), {}, Config.Groups[playerGroup].Access["submenu_players_interact_managemoney"] and not _var.menus.admin.cooldowns.items, function(_h, _a, Selected, Index)
-		_var.menu.accountsActionsArrayIndex = Index
-		if Selected then
-			Citizen.CreateThread(function()
-				_var.menus.admin.cooldowns.items = true
-				local amount = textEntry(_U("textentry_amount"), "", 9)
-				if amount == nil or amount == "" then
-					ESX.ShowNotification(_U("textentry_number_invalid"))
+	)
+	RageUI.List(
+		_U("main_players_interact_money_cash", playerAccounts["money"]),
+		_var.menu.accountsActionsArray,
+		_var.menu.accountsActionsArrayIndex,
+		_U("main_players_interact_money_desc"),
+		{},
+		Config.Groups[playerGroup].Access["submenu_players_interact_managemoney"] and not _var.menus.admin.cooldowns.items,
+		function(_h, _a, Selected, Index)
+			_var.menu.accountsActionsArrayIndex = Index
+			if Selected then
+				Citizen.CreateThread(function()
+					_var.menus.admin.cooldowns.items = true
+					local amount = textEntry(_U("textentry_amount"), "", 9)
+					if amount == nil or amount == "" then
+						ESX.ShowNotification(_U("textentry_number_invalid"))
+						_var.menus.admin.cooldowns.items = false
+						return
+					end
+					if string.find(amount, "[%c%p%s%z%a]") then
+						ESX.ShowNotification(_U("textentry_number_invalid"))
+						_var.menus.admin.cooldowns.items = false
+						return
+					end
+					if _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_add") then
+						TriggerServerEvent("epyi_administration:addPlayerMoney", player.source, "money", tonumber(amount))
+					elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_remove") then
+						TriggerServerEvent("epyi_administration:removePlayerMoney", player.source, "money", tonumber(amount))
+					elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_set") then
+						TriggerServerEvent("epyi_administration:setPlayerMoney", player.source, "money", tonumber(amount))
+					end
 					_var.menus.admin.cooldowns.items = false
-					return
-				end
-				if string.find(amount, "[%c%p%s%z%a]") then
-					ESX.ShowNotification(_U("textentry_number_invalid"))
-					_var.menus.admin.cooldowns.items = false
-					return
-				end
-				if _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_add") then
-					TriggerServerEvent("epyi_administration:addPlayerMoney", player.source, "money", tonumber(amount))
-				elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_remove") then
-					TriggerServerEvent("epyi_administration:removePlayerMoney", player.source, "money", tonumber(amount))
-				elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_set") then
-					TriggerServerEvent("epyi_administration:setPlayerMoney", player.source, "money", tonumber(amount))
-				end
-				_var.menus.admin.cooldowns.items = false
-			end)
+				end)
+			end
 		end
-	end)
-	RageUI.List(_U("main_players_interact_money_black", playerAccounts["black_money"]), _var.menu.accountsActionsArray, _var.menu.accountsActionsArrayIndex, _U("main_players_interact_money_desc"), {}, Config.Groups[playerGroup].Access["submenu_players_interact_managemoney"] and not _var.menus.admin.cooldowns.items, function(_h, _a, Selected, Index)
-		_var.menu.accountsActionsArrayIndex = Index
-		if Selected then
-			Citizen.CreateThread(function()
-				_var.menus.admin.cooldowns.items = true
-				local amount = textEntry(_U("textentry_amount"), "", 9)
-				if amount == nil or amount == "" then
-					ESX.ShowNotification(_U("textentry_number_invalid"))
+	)
+	RageUI.List(
+		_U("main_players_interact_money_black", playerAccounts["black_money"]),
+		_var.menu.accountsActionsArray,
+		_var.menu.accountsActionsArrayIndex,
+		_U("main_players_interact_money_desc"),
+		{},
+		Config.Groups[playerGroup].Access["submenu_players_interact_managemoney"] and not _var.menus.admin.cooldowns.items,
+		function(_h, _a, Selected, Index)
+			_var.menu.accountsActionsArrayIndex = Index
+			if Selected then
+				Citizen.CreateThread(function()
+					_var.menus.admin.cooldowns.items = true
+					local amount = textEntry(_U("textentry_amount"), "", 9)
+					if amount == nil or amount == "" then
+						ESX.ShowNotification(_U("textentry_number_invalid"))
+						_var.menus.admin.cooldowns.items = false
+						return
+					end
+					if string.find(amount, "[%c%p%s%z%a]") then
+						ESX.ShowNotification(_U("textentry_number_invalid"))
+						_var.menus.admin.cooldowns.items = false
+						return
+					end
+					if _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_add") then
+						TriggerServerEvent("epyi_administration:addPlayerMoney", player.source, "black_money", tonumber(amount))
+					elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_remove") then
+						TriggerServerEvent("epyi_administration:removePlayerMoney", player.source, "black_money", tonumber(amount))
+					elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_set") then
+						TriggerServerEvent("epyi_administration:setPlayerMoney", player.source, "black_money", tonumber(amount))
+					end
 					_var.menus.admin.cooldowns.items = false
-					return
-				end
-				if string.find(amount, "[%c%p%s%z%a]") then
-					ESX.ShowNotification(_U("textentry_number_invalid"))
-					_var.menus.admin.cooldowns.items = false
-					return
-				end
-				if _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_add") then
-					TriggerServerEvent("epyi_administration:addPlayerMoney", player.source, "black_money", tonumber(amount))
-				elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_remove") then
-					TriggerServerEvent("epyi_administration:removePlayerMoney", player.source, "black_money", tonumber(amount))
-				elseif _var.menu.accountsActionsArray[_var.menu.accountsActionsArrayIndex] == _("main_players_interact_money_action_set") then
-					TriggerServerEvent("epyi_administration:setPlayerMoney", player.source, "black_money", tonumber(amount))
-				end
-				_var.menus.admin.cooldowns.items = false
-			end)
+				end)
+			end
 		end
-	end)
+	)
 	RageUI.ButtonWithStyle(_U("main_players_interact_goto"), _U("main_players_interact_goto_desc"), {}, Config.Groups[playerGroup].Access["submenu_players_interact_goto"] and not _var.menus.admin.cooldowns.items, function(_h, _a, Selected)
 		if Selected then
 			Citizen.CreateThread(function()
