@@ -108,18 +108,17 @@ ESX.RegisterServerCallback("epyi_administration:setCoords", function(source, cb,
 	cb(true)
 end)
 
-local function isDeadState(src, bool)
-	if not src or bool == nil then
+RegisterNetEvent("epyi_administration:setDeathStatus", function(isDead)
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
+	if not Config.Groups[xPlayer.getGroup()] then
+		xPlayer.kick(_U("insuficient_permissions"))
 		return
 	end
-	Player(src).state:set("isDead", bool, true)
-end
-
-RegisterNetEvent("epyi_administration:setDeathStatus", function(isDead)
-	local xPlayer = ESX.GetPlayerFromId(source)
 	if type(isDead) == "boolean" then
 		MySQL.update("UPDATE users SET is_dead = ? WHERE identifier = ?", { isDead, xPlayer.identifier })
-		isDeadState(source, isDead)
+		isDeadState(_source, isDead)
+		Player(_source).state:set("isDead", isDead, true)
 	end
 end)
 
