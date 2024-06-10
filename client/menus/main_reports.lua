@@ -3,7 +3,6 @@
 ---@return void
 function main_reports_showContentThisFrame(playerGroup)
 	_var.client.playerData = ESX.GetPlayerData()
-	_var.reports.list = GlobalState["epyi_administration:reportList"] or {}
 	_var.reports.count = 0
 	_var.reports.countHiden = 0
 	for _k, report in pairs(_var.reports.list) do
@@ -28,7 +27,7 @@ function main_reports_showContentThisFrame(playerGroup)
 		end)
 		RageUI.Separator(_U("main_reports_avalaible", _var.reports.count, _var.reports.countHiden))
 	end
-	for key, report in pairs(_var.reports.list) do
+	for __, report in pairs(_var.reports.list) do
 		local showThisReport = true
 		if _var.menu.reportsFilterArray[_var.menu.reportsFilterArrayIndex] == _("main_reports_filter_waiting") then
 			if report.staff.taken then
@@ -51,18 +50,11 @@ function main_reports_showContentThisFrame(playerGroup)
 			if Config.Groups[report.user.group] ~= nil then
 				group = Config.Groups[report.user.group].Color .. Config.Groups[report.user.group].Label
 			end
-			RageUI.ButtonWithStyle(
-				(report.staff.taken and _U("main_reports_edit_status_taken") or _U("main_reports_edit_status_waiting")) .. "~s~ - " .. _U("main_reports_edit_by", "~s~" .. report.user.name) .. " [" .. group .. "~s~]",
-				_U("main_reports_report_desc", report.user.reason),
-				{ RightLabel = "→" },
-				true,
-				function(_h, _a, Selected)
-					if Selected then
-						_var.reports.selectedReport = key
-					end
-				end,
-				_var.menus.admin.objects.mainReportsEdit
-			)
+			RageUI.ButtonWithStyle((report.staff.taken and _U("main_reports_edit_status_taken") or _U("main_reports_edit_status_waiting")) .. "~s~ - " .. _U("main_reports_edit_by", "~s~" .. report.user.name) .. " [" .. group .. "~s~]", _U("main_reports_report_desc", report.user.reason), { RightLabel = "→" }, true, function(_, _, s)
+				if s then
+					_var.reports.selectedReport = report.id
+				end
+			end, _var.menus.admin.objects.mainReportsEdit)
 		end
 	end
 	if _var.reports.count == 0 then

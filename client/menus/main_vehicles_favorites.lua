@@ -3,7 +3,6 @@
 ---@return void
 function main_vehicles_favorites_showContentThisFrame(playerGroup)
 	_var.client.playerData = ESX.GetPlayerData()
-	_var.datas.list = GlobalState["epyi_administration:datastore"] or {}
 
 	RageUI.ButtonWithStyle(_U("main_vehicles_favorites_add"), _U("main_vehicles_favorites_add_desc"), { RightLabel = "→" }, not _var.menus.admin.cooldowns.items, function(_h, _a, Selected)
 		if Selected and not _var.menus.admin.cooldowns.items then

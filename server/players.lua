@@ -1,15 +1,10 @@
 local _players = {}
 
-ESX.RegisterServerCallback("epyi_administration:getPlayers", function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
-	if not Config.Groups[xPlayer.getGroup()] or not Config.Groups[xPlayer.getGroup()].Access["submenu_players_access"] then
-		xPlayer.kick(_U("insuficient_permissions"))
-		cb({})
-		return
-	end
-	cb(_players)
-end)
-
+---playerUpdated
+---@param playerId number
+---@param player table
+---@return void
+---@private
 local function playerUpdated(playerId, player)
 	local xPlayers = ESX.GetExtendedPlayers()
 	for _, xTarget in pairs(xPlayers) do
@@ -19,6 +14,29 @@ local function playerUpdated(playerId, player)
 		end
 	end
 end
+
+---logoutPlayer
+---@param source number
+---@return void
+---@private
+local function logoutPlayer(source)
+	if not _players[source] then
+		return
+	end
+	_players[source] = nil
+	playerUpdated(source, _players[source])
+	Player(source).state:set("epyi_administration:onDuty", nil, true)
+end
+
+ESX.RegisterServerCallback("epyi_administration:getPlayers", function(source, cb)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if not Config.Groups[xPlayer.getGroup()] or not Config.Groups[xPlayer.getGroup()].Access["submenu_players_access"] then
+		xPlayer.kick(_U("insuficient_permissions"))
+		cb({})
+		return
+	end
+	cb(_players)
+end)
 
 AddEventHandler("esx:playerUpdated", function(_, xPlayer)
 	if _players[xPlayer.source] then
@@ -39,14 +57,11 @@ AddEventHandler("esx:playerUpdated", function(_, xPlayer)
 end)
 
 AddEventHandler("esx:playerLogout", function(source)
-	_players[source] = nil
-	playerUpdated(source, _players[source])
+	logoutPlayer(source)
 end)
 
 AddEventHandler("playerDropped", function(reason)
-	local _source = source
-	_players[_source] = nil
-	playerUpdated(_source, _players[_source])
+	logoutPlayer(source)
 end)
 
 Citizen.CreateThread(function()

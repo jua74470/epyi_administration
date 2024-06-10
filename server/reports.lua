@@ -1,49 +1,29 @@
 local reportCooldowns = reportCooldowns or {}
+local reports = {}
 
-GlobalState:set("epyi_administration:reportList", {}, true)
-
-local function sendReportsToStatebag()
-	GlobalState:set("epyi_administration:reportList", _var.reports.list, true)
-end
-
---report command
---command to create a report
-ESX.RegisterCommand("report", "user", function(xPlayer, args, showError)
-	if reportCooldowns[xPlayer.identifier] then
-		xPlayer.showNotification(_U("notif_cannot_perform_cooldown"))
-		return
-	end
-	local reason = ""
-	for _, arg in pairs(args) do
-		if reason == "" then
-			reason = arg
-		else
-			reason = reason .. " " .. arg
-		end
-	end
-	if reason == nil or reason == "" then
-		reason = _U("command_report_no_reason")
-	end
-	addReport(xPlayer, reason)
-	xPlayer.showNotification(_U("command_report_success", reason))
+---reportUpdated
+---@param reportId number
+---@return void
+---@private
+local function reportUpdated(reportId)
 	local xPlayers = ESX.GetExtendedPlayers()
-	for _, xStaff in pairs(xPlayers) do
-		if Config.Groups[xStaff.getGroup()].Access["submenu_reports_access"] then
-			xStaff.showNotification(_U("command_report_success_staff", xPlayer.getName(), xPlayer.source))
+	for _, xTarget in pairs(xPlayers) do
+		local xTargetSource = xTarget.source
+		if Config.Groups[xTarget.getGroup()] and Config.Groups[xTarget.getGroup()].Access["submenu_reports_access"] and Player(xTargetSource).state["epyi_administration:onDuty"] then
+			TriggerClientEvent("epyi_administration:reportUpdated", xTargetSource, reportId, reports[reportId])
 		end
 	end
-	reportCooldowns[xPlayer.identifier] = true
-	Citizen.SetTimeout(5000, function()
-		reportCooldowns[xPlayer.identifier] = false
-	end)
-end, false)
+end
 
 ---addReport
 ---@param xPlayer player
 ---@param reason string
 ---@return void
-function addReport(xPlayer, reason)
+---@private
+local function addReport(xPlayer, reason)
+	local _id = #reports + 1
 	local report = {
+		id = _id,
 		user = {
 			identifier = xPlayer.identifier,
 			source = xPlayer.source,
@@ -64,45 +44,77 @@ function addReport(xPlayer, reason)
 			takerName = nil,
 		},
 	}
-	table.insert(_var.reports.list, report)
-	sendReportsToStatebag()
+	reports[_id] = report
+	reportUpdated(_id)
 end
 
----setReport → Set a server report data
----@param identifier string
----@return table
-ESX.RegisterServerCallback("epyi_administration:setReport", function(source, cb, identifier, key, data)
-	xPlayer = ESX.GetPlayerFromIdentifier(identifier)
+ESX.RegisterServerCallback("epyi_administration:getReports", function(source, cb)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if not Config.Groups[xPlayer.getGroup()] or not Config.Groups[xPlayer.getGroup()].Access["submenu_reports_access"] then
+		cb({})
+		xPlayer.kick(_U("insuficient_permissions"))
+		return
+	end
+	cb(reports or {})
+end)
+
+ESX.RegisterServerCallback("epyi_administration:setReport", function(source, cb, key, data)
+	local xPlayer = ESX.GetPlayerFromId(source)
 	if not Config.Groups[xPlayer.getGroup()] or not Config.Groups[xPlayer.getGroup()].Access["submenu_reports_access"] then
 		cb(false)
 		xPlayer.kick(_U("insuficient_permissions"))
 		return
 	end
-	if _var.reports.list[key] == nil then
+	if reports[key] == nil then
 		cb(false)
 		return
 	end
-	_var.reports.list[key] = data
-	sendReportsToStatebag()
+	reports[key] = data
+	reportUpdated(key)
 	cb(true)
 end)
 
----Thread to leave report from staff when quit the server
-Citizen.CreateThread(function()
-	while true do
-		for _k, report in pairs(_var.reports.list) do
-			if report.staff.taken then
-				if report.staff.takerIdentifier ~= nil then
-					local xPlayer = ESX.GetPlayerFromIdentifier(report.staff.takerIdentifier)
-					if not xPlayer then
-						report.staff.taken = false
-						report.staff.takerIdentifier = nil
-					end
-				else
-					report.staff.taken = false
-				end
-			end
-		end
-		Citizen.Wait(1000)
+ESX.RegisterCommand("report", "user", function(xPlayer, args, showError)
+	if reportCooldowns[xPlayer.identifier] then
+		xPlayer.showNotification(_U("notif_cannot_perform_cooldown"))
+		return
 	end
-end)
+	local reason = ""
+	for _, arg in pairs(args) do
+		if reason == "" then
+			reason = arg
+		else
+			reason = reason .. " " .. arg
+		end
+	end
+	if reason == nil or reason == "" then
+		reason = _U("command_report_no_reason")
+	end
+	addReport(xPlayer, reason)
+	xPlayer.showNotification(_U("command_report_success", reason))
+	local xPlayers = ESX.GetExtendedPlayers()
+	for _, xStaff in pairs(xPlayers) do
+		if Config.Groups[xStaff.getGroup()].Access["submenu_reports_access"] and Player(xStaff.source).state["epyi_administration:onDuty"] then
+			xStaff.showNotification(_U("command_report_success_staff", xPlayer.getName(), xPlayer.source))
+		end
+	end
+	reportCooldowns[xPlayer.identifier] = true
+	Citizen.SetTimeout(5000, function()
+		reportCooldowns[xPlayer.identifier] = false
+	end)
+end, false)
+
+repeat
+	for _, report in pairs(reports) do
+		local xStaff = ESX.GetPlayerFromIdentifier(report.staff.takerIdentifier)
+		if report.staff.taken and not xStaff then
+			report.staff.taken = false
+			report.staff.takerIdentifier = nil
+			report.staff.takerSource = nil
+			report.staff.takerGroup = nil
+			report.staff.takerName = nil
+			reportUpdated(report.id)
+		end
+	end
+	Citizen.Wait(1000)
+until false

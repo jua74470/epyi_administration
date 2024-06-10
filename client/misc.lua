@@ -44,21 +44,22 @@ end
 ---leaveAllReports → Leave all reports taken by client
 ---@return void
 function leaveAllReports()
-	_var.client.playerData = ESX.GetPlayerData()
-	_var.reports.list = GlobalState["epyi_administration:reportList"] or {}
-	for key, report in pairs(_var.reports.list) do
-		if report.staff.takerIdentifier == _var.client.playerData.identifier then
-			report.staff.taken = false
-			report.staff.takerIdentifier = nil
-			report.staff.takerSource = nil
-			report.staff.takerGroup = nil
-			ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
-				if not result then
-					ESX.ShowNotification(_U("notif_report_editing_error"))
-				end
-			end, _var.client.playerData.identifier, key, _var.reports.list[key])
+	ESX.TriggerServerCallback("epyi_administration:getReports", function(reports)
+		_var.reports.list = reports
+		for key, report in pairs(_var.reports.list) do
+			if report.staff.takerIdentifier == ESX.GetPlayerData().identifier then
+				report.staff.taken = false
+				report.staff.takerIdentifier = nil
+				report.staff.takerSource = nil
+				report.staff.takerGroup = nil
+				ESX.TriggerServerCallback("epyi_administration:setReport", function(result)
+					if not result then
+						ESX.ShowNotification(_U("notif_report_editing_error"))
+					end
+				end, key, _var.reports.list[key])
+			end
 		end
-	end
+	end)
 end
 
 ---timeFormat
@@ -177,4 +178,8 @@ end)
 
 RegisterNetEvent("epyi_administration:playerUpdated", function(playerId, player)
 	_var.players.list[playerId] = player
+end)
+
+RegisterNetEvent("epyi_administration:reportUpdated", function(reportId, report)
+	_var.reports.list[reportId] = report
 end)
