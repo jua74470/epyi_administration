@@ -2,7 +2,6 @@
 ---@param playerGroup string
 ---@return void
 function main_players_interact_showContentThisFrame(playerGroup)
-	_var.players.list = GlobalState["epyi_administration:playerList"] or {}
 	for _k, player in pairs(_var.players.list) do
 		if player.identifier == _var.players.selected.identifier then
 			_var.players.selected = player

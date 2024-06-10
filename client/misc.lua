@@ -175,10 +175,6 @@ CreateThread(function()
 	end
 end)
 
-RegisterNetEvent("epyi_administration:playerUpdated", function(player)
-	_var.players.list[player.source] = player
-end)
-
-RegisterNetEvent("epyi_administration:playerLost", function(playerId)
-	_var.players.list[playerId] = nil
+RegisterNetEvent("epyi_administration:playerUpdated", function(playerId, player)
+	_var.players.list[playerId] = player
 end)

@@ -10,22 +10,12 @@ ESX.RegisterServerCallback("epyi_administration:getPlayers", function(source, cb
 	cb(_players)
 end)
 
-local function playerLost(source)
+local function playerUpdated(playerId, player)
 	local xPlayers = ESX.GetExtendedPlayers()
 	for _, xTarget in pairs(xPlayers) do
 		local xTargetSource = xTarget.source
 		if Config.Groups[xTarget.getGroup()] and Config.Groups[xTarget.getGroup()].Access["submenu_players_access"] and Player(xTargetSource).state["epyi_administration:onDuty"] then
-			TriggerClientEvent("epyi_administration:playerLost", xTargetSource, source)
-		end
-	end
-end
-
-local function playerUpdated(source)
-	local xPlayers = ESX.GetExtendedPlayers()
-	for _, xTarget in pairs(xPlayers) do
-		local xTargetSource = xTarget.source
-		if Config.Groups[xTarget.getGroup()] and Config.Groups[xTarget.getGroup()].Access["submenu_players_access"] and Player(xTargetSource).state["epyi_administration:onDuty"] then
-			TriggerClientEvent("epyi_administration:playerUpdated", xTargetSource, _players[source])
+			TriggerClientEvent("epyi_administration:playerUpdated", xTargetSource, playerId, player)
 		end
 	end
 end
@@ -45,17 +35,18 @@ AddEventHandler("esx:playerUpdated", function(_, xPlayer)
 		coords = xPlayer.getCoords(),
 		inventory = xPlayer.getInventory(),
 	}
-	playerUpdated(xPlayer.source)
+	playerUpdated(xPlayer.source, _players[xPlayer.source])
 end)
 
 AddEventHandler("esx:playerLogout", function(source)
 	_players[source] = nil
-	playerLost(source)
+	playerUpdated(source, _players[source])
 end)
 
 AddEventHandler("playerDropped", function(reason)
-	_players[source] = nil
-	playerLost(source)
+	local _source = source
+	_players[_source] = nil
+	playerUpdated(_source, _players[_source])
 end)
 
 Citizen.CreateThread(function()
@@ -131,7 +122,7 @@ RegisterNetEvent("epyi_administration:addPlayerMoney", function(target, type, am
 	xTarget.addAccountMoney(type, amount)
 	xPlayer.showNotification(_U("notif_addmoney_success", amount))
 	_players[xTarget.source]["accounts"] = xTarget.getAccounts()
-	playerUpdated(xTarget.source)
+	playerUpdated(xTarget.source, _players[xTarget.source])
 end)
 
 RegisterNetEvent("epyi_administration:removePlayerMoney", function(target, type, amount)
@@ -152,7 +143,7 @@ RegisterNetEvent("epyi_administration:removePlayerMoney", function(target, type,
 	xTarget.removeAccountMoney(type, amount)
 	xPlayer.showNotification(_U("notif_removemoney_success", amount))
 	_players[xTarget.source]["accounts"] = xTarget.getAccounts()
-	playerUpdated(xTarget.source)
+	playerUpdated(xTarget.source, _players[xTarget.source])
 end)
 
 RegisterNetEvent("epyi_administration:setPlayerMoney", function(target, type, amount)
@@ -169,7 +160,7 @@ RegisterNetEvent("epyi_administration:setPlayerMoney", function(target, type, am
 	xTarget.setAccountMoney(type, tonumber(amount))
 	xPlayer.showNotification(_U("notif_setmoney_success", amount))
 	_players[xTarget.source]["accounts"] = xTarget.getAccounts()
-	playerUpdated(xTarget.source)
+	playerUpdated(xTarget.source, _players[xTarget.source])
 end)
 
 RegisterNetEvent("epyi_administration:sendMessage", function(target, message)
