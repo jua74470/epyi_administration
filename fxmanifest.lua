@@ -43,7 +43,6 @@ server_scripts({
 	"server/version_check.lua",
 	"server/logs.lua",
 	"server/var_init.lua",
-	"server/permissions.lua",
 	"server/datastore.lua",
 	"server/players.lua",
 	"server/ban.lua",
