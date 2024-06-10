@@ -4,7 +4,7 @@
 function main_showContentThisFrame(playerGroup)
 	RageUI.Checkbox(_U("main_menu_staffmode"), _U("main_menu_staffmode_desc"), _var.client.isStaffModeActivated, {}, function() end, function()
 		_var.client.isStaffModeActivated = true
-		LocalPayer.state:set("epyi_administration:onDuty", true, true)
+		LocalPlayer.state:set("epyi_administration:onDuty", true, true)
 		if Config.Groups[playerGroup].Clothes then
 			TriggerEvent("skinchanger:getSkin", function(skin)
 				TriggerEvent("skinchanger:loadClothes", skin, Config.Groups[playerGroup].Clothes[(GetEntityModel(PlayerPedId()) == joaat("mp_m_freemode_01") and "male" or "female")])
@@ -12,7 +12,7 @@ function main_showContentThisFrame(playerGroup)
 		end
 	end, function()
 		_var.client.isStaffModeActivated = false
-		LocalPayer.state:set("epyi_administration:onDuty", nil, true)
+		LocalPlayer.state:set("epyi_administration:onDuty", nil, true)
 		if Config.Groups[playerGroup].Clothes then
 			ESX.TriggerServerCallback("esx_skin:getPlayerSkin", function(skin)
 				TriggerEvent("skinchanger:loadSkin", skin)

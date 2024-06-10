@@ -20,17 +20,17 @@ local function playerLost(source)
 	end
 end
 
-local function playerLoaded(source)
+local function playerUpdated(source)
 	local xPlayers = ESX.GetExtendedPlayers()
 	for _, xTarget in pairs(xPlayers) do
 		local xTargetSource = xTarget.source
 		if Config.Groups[xTarget.getGroup()] and Config.Groups[xTarget.getGroup()].Access["submenu_players_access"] and Player(xTargetSource).state["epyi_administration:onDuty"] then
-			TriggerClientEvent("epyi_administration:playerLoaded", xTargetSource, _players[source])
+			TriggerClientEvent("epyi_administration:playerUpdated", xTargetSource, _players[source])
 		end
 	end
 end
 
-AddEventHandler("esx:playerLoaded", function(_, xPlayer)
+AddEventHandler("esx:playerUpdated", function(_, xPlayer)
 	if _players[xPlayer.source] then
 		return
 	end
@@ -45,7 +45,7 @@ AddEventHandler("esx:playerLoaded", function(_, xPlayer)
 		coords = xPlayer.getCoords(),
 		inventory = xPlayer.getInventory(),
 	}
-	playerLoaded(xPlayer.source)
+	playerUpdated(xPlayer.source)
 end)
 
 AddEventHandler("esx:playerLogout", function(source)
@@ -130,10 +130,8 @@ RegisterNetEvent("epyi_administration:addPlayerMoney", function(target, type, am
 	end
 	xTarget.addAccountMoney(type, amount)
 	xPlayer.showNotification(_U("notif_addmoney_success", amount))
-
-	local _cache = _players[xTarget.source]
-	_cache["accounts"] = xTarget.getAccounts()
-	_players[xTarget.source] = _cache
+	_players[xTarget.source]["accounts"] = xTarget.getAccounts()
+	playerUpdated(xTarget.source)
 end)
 
 RegisterNetEvent("epyi_administration:removePlayerMoney", function(target, type, amount)
@@ -153,10 +151,8 @@ RegisterNetEvent("epyi_administration:removePlayerMoney", function(target, type,
 	end
 	xTarget.removeAccountMoney(type, amount)
 	xPlayer.showNotification(_U("notif_removemoney_success", amount))
-
-	local _cache = _players[xTarget.source]
-	_cache["accounts"] = xTarget.getAccounts()
-	_players[xTarget.source] = _cache
+	_players[xTarget.source]["accounts"] = xTarget.getAccounts()
+	playerUpdated(xTarget.source)
 end)
 
 RegisterNetEvent("epyi_administration:setPlayerMoney", function(target, type, amount)
@@ -172,10 +168,8 @@ RegisterNetEvent("epyi_administration:setPlayerMoney", function(target, type, am
 	end
 	xTarget.setAccountMoney(type, tonumber(amount))
 	xPlayer.showNotification(_U("notif_setmoney_success", amount))
-
-	local _cache = _players[xTarget.source]
-	_cache["accounts"] = xTarget.getAccounts()
-	_players[xTarget.source] = _cache
+	_players[xTarget.source]["accounts"] = xTarget.getAccounts()
+	playerUpdated(xTarget.source)
 end)
 
 RegisterNetEvent("epyi_administration:sendMessage", function(target, message)
