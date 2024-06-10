@@ -1,6 +1,6 @@
 ---timeExpression
 ---@param expression string
----@return void
+---@return number|boolean
 ---@public
 function timeExpression(expression)
 	local timestamp = 0
