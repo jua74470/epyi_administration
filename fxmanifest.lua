@@ -6,7 +6,7 @@ lua54("yes")
 name("epyi_administration")
 description("A RageUI Administration for ESX Legacy 1.7.5 or newer")
 author("Epyi")
-version("0.2.0")
+version("0.2.1")
 
 shared_scripts({
 	"shared/locale.lua",
